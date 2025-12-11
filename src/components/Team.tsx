@@ -1,34 +1,36 @@
 import { Instagram, Award, GraduationCap } from "lucide-react";
+import drPedroImage from "@/assets/dr-pedro.jpeg";
+import draJuliaImage from "@/assets/dra-julia.jpeg";
 
 const Team = () => {
   const doctors = [
     {
       name: "Dr. Pedro Germano Longo Schmitz",
-      specialty: "Medicina Estética",
+      specialty: "Medicina Estética e Tecnologias",
       description:
-        "Especialista em procedimentos estéticos faciais e corporais, com foco em resultados naturais e harmoniosos. Dedicado a realçar a beleza única de cada paciente.",
+        "Especialista em procedimentos estéticos faciais e corporais, com foco em resultados naturais e harmoniosos. Dedicado a realçar a beleza única de cada paciente utilizando as mais avançadas tecnologias.",
       credentials: [
         "Medicina Estética Avançada",
         "Harmonização Orofacial",
-        "Bioestimuladores e Preenchimentos",
+        "Injetáveis e Bioestimuladores",
+        "Tecnologias a Laser e Radiofrequência",
       ],
       instagram: "DrPedroSchmitz",
-      image:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=600&auto=format&fit=crop",
+      image: drPedroImage,
     },
     {
       name: "Dra. Júlia Longo Rodrigues Schmitz",
-      specialty: "Medicina do Metabolismo, Performance e Emagrecimento",
+      specialty: "Emagrecimento, Metabolismo e Performance",
       description:
-        "Especialista em emagrecimento saudável e otimização metabólica. Ajuda pacientes a conquistarem seus objetivos de peso e performance com tratamentos personalizados.",
+        "Especialista em emagrecimento saudável, otimização metabólica e performance. Ajuda pacientes a conquistarem seus objetivos de peso, energia e longevidade com tratamentos personalizados.",
       credentials: [
-        "Nutrologia e Metabolismo",
+        "Metabolismo e Emagrecimento",
         "Medicina do Estilo de Vida",
-        "Performance e Longevidade",
+        "Performance Física e Mental",
+        "Reposição Hormonal e Longevidade",
       ],
       instagram: "DraJuliaLongo",
-      image:
-        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=600&auto=format&fit=crop",
+      image: draJuliaImage,
     },
   ];
 
@@ -63,7 +65,7 @@ const Team = () => {
                   <img
                     src={doctor.image}
                     alt={doctor.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
 

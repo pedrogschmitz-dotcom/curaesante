@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Playfair Display', 'serif'],
-        sans: ['Inter', 'sans-serif'],
+        display: ['Cormorant', 'serif'],
+        sans: ['Red Hat Display', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -39,6 +39,9 @@ export default {
         beige: {
           DEFAULT: "hsl(var(--beige))",
           dark: "hsl(var(--beige-dark))",
+        },
+        rose: {
+          DEFAULT: "hsl(var(--rose))",
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
