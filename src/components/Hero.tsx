@@ -1,12 +1,7 @@
 import { Phone, Instagram, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 const Hero = () => {
-  return (
-    <section
-      id="inicio"
-      className="relative min-h-screen flex items-center justify-center gradient-hero overflow-hidden"
-    >
+  return <section id="inicio" className="relative min-h-screen flex items-center justify-center gradient-hero overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gold/10 rounded-full blur-3xl" />
@@ -39,25 +34,14 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
-              <a
-                href="https://wa.me/5548988064337"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://wa.me/5548988064337" target="_blank" rel="noopener noreferrer">
                 <Button className="btn-primary w-full sm:w-auto text-lg px-8 py-6 flex items-center justify-center gap-3 group">
                   <Phone size={20} />
                   Fale no WhatsApp
-                  <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </Button>
               </a>
-              <a
-                href="https://instagram.com/CuraeSante"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="https://instagram.com/CuraeSante" target="_blank" rel="noopener noreferrer">
                 <Button className="btn-outline w-full sm:w-auto text-lg px-8 py-6 flex items-center justify-center gap-3">
                   <Instagram size={20} />
                   Siga no Instagram
@@ -95,15 +79,13 @@ const Hero = () => {
           </div>
 
           {/* Hero Image */}
-          <div className="relative animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          <div className="relative animate-fade-in" style={{
+          animationDelay: "0.3s"
+        }}>
             <div className="relative aspect-[4/5] max-w-md mx-auto">
               <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-brown-light/30 rounded-[3rem] transform rotate-3" />
               <div className="absolute inset-0 bg-card rounded-[3rem] shadow-card overflow-hidden transform -rotate-3 hover:rotate-0 transition-transform duration-500">
-                <img
-                  src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1000&auto=format&fit=crop"
-                  alt="Ambiente acolhedor da Curae Santé - Clínica de estética e emagrecimento"
-                  className="w-full h-full object-cover"
-                />
+                <img alt="Ambiente acolhedor da Curae Santé - Clínica de estética e emagrecimento" className="w-full h-full object-cover" src="/lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
               </div>
 
@@ -122,10 +104,9 @@ const Hero = () => {
                 </div>
               </div>
 
-              <div
-                className="absolute -bottom-4 -left-4 bg-card p-4 rounded-2xl shadow-card animate-float"
-                style={{ animationDelay: "1.5s" }}
-              >
+              <div className="absolute -bottom-4 -left-4 bg-card p-4 rounded-2xl shadow-card animate-float" style={{
+              animationDelay: "1.5s"
+            }}>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center">
                     <span className="text-gold text-lg">💛</span>
@@ -149,8 +130,6 @@ const Hero = () => {
           <div className="w-1 h-3 bg-gold rounded-full animate-pulse" />
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
