@@ -49,11 +49,10 @@ const About = () => {
                 <span className="text-gold italic">transforma</span>
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                A Curae Santé nasceu do sonho de entregar medicina de excelência
-                com o cuidado humano que todo paciente merece. Nossa clínica reúne o
-                melhor da medicina estética, dos cuidados com a pele, do emagrecimento,
-                da performance e da metabologia, sempre em um ambiente pensado para
-                seu conforto e bem-estar.
+                A Curae Santé nasceu do sonho de oferecer medicina de excelência
+                com o calor humano que todo paciente merece. Nossa clínica une o
+                melhor da medicina estética, dermatologia e nutrologia em um
+                ambiente pensado para seu conforto e bem-estar.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Acreditamos que beleza e saúde caminham juntas, e cada
