@@ -65,7 +65,7 @@ const Team = () => {
                   <img
                     src={doctor.image}
                     alt={doctor.name}
-                    className="w-full h-full object-cover object-[center_25%] transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover object-[center_50%] transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
 
