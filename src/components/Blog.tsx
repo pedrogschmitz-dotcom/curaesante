@@ -18,7 +18,7 @@ const Blog = () => {
       title: "Skincare: O Guia Completo para Pele Radiante",
       excerpt:
         "Aprenda os passos essenciais de uma rotina de skincare eficaz e descubra os melhores produtos para seu tipo de pele.",
-      category: "PELE",
+      category: "Pele",
       date: "08 Dez 2024",
       readTime: "7 min",
       image:
@@ -50,7 +50,7 @@ const Blog = () => {
 
   const categoryColors: Record<string, string> = {
     Emagrecimento: "bg-green-100 text-green-700",
-    PELE: "bg-pink-100 text-pink-700",
+    Pele: "bg-pink-100 text-pink-700",
     Estética: "bg-purple-100 text-purple-700",
     Nutrição: "bg-orange-100 text-orange-700",
     "Bem-estar": "bg-blue-100 text-blue-700",
