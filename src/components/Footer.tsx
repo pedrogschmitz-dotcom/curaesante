@@ -1,44 +1,40 @@
 import { Instagram, Phone, MapPin, Clock, Heart } from "lucide-react";
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  const quickLinks = [
-    { label: "Início", href: "#inicio" },
-    { label: "Sobre", href: "#sobre" },
-    { label: "Serviços", href: "#servicos" },
-    { label: "Equipe", href: "#equipe" },
-    { label: "Blog", href: "#blog" },
-    { label: "Contato", href: "#contato" },
-  ];
-
-  const services = [
-    "Medicina Estética",
-    "Emagrecimento",
-    "Performance",
-    "Tecnologias",
-  ];
-
-  const socialLinks = [
-    {
-      label: "@CuraeSante",
-      href: "https://instagram.com/CuraeSante",
-      icon: Instagram,
-    },
-    {
-      label: "@DrPedroSchmitz",
-      href: "https://instagram.com/DrPedroSchmitz",
-      icon: Instagram,
-    },
-    {
-      label: "@DraJuliaLongo",
-      href: "https://instagram.com/DraJuliaLongo",
-      icon: Instagram,
-    },
-  ];
-
-  return (
-    <footer className="bg-foreground text-cream-light">
+  const quickLinks = [{
+    label: "Início",
+    href: "#inicio"
+  }, {
+    label: "Sobre",
+    href: "#sobre"
+  }, {
+    label: "Serviços",
+    href: "#servicos"
+  }, {
+    label: "Equipe",
+    href: "#equipe"
+  }, {
+    label: "Blog",
+    href: "#blog"
+  }, {
+    label: "Contato",
+    href: "#contato"
+  }];
+  const services = ["Medicina Estética", "Emagrecimento", "Performance", "Tecnologias"];
+  const socialLinks = [{
+    label: "@CuraeSante",
+    href: "https://instagram.com/CuraeSante",
+    icon: Instagram
+  }, {
+    label: "@DrPedroSchmitz",
+    href: "https://instagram.com/DrPedroSchmitz",
+    icon: Instagram
+  }, {
+    label: "@DraJuliaLongo",
+    href: "https://instagram.com/DraJuliaLongo",
+    icon: Instagram
+  }];
+  return <footer className="bg-foreground text-cream-light">
       {/* Main Footer */}
       <div className="section-padding py-16">
         <div className="container-content px-4 md:px-8">
@@ -53,21 +49,9 @@ const Footer = () => {
                 Cuidado personalizado para sua saúde e beleza.
               </p>
               <div className="flex gap-4 pt-2">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 bg-cream-light/10 rounded-full flex items-center justify-center hover:bg-gold transition-colors group"
-                    aria-label={social.label}
-                  >
-                    <social.icon
-                      size={18}
-                      className="text-cream-light group-hover:text-foreground"
-                    />
-                  </a>
-                ))}
+                {socialLinks.map(social => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-cream-light/10 rounded-full flex items-center justify-center hover:bg-gold transition-colors group" aria-label={social.label}>
+                    <social.icon size={18} className="text-cream-light group-hover:text-foreground" />
+                  </a>)}
               </div>
             </div>
 
@@ -77,16 +61,11 @@ const Footer = () => {
                 Links Rápidos
               </h4>
               <ul className="space-y-2">
-                {quickLinks.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-cream-light/70 hover:text-gold transition-colors"
-                    >
+                {quickLinks.map(link => <li key={link.label}>
+                    <a href={link.href} className="text-cream-light/70 hover:text-gold transition-colors">
                       {link.label}
                     </a>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
             </div>
 
@@ -96,16 +75,11 @@ const Footer = () => {
                 Serviços
               </h4>
               <ul className="space-y-2">
-                {services.map((service) => (
-                  <li key={service}>
-                    <a
-                      href="#servicos"
-                      className="text-cream-light/70 hover:text-gold transition-colors"
-                    >
+                {services.map(service => <li key={service}>
+                    <a href="#servicos" className="text-cream-light/70 hover:text-gold transition-colors">
                       {service}
                     </a>
-                  </li>
-                ))}
+                  </li>)}
               </ul>
             </div>
 
@@ -117,21 +91,17 @@ const Footer = () => {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="text-gold shrink-0 mt-0.5" />
-                  <span className="text-cream-light/70 text-sm">
-                    Av. Delamar Jose da Silva 186, loja 03
-                    <br />
+                  <span className="text-cream-light/70 text-sm">Av. Delamar Jose da Silva
+n° 186, loja 03,
+Kobrasol, São José/SC
+CEP: 88102-100<br />
                     Kobrasol, São José/SC
                     <br />
                     CEP: 88102-100
                   </span>
                 </li>
                 <li>
-                  <a
-                    href="https://wa.me/5548988064337"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-cream-light/70 hover:text-gold transition-colors"
-                  >
+                  <a href="https://wa.me/5548988064337" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-cream-light/70 hover:text-gold transition-colors">
                     <Phone size={18} className="text-gold" />
                     <span className="text-sm">+55 48 8806-4337</span>
                   </a>
@@ -163,8 +133,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
