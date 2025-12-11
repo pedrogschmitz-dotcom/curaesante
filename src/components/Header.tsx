@@ -59,7 +59,7 @@ const Header = () => {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-4">
             <a
-              href="https://g.co/kgs/CuraeSante"
+              href="https://share.google/HZaHtH75KBL1D5QhZ"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-foreground/70 hover:text-rose transition-colors"
@@ -135,7 +135,7 @@ const Header = () => {
                   @CuraeSante
                 </a>
                 <a
-                  href="https://g.co/kgs/CuraeSante"
+                  href="https://share.google/HZaHtH75KBL1D5QhZ"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-outline text-center flex items-center justify-center gap-2"
