@@ -19,7 +19,7 @@ const Hero = () => {
               <img 
                 src={curaeSanteLogo} 
                 alt="Curae Santé - Clínica Médica" 
-                className="h-24 md:h-32 lg:h-40 w-auto object-contain"
+                className="h-32 md:h-44 lg:h-56 w-auto object-contain"
               />
             </div>
 
