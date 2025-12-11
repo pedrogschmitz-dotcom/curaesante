@@ -15,7 +15,7 @@ const Footer = () => {
   const services = [
     "Medicina Estética",
     "Emagrecimento",
-    "Dermatologia",
+    "Performance",
     "Nutrologia",
   ];
 
