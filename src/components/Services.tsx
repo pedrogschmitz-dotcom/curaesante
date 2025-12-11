@@ -1,4 +1,5 @@
 import { Sparkles, Scale, Zap, Rocket, ArrowRight } from "lucide-react";
+import tecnologiasImage from "@/assets/tecnologias-equipment.jpg";
 
 const Services = () => {
   const services = [
@@ -31,8 +32,7 @@ const Services = () => {
         "Criolipólise",
         "Equipamentos de Ponta",
       ],
-      image:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
+      image: tecnologiasImage,
     },
     {
       icon: Scale,
