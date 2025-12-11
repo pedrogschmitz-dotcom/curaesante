@@ -16,7 +16,7 @@ const Footer = () => {
     "Medicina Estética",
     "Emagrecimento",
     "Performance",
-    "Nutrologia",
+    "Tecnologias",
   ];
 
   const socialLinks = [
