@@ -11,7 +11,7 @@ const Team = () => {
         "Especialista em procedimentos estéticos faciais e corporais, com foco em resultados naturais e harmoniosos. Dedicado a realçar a beleza única de cada paciente utilizando as mais avançadas tecnologias.",
       credentials: [
         "Medicina Estética Avançada",
-        "Harmonização Orofacial",
+        "Harmonização Facial",
         "Injetáveis e Bioestimuladores",
         "Tecnologias a Laser e Radiofrequência",
       ],
