@@ -21,23 +21,23 @@ const Contact = () => {
     phone: "",
     message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
+    
+    const { name, email, phone, message } = formData;
+    const whatsappMessage = `Olá! Meu nome é ${name}.%0A%0AE-mail: ${email}%0ATelefone: ${phone}%0A%0AMensagem: ${message}`;
+    const whatsappUrl = `https://wa.me/5548988064337?text=${encodeURIComponent(whatsappMessage.replace(/%0A/g, '\n'))}`;
+    
+    window.open(whatsappUrl, '_blank');
+    
     toast({
-      title: "Mensagem enviada!",
-      description:
-        "Entraremos em contato em breve. Obrigado pelo seu interesse!",
+      title: "Redirecionando para WhatsApp",
+      description: "Complete o envio da mensagem no WhatsApp.",
     });
 
     setFormData({ name: "", email: "", phone: "", message: "" });
-    setIsSubmitting(false);
   };
 
   const contactInfo = [
@@ -256,20 +256,10 @@ const Contact = () => {
 
               <Button
                 type="submit"
-                disabled={isSubmitting}
                 className="btn-primary w-full flex items-center justify-center gap-2"
               >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    Enviando...
-                  </>
-                ) : (
-                  <>
-                    <Send size={18} />
-                    Enviar Mensagem
-                  </>
-                )}
+                <Send size={18} />
+                Enviar pelo WhatsApp
               </Button>
             </form>
           </div>
