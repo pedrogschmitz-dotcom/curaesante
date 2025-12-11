@@ -49,11 +49,11 @@ const Contact = () => {
       link: "https://maps.google.com/?q=Av.+Delamar+Jose+da+Silva+186,+loja+03,+Kobrasol,+São+José,+SC",
     },
     {
-      icon: Phone,
-      title: "WhatsApp",
-      content: "+55 48 8806-4337",
-      subtitle: "Clique para iniciar conversa",
-      link: "https://wa.me/5548988064337",
+      icon: Mail,
+      title: "E-mail",
+      content: "curaesante@gmail.com",
+      subtitle: "Envie sua mensagem",
+      link: "mailto:curaesante@gmail.com",
     },
     {
       icon: Clock,
