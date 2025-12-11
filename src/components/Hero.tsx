@@ -1,6 +1,6 @@
 import { Phone, Instagram, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import curaeSanteLogo from "@/assets/curae-sante-logo-full.jpg";
+import curaeSanteLogo from "@/assets/curae-sante-logo-transparent.png";
 
 const Hero = () => {
   return <section id="inicio" className="relative min-h-screen flex items-center justify-center gradient-hero overflow-hidden">
