@@ -181,7 +181,7 @@ const Contact = () => {
                     </svg>
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-medium text-foreground">Conte para nós como foi sua experiência</span>
+                    <span className="font-bold text-foreground">Conte para nós como foi sua experiência</span>
                     <span className="text-sm text-muted-foreground">Sua opinião é importante para nós! Deixe aqui a sua avaliação</span>
                   </div>
                 </div>
