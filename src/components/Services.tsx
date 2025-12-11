@@ -1,66 +1,70 @@
-import { Sparkles, Scale, Stethoscope, Apple, ArrowRight } from "lucide-react";
+import { Sparkles, Scale, Zap, Rocket, ArrowRight } from "lucide-react";
 
 const Services = () => {
   const services = [
     {
       icon: Sparkles,
       title: "Medicina Estética",
+      subtitle: "Dr. Pedro Schmitz",
       description:
-        "Procedimentos faciais e corporais para realçar sua beleza natural. Harmonização facial, bioestimuladores, toxina botulínica e muito mais.",
+        "Procedimentos estéticos faciais e corporais para realçar sua beleza natural com resultados harmoniosos e naturais.",
       features: [
-        "Harmonização Facial",
+        "Injetáveis (Toxina Botulínica, Preenchedores)",
         "Bioestimuladores de Colágeno",
-        "Toxina Botulínica",
-        "Preenchimentos",
-        "Rejuvenescimento Facial",
+        "Harmonização Facial",
+        "Procedimentos Estéticos Faciais",
+        "Procedimentos Corporais",
       ],
       image:
         "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=800&auto=format&fit=crop",
     },
     {
-      icon: Scale,
-      title: "Emagrecimento",
+      icon: Zap,
+      title: "Tecnologias",
+      subtitle: "Dr. Pedro Schmitz",
       description:
-        "Programas personalizados de emagrecimento com acompanhamento médico completo. Conquiste seu peso ideal de forma saudável e sustentável.",
+        "Tratamentos com equipamentos de última geração para resultados excepcionais em rejuvenescimento e remodelamento corporal.",
       features: [
-        "Avaliação Metabólica",
-        "Plano Alimentar Personalizado",
-        "Medicamentos para Emagrecimento",
-        "Acompanhamento Contínuo",
-        "Performance e Energia",
+        "Laser de Alta Tecnologia",
+        "Radiofrequência",
+        "Ultrassom Microfocado",
+        "Criolipólise",
+        "Equipamentos de Ponta",
+      ],
+      image:
+        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
+    },
+    {
+      icon: Scale,
+      title: "Emagrecimento e Metabolismo",
+      subtitle: "Dra. Júlia Longo",
+      description:
+        "Programas personalizados de emagrecimento com acompanhamento médico completo para conquistar seu peso ideal de forma saudável.",
+      features: [
+        "Programas Personalizados de Emagrecimento",
+        "Avaliação Metabólica Completa",
+        "Nutrição Estratégica",
+        "Acompanhamento Individualizado",
+        "Resultados Sustentáveis",
       ],
       image:
         "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop",
     },
     {
-      icon: Stethoscope,
-      title: "Dermatologia",
+      icon: Rocket,
+      title: "Performance",
+      subtitle: "Dra. Júlia Longo",
       description:
-        "Tratamentos especializados para a saúde e beleza da sua pele. Cuidados clínicos e estéticos com tecnologia de ponta.",
+        "Otimização de performance física e mental para você alcançar seu máximo potencial com qualidade de vida e longevidade.",
       features: [
-        "Tratamento de Acne",
-        "Manchas e Melasma",
-        "Peeling e Microagulhamento",
-        "Laser e Tecnologias",
-        "Skincare Personalizado",
+        "Otimização de Performance Física",
+        "Performance Mental e Cognitiva",
+        "Reposição Hormonal",
+        "Suplementação Personalizada",
+        "Longevidade e Qualidade de Vida",
       ],
       image:
-        "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?q=80&w=800&auto=format&fit=crop",
-    },
-    {
-      icon: Apple,
-      title: "Nutrologia",
-      description:
-        "Avaliação nutricional completa e suplementação inteligente. Otimize sua saúde através da nutrição adequada às suas necessidades.",
-      features: [
-        "Avaliação Nutricional",
-        "Suplementação Inteligente",
-        "Otimização Metabólica",
-        "Saúde Intestinal",
-        "Longevidade Saudável",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=800&auto=format&fit=crop",
     },
   ];
 
@@ -102,9 +106,12 @@ const Services = () => {
                   <div className="w-12 h-12 bg-gold rounded-xl flex items-center justify-center">
                     <service.icon className="w-6 h-6 text-primary-foreground" />
                   </div>
-                  <h3 className="font-display text-2xl font-semibold text-cream-light">
-                    {service.title}
-                  </h3>
+                  <div>
+                    <h3 className="font-display text-2xl font-semibold text-cream-light">
+                      {service.title}
+                    </h3>
+                    <p className="text-cream-light/80 text-sm">{service.subtitle}</p>
+                  </div>
                 </div>
               </div>
 

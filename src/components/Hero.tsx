@@ -33,8 +33,8 @@ const Hero = () => {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Tratamentos personalizados em dermatologia, nutrologia e estética
-              médica. Cuide da sua saúde e beleza com uma equipe especializada
+              Tratamentos personalizados em medicina estética, tecnologias avançadas, 
+              emagrecimento e performance. Cuide da sua saúde e beleza com uma equipe especializada
               e humanizada.
             </p>
 

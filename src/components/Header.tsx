@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Instagram, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoImage from "@/assets/logo-curae.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,9 +36,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-20 px-4 md:px-8">
           {/* Logo */}
           <a href="#inicio" className="flex items-center gap-2">
-            <span className="font-display text-2xl md:text-3xl font-semibold text-foreground">
-              Curae <span className="text-gold">Santé</span>
-            </span>
+            <img 
+              src={logoImage} 
+              alt="Curae Santé Clínica Médica" 
+              className="h-12 md:h-14 w-auto"
+            />
           </a>
 
           {/* Desktop Navigation */}
@@ -46,7 +49,7 @@ const Header = () => {
               <a
                 key={link.href}
                 href={link.href}
-                className="font-medium text-foreground/80 hover:text-gold transition-colors duration-200"
+                className="font-medium text-foreground/80 hover:text-gold-dark transition-colors duration-200"
               >
                 {link.label}
               </a>
@@ -59,7 +62,7 @@ const Header = () => {
               href="https://instagram.com/CuraeSante"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-foreground/70 hover:text-gold transition-colors"
+              className="p-2 text-foreground/70 hover:text-rose transition-colors"
             >
               <Instagram size={20} />
             </a>
@@ -92,7 +95,7 @@ const Header = () => {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="px-6 py-3 font-medium text-foreground/80 hover:text-gold hover:bg-muted/50 transition-all"
+                  className="px-6 py-3 font-medium text-foreground/80 hover:text-gold-dark hover:bg-muted/50 transition-all"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
