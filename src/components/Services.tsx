@@ -31,8 +31,7 @@ const Services = () => {
         "Criolipólise",
         "Equipamentos de Ponta",
       ],
-      image:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
+      image: "/lovable-uploads/tecnologias-laser.jpg",
     },
     {
       icon: Scale,
