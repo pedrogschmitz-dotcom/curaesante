@@ -28,6 +28,7 @@ export default {
   				'Noto Color Emoji'
   			],
   			serif: [
+  				'Cormorant Garamond',
   				'ui-serif',
   				'Georgia',
   				'Cambria',
