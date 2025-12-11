@@ -126,7 +126,7 @@ const Contact = () => {
             {/* Map */}
             <div className="card-elegant p-0 overflow-hidden h-[300px]">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3535.8!2d-48.6!3d-27.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjfCsDM2JzAwLjAiUyA0OMKwMzYnMDAuMCJX!5e0!3m2!1spt-BR!2sbr!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d883.9!2d-48.6195!3d-27.5935!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95274090e0c2c3c9%3A0x0!2sAv.+Delamar+Jos%C3%A9+da+Silva%2C+186+-+Kobrasol%2C+S%C3%A3o+Jos%C3%A9+-+SC%2C+88102-100!5e0!3m2!1spt-BR!2sbr!4v1702300000000"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
