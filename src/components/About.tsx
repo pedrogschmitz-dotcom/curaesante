@@ -1,35 +1,23 @@
 import { Heart, Shield, Award, Users } from "lucide-react";
-
 const About = () => {
-  const values = [
-    {
-      icon: Heart,
-      title: "Acolhimento",
-      description:
-        "Cada paciente é único. Oferecemos um ambiente acolhedor onde você se sente cuidado e respeitado.",
-    },
-    {
-      icon: Shield,
-      title: "Segurança",
-      description:
-        "Procedimentos realizados com os mais altos padrões de segurança e qualidade médica.",
-    },
-    {
-      icon: Award,
-      title: "Excelência",
-      description:
-        "Equipe altamente qualificada, em constante atualização com as melhores técnicas.",
-    },
-    {
-      icon: Users,
-      title: "Humanização",
-      description:
-        "Tratamento personalizado, respeitando suas necessidades e objetivos individuais.",
-    },
-  ];
-
-  return (
-    <section id="sobre" className="section-padding bg-card">
+  const values = [{
+    icon: Heart,
+    title: "Acolhimento",
+    description: "Cada paciente é único. Oferecemos um ambiente acolhedor onde você se sente cuidado e respeitado."
+  }, {
+    icon: Shield,
+    title: "Segurança",
+    description: "Procedimentos realizados com os mais altos padrões de segurança e qualidade médica."
+  }, {
+    icon: Award,
+    title: "Excelência",
+    description: "Equipe altamente qualificada, em constante atualização com as melhores técnicas."
+  }, {
+    icon: Users,
+    title: "Humanização",
+    description: "Tratamento personalizado, respeitando suas necessidades e objetivos individuais."
+  }];
+  return <section id="sobre" className="section-padding bg-card">
       <div className="container-content px-4 md:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Image */}
@@ -38,18 +26,14 @@ const About = () => {
               <div className="absolute inset-0 bg-gold/10 rounded-[2rem] transform -rotate-6" />
               <div className="absolute inset-4 bg-beige rounded-[2rem] transform rotate-3" />
               <div className="relative bg-card rounded-[2rem] shadow-card overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=1000&auto=format&fit=crop"
-                  alt="Ambiente interno da clínica Curae Santé"
-                  className="w-full h-full object-cover aspect-square"
-                />
+                <img alt="Ambiente interno da clínica Curae Santé" className="w-full h-full object-cover aspect-square" src="/lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg" />
               </div>
 
               {/* Experience Badge */}
               <div className="absolute -bottom-6 -right-6 bg-gold text-primary-foreground p-6 rounded-2xl shadow-gold">
-                <p className="font-display text-4xl font-bold">+5</p>
-                <p className="text-sm font-medium">Anos de</p>
-                <p className="text-sm font-medium">Experiência</p>
+                
+                <p className="text-sm font-medium">Cuidado</p>
+                <p className="text-sm font-medium">Continuado</p>
               </div>
             </div>
           </div>
@@ -79,12 +63,9 @@ const About = () => {
 
             {/* Values Grid */}
             <div className="grid sm:grid-cols-2 gap-4">
-              {values.map((value, index) => (
-                <div
-                  key={value.title}
-                  className="card-elegant group"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
+              {values.map((value, index) => <div key={value.title} className="card-elegant group" style={{
+              animationDelay: `${index * 0.1}s`
+            }}>
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-gold/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-gold/20 transition-colors">
                       <value.icon className="w-6 h-6 text-gold" />
@@ -98,14 +79,11 @@ const About = () => {
                       </p>
                     </div>
                   </div>
-                </div>
-              ))}
+                </div>)}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default About;
