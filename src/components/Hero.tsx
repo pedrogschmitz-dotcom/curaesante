@@ -1,5 +1,7 @@
 import { Phone, Instagram, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import curaeSanteLogo from "@/assets/curae-sante-logo-full.jpg";
+
 const Hero = () => {
   return <section id="inicio" className="relative min-h-screen flex items-center justify-center gradient-hero overflow-hidden">
       {/* Background Pattern */}
@@ -13,10 +15,12 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center px-4 md:px-8">
           {/* Content */}
           <div className="text-center lg:text-left space-y-6 animate-fade-up">
-            <div className="inline-block px-4 py-2 bg-gold/10 rounded-full border border-gold/20">
-              <span className="text-sm font-medium text-gold-dark">
-                Medicina Estética & Emagrecimento
-              </span>
+            <div className="inline-block">
+              <img 
+                src={curaeSanteLogo} 
+                alt="Curae Santé - Clínica Médica" 
+                className="h-24 md:h-32 lg:h-40 w-auto object-contain"
+              />
             </div>
 
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground leading-tight">
