@@ -40,37 +40,10 @@ const InstagramFeed = () => {
 
         {/* Elfsight Instagram Widget */}
         <div className="w-full max-w-6xl mx-auto">
-          {/* 
-            INSTRUÇÕES PARA ATIVAR:
-            1. Crie uma conta em https://elfsight.com
-            2. Crie um widget "Instagram Feed" 
-            3. Conecte a conta @CURAESANTE
-            4. Copie o ID do widget (ex: elfsight-app-xxxxxxxx)
-            5. Substitua o ID abaixo pelo seu
-          */}
           <div 
-            className="elfsight-app-xxxxxxxx" 
+            className="elfsight-app-21d2b473-9dc6-48e7-854e-ef96fd49841d" 
             data-elfsight-app-lazy
           />
-          
-          {/* Placeholder enquanto widget não está configurado */}
-          <div className="text-center py-16 bg-muted/30 rounded-2xl border border-border/50">
-            <Instagram className="w-12 h-12 mx-auto text-gold mb-4" />
-            <h3 className="font-display text-xl font-semibold text-foreground mb-2">
-              Widget do Instagram
-            </h3>
-            <p className="text-muted-foreground max-w-md mx-auto mb-4">
-              Configure seu widget Elfsight para exibir os posts reais do @CURAESANTE aqui.
-            </p>
-            <a
-              href="https://elfsight.com/instagram-feed-widget/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gold hover:underline text-sm font-medium"
-            >
-              Criar widget no Elfsight →
-            </a>
-          </div>
         </div>
 
         {/* View All CTA */}
