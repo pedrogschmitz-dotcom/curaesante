@@ -94,8 +94,9 @@ const Header = () => {
             {navLinks.map((link) => (
               <a
                 key={link.href}
-                href={link.href}
-                className="font-medium text-foreground/80 hover:text-gold-dark transition-colors duration-200"
+                href={isHomePage ? link.href : link.route}
+                onClick={(e) => handleNavClick(link, e)}
+                className="font-medium text-foreground/80 hover:text-gold-dark transition-colors duration-200 cursor-pointer"
               >
                 {link.label}
               </a>
