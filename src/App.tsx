@@ -7,7 +7,8 @@ import Index from "./pages/Index";
 import SobrePage from "./pages/SobrePage";
 import ServicosPage from "./pages/ServicosPage";
 import EquipePage from "./pages/EquipePage";
-import BlogPage from "./pages/BlogPage";
+import BlogListPage from "./pages/BlogListPage";
+import BlogPostPage from "./pages/BlogPostPage";
 import ContatoPage from "./pages/ContatoPage";
 import NotFound from "./pages/NotFound";
 
@@ -24,7 +25,8 @@ const App = () => (
           <Route path="/sobre" element={<SobrePage />} />
           <Route path="/servicos" element={<ServicosPage />} />
           <Route path="/equipe" element={<EquipePage />} />
-          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog" element={<BlogListPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/contato" element={<ContatoPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
