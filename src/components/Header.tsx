@@ -63,7 +63,14 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center">
+          <div className="hidden lg:flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full text-foreground/70 hover:text-accent transition-colors duration-200"
+              aria-label={theme === "dark" ? "Ativar modo dia" : "Ativar modo noite"}
+            >
+              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
               <button className="btn-primary flex items-center gap-2 text-sm">
                 <Phone size={16} />
