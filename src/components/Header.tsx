@@ -81,7 +81,7 @@ const Header = () => {
       <div className="container-content">
         <div className="flex items-center justify-between h-20 px-4 md:px-8">
           {/* Logo */}
-          <a href="#inicio" className="flex items-center gap-2">
+          <a href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }} className="flex items-center gap-2 cursor-pointer">
             <img
               src={logoImage}
               alt="Curae Santé Clínica Médica"
