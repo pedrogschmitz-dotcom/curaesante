@@ -180,9 +180,9 @@ const Header = () => {
               {navLinks.map((link) => (
                 <a
                   key={link.href}
-                  href={link.href}
-                  className="px-6 py-3 font-medium text-foreground/80 hover:text-gold-dark hover:bg-muted/50 transition-all"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  href={isHomePage ? link.href : link.route}
+                  className="px-6 py-3 font-medium text-foreground/80 hover:text-gold-dark hover:bg-muted/50 transition-all cursor-pointer"
+                  onClick={(e) => handleNavClick(link, e)}
                 >
                   {link.label}
                 </a>
