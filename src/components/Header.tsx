@@ -41,13 +41,28 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { href: "#inicio", label: "Início" },
-    { href: "#sobre", label: "Sobre" },
-    { href: "#servicos", label: "Serviços" },
-    { href: "#equipe", label: "Equipe" },
-    { href: "#blog", label: "Blog" },
-    { href: "#contato", label: "Contato" },
+    { href: "#inicio", route: "/", label: "Início" },
+    { href: "#sobre", route: "/sobre", label: "Sobre" },
+    { href: "#servicos", route: "/servicos", label: "Serviços" },
+    { href: "#equipe", route: "/equipe", label: "Equipe" },
+    { href: "#blog", route: "/blog", label: "Blog" },
+    { href: "#contato", route: "/contato", label: "Contato" },
   ];
+
+  const handleNavClick = (link: { href: string; route: string }, e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isHomePage) {
+      // On homepage: smooth scroll to section
+      const element = document.querySelector(link.href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // On other pages: navigate to individual page
+      navigate(link.route);
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   const FacebookIcon = () => (
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
