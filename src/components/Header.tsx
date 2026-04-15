@@ -5,6 +5,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import logoImage from "@/assets/logo-curae.png";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
