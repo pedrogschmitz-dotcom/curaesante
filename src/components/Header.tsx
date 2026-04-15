@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Instagram, Phone, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
 import logoImage from "@/assets/logo-curae.png";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => {
@@ -37,13 +41,28 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { href: "#inicio", label: "Início" },
-    { href: "#sobre", label: "Sobre" },
-    { href: "#servicos", label: "Serviços" },
-    { href: "#equipe", label: "Equipe" },
-    { href: "#blog", label: "Blog" },
-    { href: "#contato", label: "Contato" },
+    { href: "#inicio", route: "/", label: "Início" },
+    { href: "#sobre", route: "/sobre", label: "Sobre" },
+    { href: "#servicos", route: "/servicos", label: "Serviços" },
+    { href: "#equipe", route: "/equipe", label: "Equipe" },
+    { href: "#blog", route: "/blog", label: "Blog" },
+    { href: "#contato", route: "/contato", label: "Contato" },
   ];
+
+  const handleNavClick = (link: { href: string; route: string }, e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isHomePage) {
+      // On homepage: smooth scroll to section
+      const element = document.querySelector(link.href);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // On other pages: navigate to individual page
+      navigate(link.route);
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   const FacebookIcon = () => (
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
@@ -62,7 +81,7 @@ const Header = () => {
       <div className="container-content">
         <div className="flex items-center justify-between h-20 px-4 md:px-8">
           {/* Logo */}
-          <a href="#inicio" className="flex items-center gap-2">
+          <a href="/" onClick={(e) => { e.preventDefault(); navigate("/"); }} className="flex items-center gap-2 cursor-pointer">
             <img
               src={logoImage}
               alt="Curae Santé Clínica Médica"
@@ -75,8 +94,9 @@ const Header = () => {
             {navLinks.map((link) => (
               <a
                 key={link.href}
-                href={link.href}
-                className="font-medium text-foreground/80 hover:text-gold-dark transition-colors duration-200"
+                href={isHomePage ? link.href : link.route}
+                onClick={(e) => handleNavClick(link, e)}
+                className="font-medium text-foreground/80 hover:text-gold-dark transition-colors duration-200 cursor-pointer"
               >
                 {link.label}
               </a>
@@ -160,9 +180,9 @@ const Header = () => {
               {navLinks.map((link) => (
                 <a
                   key={link.href}
-                  href={link.href}
-                  className="px-6 py-3 font-medium text-foreground/80 hover:text-gold-dark hover:bg-muted/50 transition-all"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  href={isHomePage ? link.href : link.route}
+                  className="px-6 py-3 font-medium text-foreground/80 hover:text-gold-dark hover:bg-muted/50 transition-all cursor-pointer"
+                  onClick={(e) => handleNavClick(link, e)}
                 >
                   {link.label}
                 </a>
