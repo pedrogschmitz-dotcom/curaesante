@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Instagram, Phone, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
 import logoImage from "@/assets/logo-curae.png";
 
 const Header = () => {
