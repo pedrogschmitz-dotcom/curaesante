@@ -31,7 +31,7 @@ const BlogListPage = () => {
       <section className="pt-28 pb-20">
         <div className="container-content px-4 md:px-8">
           <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-4 text-center">Blog</h1>
-          <p className="text-foreground/70 text-center max-w-2xl mx-auto mb-12">
+          <p className="text-foreground/70 text-center max-w-4xl mx-auto mb-12">
             Artigos clínicos sobre saúde da pele, emagrecimento, saúde metabólica e saúde hormonal feminina.
           </p>
 
