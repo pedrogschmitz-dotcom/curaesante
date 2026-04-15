@@ -4,7 +4,11 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-User-agent: *
+User-agent: Twitterbot
 Allow: /
 
-Sitemap: https://curaesante.com.br/sitemap.xml
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: *
+Allow: /
