@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Sun, Moon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "@/contexts/ThemeContext";
 import logoImage from "@/assets/logo-curae.png";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -61,7 +63,14 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center">
+          <div className="hidden lg:flex items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full text-foreground/70 hover:text-accent transition-colors duration-200"
+              aria-label={theme === "dark" ? "Ativar modo dia" : "Ativar modo noite"}
+            >
+              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
               <button className="btn-primary flex items-center gap-2 text-sm">
                 <Phone size={16} />
@@ -91,6 +100,16 @@ const Header = () => {
                   {link.label}
                 </Link>
               ))}
+              <div className="px-5 py-3 flex items-center gap-3 text-sm font-medium text-foreground/70">
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center gap-2 hover:text-accent transition-colors"
+                  aria-label={theme === "dark" ? "Ativar modo dia" : "Ativar modo noite"}
+                >
+                  {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                  {theme === "dark" ? "Modo dia" : "Modo noite"}
+                </button>
+              </div>
               <div className="px-5 py-4 border-t border-border mt-2">
                 <a
                   href={whatsappUrl}
