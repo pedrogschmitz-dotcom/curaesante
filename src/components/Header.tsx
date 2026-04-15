@@ -100,6 +100,16 @@ const Header = () => {
                   {link.label}
                 </Link>
               ))}
+              <div className="px-5 py-3 flex items-center gap-3 text-sm font-medium text-foreground/70">
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center gap-2 hover:text-accent transition-colors"
+                  aria-label={theme === "dark" ? "Ativar modo dia" : "Ativar modo noite"}
+                >
+                  {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                  {theme === "dark" ? "Modo dia" : "Modo noite"}
+                </button>
+              </div>
               <div className="px-5 py-4 border-t border-border mt-2">
                 <a
                   href={whatsappUrl}
