@@ -51,16 +51,7 @@ const Header = () => {
 
   const handleNavClick = (link: { href: string; route: string }, e: React.MouseEvent) => {
     e.preventDefault();
-    if (isHomePage) {
-      // On homepage: smooth scroll to section
-      const element = document.querySelector(link.href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      // On other pages: navigate to individual page
-      navigate(link.route);
-    }
+    navigate(link.route);
     setIsMobileMenuOpen(false);
   };
 
