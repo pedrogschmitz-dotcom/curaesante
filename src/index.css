@@ -2,121 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Red+Hat+Display:wght@300;400;500;600;700&display=swap');
-
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
 @layer base {
   :root {
-    /* Brand Colors from Curae Santé Identity */
-    /* #f9f6f2 - Light cream background */
-    /* #eae4da - Beige accent */
-    /* #bc9fa5 - Mauve/rose accent */
-    /* #bca78e - Warm taupe */
-    /* #5d4424 - Dark brown */
-    /* #fffeec - Off-white */
+    /* Dark-first palette: rust / sage / sand / cream / gold */
+    --background: 30 12% 10%;
+    --foreground: 36 30% 90%;
 
-    --background: 36 35% 96%; /* #f9f6f2 */
-    --foreground: 30 45% 24%; /* #5d4424 */
+    --card: 30 12% 14%;
+    --card-foreground: 36 30% 90%;
 
-    --card: 40 40% 97%; /* Slightly lighter than bg */
-    --card-foreground: 30 45% 24%;
+    --popover: 30 12% 14%;
+    --popover-foreground: 36 30% 90%;
 
-    --popover: 40 40% 97%;
-    --popover-foreground: 30 45% 24%;
+    --primary: 15 45% 42%;
+    --primary-foreground: 36 30% 95%;
 
-    --primary: 33 25.5556% 64.7059%; /* Dark brown #5d4424 */
-    --primary-foreground: 55 100% 96%; /* #fffeec */
+    --secondary: 30 12% 18%;
+    --secondary-foreground: 36 30% 90%;
 
-    --secondary: 35 28% 65%; /* #bca78e */
-    --secondary-foreground: 30 45% 24%;
+    --muted: 30 10% 18%;
+    --muted-foreground: 35 15% 55%;
 
-    --muted: 36 24% 89%; /* #eae4da */
-    --muted-foreground: 30 25% 40%;
+    --accent: 43 50% 48%;
+    --accent-foreground: 30 12% 10%;
 
-    --accent: 346 22% 68%; /* #bc9fa5 */
-    --accent-foreground: 30 45% 24%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 36 30% 95%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --border: 30 10% 20%;
+    --input: 30 10% 20%;
+    --ring: 43 50% 48%;
 
-    --border: 36 24% 85%;
-    --input: 36 24% 85%;
-    --ring: 30 45% 24%;
+    --radius: 0.75rem;
 
-    --radius: 1rem;
-
-    /* Custom brand colors */
-    --cream: 36 35% 96%; /* #f9f6f2 */
-    --cream-light: 55 100% 96%; /* #fffeec */
-    --gold: 35 28% 65%; /* #bca78e - warm taupe as gold */
-    --gold-light: 35 28% 75%;
-    --gold-dark: 30 45% 24%; /* #5d4424 */
-    --brown-light: 35 28% 65%; /* #bca78e */
-    --brown: 30 45% 24%; /* #5d4424 */
-    --beige: 36 24% 89%; /* #eae4da */
-    --beige-dark: 36 24% 82%;
-    --rose: 346 22% 68%; /* #bc9fa5 */
-
-    /* Gradients */
-    --gradient-gold: linear-gradient(135deg, hsl(43 56% 52%) 0%, hsl(35 35% 75%) 100%);
-    --gradient-cream: linear-gradient(180deg, hsl(40 33% 96%) 0%, hsl(40 40% 98%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(40 33% 96%) 0%, hsl(35 30% 90%) 50%, hsl(40 40% 98%) 100%);
+    /* Semantic brand tokens */
+    --rust: 15 45% 42%;
+    --rust-light: 15 40% 55%;
+    --sage: 140 12% 42%;
+    --sage-light: 140 10% 55%;
+    --sand: 35 25% 65%;
+    --sand-light: 35 25% 78%;
+    --cream: 36 30% 90%;
+    --cream-dark: 36 20% 78%;
+    --gold: 43 50% 48%;
+    --gold-light: 43 45% 60%;
 
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(30 15% 20% / 0.08);
-    --shadow-card: 0 8px 32px -8px hsl(30 15% 20% / 0.1);
-    --shadow-gold: 0 8px 24px -8px hsl(43 56% 52% / 0.3);
+    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.4);
 
-    --sidebar-background: 40 33% 96%;
-    --sidebar-foreground: 30 15% 20%;
-    --sidebar-primary: 43 56% 52%;
-    --sidebar-primary-foreground: 40 33% 98%;
-    --sidebar-accent: 35 30% 90%;
-    --sidebar-accent-foreground: 30 15% 20%;
-    --sidebar-border: 35 25% 85%;
-    --sidebar-ring: 43 56% 52%;
-    --font-serif: "Cormorant Garamond", ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
+    --sidebar-background: 30 12% 10%;
+    --sidebar-foreground: 36 30% 90%;
+    --sidebar-primary: 43 50% 48%;
+    --sidebar-primary-foreground: 30 12% 10%;
+    --sidebar-accent: 30 12% 18%;
+    --sidebar-accent-foreground: 36 30% 90%;
+    --sidebar-border: 30 10% 20%;
+    --sidebar-ring: 43 50% 48%;
   }
 
-  .dark {
-    --background: 30 15% 12%;
-    --foreground: 40 33% 96%;
-
-    --card: 30 15% 15%;
-    --card-foreground: 40 33% 96%;
-
-    --popover: 30 15% 15%;
-    --popover-foreground: 40 33% 96%;
-
-    --primary: 43 56% 52%;
-    --primary-foreground: 30 15% 12%;
-
-    --secondary: 30 20% 25%;
-    --secondary-foreground: 40 33% 96%;
-
-    --muted: 30 15% 20%;
-    --muted-foreground: 35 20% 65%;
-
-    --accent: 43 56% 52%;
-    --accent-foreground: 30 15% 12%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 40 33% 96%;
-
-    --border: 30 15% 25%;
-    --input: 30 15% 25%;
-    --ring: 43 56% 52%;
-
-    --sidebar-background: 30 15% 12%;
-    --sidebar-foreground: 40 33% 96%;
-    --sidebar-primary: 43 56% 52%;
-    --sidebar-primary-foreground: 30 15% 12%;
-    --sidebar-accent: 30 15% 20%;
-    --sidebar-accent-foreground: 40 33% 96%;
-    --sidebar-border: 30 15% 25%;
-    --sidebar-ring: 43 56% 52%;
-    --font-serif: "Cormorant Garamond", ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
+  /* Light variant for specific sections */
+  .theme-light {
+    --background: 36 30% 94%;
+    --foreground: 30 20% 18%;
+    --card: 36 28% 97%;
+    --card-foreground: 30 20% 18%;
+    --muted: 36 20% 88%;
+    --muted-foreground: 30 15% 45%;
+    --border: 36 18% 82%;
   }
 }
 
@@ -126,34 +81,22 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Red Hat Display', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'DM Sans', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Cormorant', serif;
+    font-family: 'Playfair Display', serif;
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: 'Cormorant', serif;
+    font-family: 'Playfair Display', serif;
   }
 
   .font-body {
-    font-family: 'Red Hat Display', sans-serif;
-  }
-
-  .gradient-gold {
-    background: var(--gradient-gold);
-  }
-
-  .gradient-cream {
-    background: var(--gradient-cream);
-  }
-
-  .gradient-hero {
-    background: var(--gradient-hero);
+    font-family: 'DM Sans', sans-serif;
   }
 
   .shadow-soft {
@@ -162,17 +105,6 @@
 
   .shadow-card {
     box-shadow: var(--shadow-card);
-  }
-
-  .shadow-gold {
-    box-shadow: var(--shadow-gold);
-  }
-
-  .text-gradient-gold {
-    background: var(--gradient-gold);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 }
 
@@ -185,82 +117,54 @@
     animation: fadeIn 0.5s ease-out forwards;
   }
 
-  .animate-scale-in {
-    animation: scaleIn 0.4s ease-out forwards;
-  }
-
-  .animate-slide-up {
-    animation: slideUp 0.5s ease-out forwards;
-  }
-
   @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   .hover-lift {
     @apply transition-all duration-300 ease-out;
   }
-
   .hover-lift:hover {
     @apply -translate-y-1;
     box-shadow: var(--shadow-card);
   }
 
   .btn-primary {
-    @apply bg-primary text-primary-foreground px-6 py-3 rounded-full font-medium transition-all duration-300 hover:shadow-gold hover:-translate-y-0.5;
+    @apply bg-accent text-accent-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:opacity-90 hover:-translate-y-0.5;
   }
 
   .btn-outline {
-    @apply border-2 border-primary text-primary px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
+    @apply border border-border text-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-card;
   }
 
   .card-elegant {
-    @apply bg-card rounded-2xl p-6 shadow-soft transition-all duration-300 hover:shadow-card;
+    @apply bg-card rounded-xl p-6 border border-border transition-all duration-300;
   }
 
   .section-padding {
-    @apply py-16 md:py-24 px-4 md:px-8;
+    @apply py-20 md:py-28;
   }
 
   .container-content {
-    @apply max-w-7xl mx-auto;
+    @apply max-w-6xl mx-auto px-5 md:px-8;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hover-lift:hover {
+    transform: none !important;
   }
 }
