@@ -59,6 +59,7 @@ const Index = () => {
       <About />
       <Services />
       <Team />
+      <BlogPreview />
       <InstagramFeed />
       <Contact />
       <Footer />
