@@ -36,7 +36,8 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === "development" && componentTagger(),
     mode === "production" &&
-      (prerender as unknown as (opts: unknown) => unknown)({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (prerender as any)({
         routes: ["/", "/sobre", "/servicos", "/equipe", "/blog", "/contato", ...getBlogRoutes()],
         renderer: "@prerenderer/renderer-puppeteer",
         rendererOptions: {
@@ -44,7 +45,7 @@ export default defineConfig(({ mode }) => ({
           maxConcurrentRoutes: 2,
         },
       }),
-  ].filter(Boolean),
+  ].filter(Boolean) as any,
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
