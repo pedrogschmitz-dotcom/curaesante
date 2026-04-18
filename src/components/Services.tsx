@@ -77,7 +77,7 @@ const Services = () => {
             Nossos Serviços
           </span>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground">
-            Especialidades para sua{" "}
+            Áreas de cuidado para sua{" "}
             <span className="text-gold italic">transformação</span>
           </h2>
           <p className="text-lg text-muted-foreground">

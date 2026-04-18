@@ -8,7 +8,7 @@ const Team = () => {
       name: "Dr. Pedro Germano Longo Schmitz",
       specialty: "Medicina Estética e Tecnologias",
       description:
-        "Especialista em procedimentos estéticos faciais e corporais, com foco em resultados naturais e harmoniosos. Dedicado a realçar a beleza única de cada paciente utilizando as mais avançadas tecnologias.",
+        "Médico com atuação em procedimentos estéticos faciais e corporais, com foco em resultados naturais e harmoniosos. Dedicado a realçar a beleza única de cada paciente utilizando as mais avançadas tecnologias.",
       credentials: [
         "Medicina Estética Avançada",
         "Harmonização Facial",
@@ -22,7 +22,7 @@ const Team = () => {
       name: "Dra. Júlia Longo Rodrigues Schmitz",
       specialty: "Emagrecimento, Metabolismo e Performance",
       description:
-        "Especialista em emagrecimento saudável, otimização metabólica e performance. Ajuda pacientes a conquistarem seus objetivos de peso, energia e longevidade com tratamentos personalizados.",
+        "Médica com atuação em emagrecimento saudável, otimização metabólica e performance. Ajuda pacientes a conquistarem seus objetivos de peso, energia e longevidade com tratamentos personalizados.",
       credentials: [
         "Metabolismo e Emagrecimento",
         "Medicina do Estilo de Vida",
@@ -43,7 +43,7 @@ const Team = () => {
             Nossa Equipe
           </span>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground">
-            Médicos <span className="text-gold italic">especialistas</span>
+            Nossa <span className="text-gold italic">equipe médica</span>
           </h2>
           <p className="text-lg text-muted-foreground">
             Conheça os profissionais dedicados a cuidar da sua saúde e beleza
@@ -98,7 +98,7 @@ const Team = () => {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                       <GraduationCap size={16} className="text-gold" />
-                      Especializações
+                      Áreas de atuação
                     </div>
                     <ul className="space-y-1.5">
                       {doctor.credentials.map((credential) => (
