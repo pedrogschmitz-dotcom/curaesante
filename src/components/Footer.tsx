@@ -45,8 +45,8 @@ const Footer = () => {
                 Curae <span className="text-gold">Santé</span>
               </h3>
               <p className="text-cream-light/70 leading-relaxed">
-                Clínica especializada em emagrecimento e estética médica.
-                Cuidado personalizado para sua saúde e beleza.
+                Clínica médica em Kobrasol com foco em saúde da pele, emagrecimento,
+                saúde metabólica e saúde hormonal feminina.
               </p>
               <div className="flex gap-4 pt-2">
                 {socialLinks.map(social => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-cream-light/10 rounded-full flex items-center justify-center hover:bg-gold transition-colors group" aria-label={social.label}>

@@ -33,8 +33,8 @@ const Hero = () => {
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 leading-relaxed">
               Tratamentos personalizados em medicina estética, tecnologias avançadas, 
-              emagrecimento e performance. Cuide da sua saúde e beleza com uma equipe especializada
-              e humanizada.
+              emagrecimento e performance. Cuide da sua saúde e beleza com uma equipe médica
+              dedicada e humanizada.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
@@ -68,7 +68,7 @@ const Hero = () => {
                   2
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Médicos Especialistas
+                  Equipe Médica
                 </p>
               </div>
               <div className="text-center">
@@ -89,7 +89,7 @@ const Hero = () => {
             <div className="relative aspect-[4/5] max-w-md mx-auto">
               <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-brown-light/30 rounded-[3rem] transform rotate-3" />
               <div className="absolute inset-0 bg-card rounded-[3rem] shadow-card overflow-hidden transform -rotate-3 hover:rotate-0 transition-transform duration-500">
-                <img alt="Ambiente acolhedor da Curae Santé - Clínica de estética e emagrecimento" className="w-full h-full object-cover" src="/lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg" />
+                <img alt="Ambiente acolhedor da Curae Santé — clínica médica em Kobrasol" className="w-full h-full object-cover" src="/lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
               </div>
 
