@@ -9,6 +9,7 @@ import InstagramFeed from "@/components/InstagramFeed";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import SEO from "@/components/SEO";
 
 const Index = () => {
   useEffect(() => {
@@ -54,6 +55,7 @@ const Index = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <SEO path="/" />
       <Header />
       <Hero />
       <About />

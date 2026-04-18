@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import SEO from "@/components/SEO";
 import { getPublishedPosts, formatDatePtBR } from "@/lib/blog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,11 +20,11 @@ const BlogListPage = () => {
 
   return (
     <main className="min-h-screen bg-background">
-      <Helmet>
-        <title>Blog — Curae Santé</title>
-        <meta name="description" content="Artigos clínicos sobre saúde da pele, emagrecimento, saúde metabólica e saúde hormonal feminina." />
-        <link rel="canonical" href="https://curaesante.com.br/blog" />
-      </Helmet>
+      <SEO
+        title="Blog"
+        description="Artigos clínicos sobre saúde da pele, emagrecimento, saúde metabólica e saúde hormonal feminina."
+        path="/blog"
+      />
 
       <Header />
 

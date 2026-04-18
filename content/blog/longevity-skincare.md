@@ -38,7 +38,7 @@ Começo pelo que funciona de verdade — não porque seja o conteúdo mais inter
 
 ### 1. Fotoproteção diária, o ano inteiro
 
-Isto não é tendência. É o item com mais evidência de prevenção de envelhecimento cutâneo da história da dermatologia. Ensaios clínicos randomizados mostram que o uso diário de protetor solar reduz sinais visíveis de envelhecimento em adultos ao longo de 4 a 5 anos comparado a uso esporádico, com efeito mensurável em textura, rugas finas e pigmentação. Nenhum outro cosmético tem esse nível de evidência.
+Isto não é tendência. É o item com mais evidência de prevenção de envelhecimento cutâneo da literatura clínica de cuidado da pele. Ensaios clínicos randomizados mostram que o uso diário de protetor solar reduz sinais visíveis de envelhecimento em adultos ao longo de 4 a 5 anos comparado a uso esporádico, com efeito mensurável em textura, rugas finas e pigmentação. Nenhum outro cosmético tem esse nível de evidência.
 
 A regra é simples e quase ninguém segue: FPS 30 ou mais, amplo espectro (UVA + UVB), aplicado todos os dias, independente de estar sol ou nublado, independente de estar em casa ou na rua, reaplicado a cada 2–3 horas quando há exposição direta. Quantidade: cerca de dois dedos cheios para o rosto. A maior parte das pessoas aplica um terço disso e depois se queixa de que "protetor não funciona".
 
@@ -124,7 +124,7 @@ Essa camada é onde o orçamento e a avaliação clínica individual mais import
 
 A parte desconfortável. Algumas das ofertas mais caras no mercado de 2026 estão exatamente aqui.
 
-**Testes genéticos de pele** que prometem "personalizar" rotinas a partir de SNPs. A validade clínica desses painéis, em ensaios independentes, ainda não está estabelecida. A maioria gera recomendações genéricas que poderiam ser feitas por qualquer dermatologista numa consulta de 20 minutos — às vezes, por valores dez vezes menores.
+**Testes genéticos de pele** que prometem "personalizar" rotinas a partir de SNPs. A validade clínica desses painéis, em ensaios independentes, ainda não está estabelecida. A maioria gera recomendações genéricas que poderiam ser feitas por qualquer médico que cuide da pele numa consulta de 20 minutos — às vezes, por valores dez vezes menores.
 
 **Painéis de biomarcadores cutâneos** ou "análise de pele por IA" com cobrança premium. Ferramentas de análise fotográfica existem e têm utilidade em triagem e acompanhamento longitudinal. O que é teatro é o pacote: fotografar, gerar um relatório com linguagem pseudo-clínica, e em seguida vender produtos ou protocolos "customizados" cujo catálogo é fechado e raramente superior ao que existe fora.
 
