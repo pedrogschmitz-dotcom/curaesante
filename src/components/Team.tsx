@@ -5,29 +5,29 @@ import draJuliaImage from "@/assets/dra-julia.jpeg";
 const Team = () => {
   const doctors = [
     {
-      name: "Dr. Pedro Germano Longo Schmitz",
-      specialty: "Medicina Estética e Tecnologias",
+      name: "Dr. Pedro Schmitz",
+      specialty: "Médico",
       description:
-        "Médico com atuação em procedimentos estéticos faciais e corporais, com foco em resultados naturais e harmoniosos. Dedicado a realçar a beleza única de cada paciente utilizando as mais avançadas tecnologias.",
+        "Atendimento médico amplo, com foco em investigação e acompanhamento. Consulta extensa para entender o contexto antes de propor qualquer conduta.",
       credentials: [
-        "Medicina Estética Avançada",
-        "Harmonização Facial",
-        "Injetáveis e Bioestimuladores",
-        "Tecnologias a Laser e Radiofrequência",
+        "Consulta clínica ampla",
+        "Investigação de sintomas",
+        "Acompanhamento contínuo",
+        "Cuidado com a pele",
       ],
       instagram: "DrPedroSchmitz",
       image: drPedroImage,
     },
     {
-      name: "Dra. Júlia Longo Rodrigues Schmitz",
-      specialty: "Emagrecimento, Metabolismo e Performance",
+      name: "Dra. Júlia Schmitz",
+      specialty: "Médica",
       description:
-        "Médica com atuação em emagrecimento saudável, otimização metabólica e performance. Ajuda pacientes a conquistarem seus objetivos de peso, energia e longevidade com tratamentos personalizados.",
+        "Atendimento com foco em emagrecimento, saúde metabólica e saúde hormonal feminina. Plano individualizado, construído a partir da escuta e da investigação.",
       credentials: [
-        "Metabolismo e Emagrecimento",
-        "Medicina do Estilo de Vida",
-        "Performance Física e Mental",
-        "Reposição Hormonal e Longevidade",
+        "Emagrecimento e metabolismo",
+        "Saúde hormonal feminina",
+        "Acompanhamento individualizado",
+        "Hábitos e estilo de vida",
       ],
       instagram: "DraJuliaLongo",
       image: draJuliaImage,
