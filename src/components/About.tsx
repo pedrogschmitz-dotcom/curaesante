@@ -49,16 +49,14 @@ const About = () => {
                 <span className="text-gold italic">transforma</span>
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                A Curae Santé nasceu do sonho de entregar medicina de excelência
-                com o cuidado humano que todo paciente merece. Nossa clínica reúne
-                o melhor da medicina estética, dos cuidados com a pele, do
-                emagrecimento, da performance e da metabologia, sempre em um
-                ambiente pensado para seu conforto e bem-estar.
+                A Curae Santé é uma clínica médica em Kobrasol que nasceu de uma ideia simples:
+                consulta com tempo, escuta de verdade e investigação cuidadosa. Atendemos quem
+                quer entender o que está acontecendo antes de receber uma receita.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Acreditamos que beleza e saúde caminham juntas, e cada
-                tratamento é desenvolvido de forma personalizada, respeitando
-                sua individualidade e objetivos.
+                Atuamos em saúde, emagrecimento, saúde hormonal feminina e saúde da pele,
+                sempre com plano individualizado e linguagem clara. Sem promessas — só
+                medicina feita com presença.
               </p>
             </div>
 
