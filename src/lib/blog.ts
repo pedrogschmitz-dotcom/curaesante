@@ -11,6 +11,13 @@ export interface BlogPost {
   body: string;
 }
 
+function normalizeImagePath(path: string): string {
+  if (!path) return "";
+  if (/^(https?:)?\/\//i.test(path) || path.startsWith("data:")) return path;
+  if (path.startsWith("/")) return `${import.meta.env.BASE_URL}${path.slice(1)}`;
+  return path;
+}
+
 function parseFrontmatter(raw: string): { attributes: Record<string, unknown>; body: string } {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) return { attributes: {}, body: raw };
@@ -64,7 +71,7 @@ function rawToPost(raw: string): BlogPost | null {
     autor: String(attributes.autor ?? ''),
     data: String(attributes.data ?? ''),
     resumo: String(attributes.resumo ?? ''),
-    imagem: String(attributes.imagem ?? ''),
+    imagem: normalizeImagePath(String(attributes.imagem ?? '')),
     imagem_alt: String(attributes.imagem_alt ?? ''),
     tags: Array.isArray(attributes.tags) ? attributes.tags : [],
     published: attributes.published === true,
