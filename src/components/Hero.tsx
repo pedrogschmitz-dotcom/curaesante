@@ -22,7 +22,7 @@ const Hero = () => {
             <img
               src={logoImage}
               alt="Logo da Curae Santé"
-              className="w-full max-w-[420px] md:max-w-[500px] lg:max-w-[560px] h-auto mx-auto lg:mx-0"
+              className="w-full max-w-[420px] md:max-w-[500px] lg:max-w-[560px] h-auto mx-auto lg:mx-0 transform transition-transform duration-300 hover:scale-105"
             />
 
             <span className="inline-block px-4 py-2 bg-gold/10 rounded-full text-sm font-medium text-gold-dark">
