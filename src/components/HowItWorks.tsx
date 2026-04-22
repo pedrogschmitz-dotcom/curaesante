@@ -72,7 +72,7 @@ const HowItWorks = () => {
               <div className="absolute inset-0 bg-gold/10 rounded-[2.5rem] transform rotate-3" />
               <div className="relative bg-card rounded-[2.5rem] shadow-card overflow-hidden h-full">
                 <img
-                  src="/lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg"
+                  src={`${import.meta.env.BASE_URL}lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg`}
                   alt="Ambiente de consulta da Curae Santé em Kobrasol"
                   className="w-full h-full object-cover"
                 />

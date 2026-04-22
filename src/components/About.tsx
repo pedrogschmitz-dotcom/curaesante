@@ -26,7 +26,7 @@ const About = () => {
               <div className="absolute inset-0 bg-gold/10 rounded-[2rem] transform -rotate-6" />
               <div className="absolute inset-4 bg-beige rounded-[2rem] transform rotate-3" />
               <div className="relative bg-card rounded-[2rem] shadow-card overflow-hidden">
-                <img alt="Ambiente interno da clínica Curae Santé" className="w-full h-full object-cover aspect-square" src="/lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg" />
+                <img alt="Ambiente interno da clínica Curae Santé" className="w-full h-full object-cover aspect-square" src={`${import.meta.env.BASE_URL}lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg`} />
               </div>
 
               {/* Experience Badge */}

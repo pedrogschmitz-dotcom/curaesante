@@ -71,7 +71,7 @@ const Hero = () => {
                 <img
                   alt="Ambiente acolhedor da Curae Santé em Kobrasol"
                   className="w-full h-full object-cover"
-                  src="/lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg"
+                  src={`${import.meta.env.BASE_URL}lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
               </div>
