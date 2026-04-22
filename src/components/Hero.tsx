@@ -1,6 +1,6 @@
 import { Phone, MessageCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoImage from "@/assets/logo-curae.png";
+import logoImage from "@/assets/curae-sante-logo-transparent.png";
 
 const Hero = () => {
   return (
@@ -22,7 +22,7 @@ const Hero = () => {
             <img
               src={logoImage}
               alt="Logo da Curae Santé"
-              className="h-16 md:h-20 lg:h-24 w-auto mx-auto lg:mx-0"
+              className="h-20 md:h-24 lg:h-28 w-auto mx-auto lg:mx-0"
             />
 
             <span className="inline-block px-4 py-2 bg-gold/10 rounded-full text-sm font-medium text-gold-dark">
