@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const POSTS_PER_PAGE = 10;
+const DEFAULT_BLOG_IMAGE = `${import.meta.env.BASE_URL}lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg`;
 
 const BlogListPage = () => {
   const posts = getPublishedPosts();
@@ -51,6 +52,10 @@ const BlogListPage = () => {
                         src={post.imagem}
                         alt={post.imagem_alt}
                         loading="lazy"
+                        onError={(e) => {
+                          const img = e.currentTarget;
+                          if (img.src !== DEFAULT_BLOG_IMAGE) img.src = DEFAULT_BLOG_IMAGE;
+                        }}
                         className="w-full h-48 object-cover"
                       />
                     )}

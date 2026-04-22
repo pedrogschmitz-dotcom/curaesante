@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
 import NotFound from "./NotFound";
 
+const DEFAULT_BLOG_IMAGE = `${import.meta.env.BASE_URL}lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg`;
+
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -42,6 +44,10 @@ const BlogPostPage = () => {
               src={post.imagem}
               alt={post.imagem_alt}
               loading="lazy"
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (img.src !== DEFAULT_BLOG_IMAGE) img.src = DEFAULT_BLOG_IMAGE;
+              }}
               className="w-full rounded-xl mb-10 shadow-soft"
             />
           )}
