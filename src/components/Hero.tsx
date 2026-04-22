@@ -1,4 +1,4 @@
-import { Phone, MessageCircle, ArrowRight } from "lucide-react";
+import { Phone, MessageCircle, ArrowRight, Sparkles, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImage from "@/assets/curae-sante-logo-transparent.png";
 
@@ -81,6 +81,30 @@ const Hero = () => {
                   src={`${import.meta.env.BASE_URL}lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg`}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
+              </div>
+
+              <div className="absolute -top-3 -right-3 md:-top-4 md:-right-4 bg-card/95 backdrop-blur-sm rounded-2xl shadow-soft px-4 py-3 border border-border/50 animate-pulse">
+                <div className="flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-full bg-gold/15 text-gold-dark flex items-center justify-center">
+                    <Sparkles size={14} />
+                  </span>
+                  <div className="leading-tight">
+                    <p className="text-xs font-semibold text-foreground">Resultados</p>
+                    <p className="text-xs text-foreground/70">Naturais</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute -bottom-3 -left-3 md:-bottom-4 md:-left-4 bg-card/95 backdrop-blur-sm rounded-2xl shadow-soft px-4 py-3 border border-border/50 animate-pulse">
+                <div className="flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-full bg-gold/15 text-gold-dark flex items-center justify-center">
+                    <Heart size={14} />
+                  </span>
+                  <div className="leading-tight">
+                    <p className="text-xs font-semibold text-foreground">Cuidado</p>
+                    <p className="text-xs text-foreground/70">Personalizado</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
