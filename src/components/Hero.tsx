@@ -1,5 +1,6 @@
 import { Phone, MessageCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoImage from "@/assets/logo-curae.png";
 
 const Hero = () => {
   return (
@@ -18,6 +19,12 @@ const Hero = () => {
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Content */}
           <div className="lg:col-span-7 text-center lg:text-left space-y-7 animate-fade-up">
+            <img
+              src={logoImage}
+              alt="Logo da Curae Santé"
+              className="h-16 md:h-20 lg:h-24 w-auto mx-auto lg:mx-0"
+            />
+
             <span className="inline-block px-4 py-2 bg-gold/10 rounded-full text-sm font-medium text-gold-dark">
               Clínica médica · Kobrasol, São José SC
             </span>
