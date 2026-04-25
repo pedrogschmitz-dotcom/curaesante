@@ -15,5 +15,8 @@ if (typeof document !== "undefined") {
   // Wait a tick so React has committed
   requestAnimationFrame(() => {
     document.dispatchEvent(new Event("render-event"));
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("render-event"));
+    }
   });
 }
