@@ -11,6 +11,7 @@ import CTASection from "@/components/CTASection";
 import Location from "@/components/Location";
 import BlogPreview from "@/components/BlogPreview";
 import InstagramFeed from "@/components/InstagramFeed";
+import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SEO from "@/components/SEO";
@@ -47,6 +48,7 @@ const Index = () => {
       <Principles />
       <CTASection />
       <Location />
+      <Testimonials />
       <BlogPreview />
       <InstagramFeed />
       <Footer />

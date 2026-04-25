@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -5,7 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import BlogSEO from "@/components/BlogSEO";
-import { getPostBySlug, formatDatePtBR } from "@/lib/blog";
+import { getPostBySlug, getPublishedPosts, formatDatePtBR } from "@/lib/blog";
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
 import NotFound from "./NotFound";
@@ -16,6 +17,10 @@ const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const post = slug ? getPostBySlug(slug) : null;
+  const relatedPosts = useMemo(
+    () => getPublishedPosts().filter((p) => p.slug !== slug).slice(0, 2),
+    [slug],
+  );
 
   if (!post) return <NotFound />;
 
@@ -75,6 +80,24 @@ const BlogPostPage = () => {
           <p className="mt-8 text-xs text-foreground/50 text-center italic">
             Este conteúdo é informativo e não substitui consulta médica presencial.
           </p>
+
+          {relatedPosts.length > 0 && (
+            <section className="mt-12 border-t border-border pt-8">
+              <h2 className="font-serif text-2xl text-foreground mb-4">Artigos relacionados</h2>
+              <ul className="space-y-3">
+                {relatedPosts.map((item) => (
+                  <li key={item.slug}>
+                    <button
+                      onClick={() => navigate(`/blog/${item.slug}`)}
+                      className="text-left text-primary hover:underline"
+                    >
+                      {item.title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </div>
       </article>
 

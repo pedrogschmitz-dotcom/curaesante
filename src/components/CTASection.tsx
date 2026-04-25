@@ -1,5 +1,6 @@
 import { Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 
 const CTASection = () => {
   return (
@@ -27,6 +28,7 @@ const CTASection = () => {
                 href="https://wa.me/5548988064337?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta%20na%20Curae%20Sant%C3%A9."
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("whatsapp_click", { location: "cta_section" })}
               >
                 <Button className="bg-cream-light text-foreground hover:bg-cream-light/90 text-lg px-8 py-6 rounded-full flex items-center gap-3 group shadow-lg">
                   <Phone size={20} />

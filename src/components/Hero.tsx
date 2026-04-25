@@ -1,6 +1,7 @@
 import { Phone, MessageCircle, ArrowRight, Sparkles, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImage from "@/assets/curae-sante-logo-transparent.png";
+import { trackEvent } from "@/lib/analytics";
 
 const Hero = () => {
   return (
@@ -23,6 +24,7 @@ const Hero = () => {
               src={logoImage}
               alt="Logo da Curae Santé"
               className="w-full max-w-[420px] md:max-w-[500px] lg:max-w-[560px] h-auto mx-auto lg:mx-0 transform transition-transform duration-300 hover:scale-105"
+              decoding="async"
             />
 
             <span className="inline-block px-4 py-2 bg-gold/10 rounded-full text-sm font-medium text-gold-dark">
@@ -47,6 +49,7 @@ const Hero = () => {
                 href="https://wa.me/5548988064337?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta%20na%20Curae%20Sant%C3%A9."
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("whatsapp_click", { location: "hero_primary" })}
               >
                 <Button className="btn-primary w-full sm:w-auto text-lg px-8 py-6 flex items-center justify-center gap-3 group">
                   <Phone size={20} />
@@ -58,6 +61,7 @@ const Hero = () => {
                 href="https://wa.me/5548988064337?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20a%20equipe%20da%20Curae%20Sant%C3%A9."
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("whatsapp_click", { location: "hero_secondary" })}
               >
                 <Button className="btn-outline w-full sm:w-auto text-lg px-8 py-6 flex items-center justify-center gap-3">
                   <MessageCircle size={20} />
@@ -79,6 +83,8 @@ const Hero = () => {
                   alt="Ambiente acolhedor da Curae Santé em Kobrasol"
                   className="w-full h-full object-cover"
                   src={`${import.meta.env.BASE_URL}lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg`}
+                  fetchPriority="high"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent" />
               </div>

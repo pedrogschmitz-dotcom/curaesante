@@ -1,4 +1,5 @@
 import { Instagram, Phone, MapPin, Clock, Heart } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const quickLinks = [{
@@ -91,17 +92,15 @@ const Footer = () => {
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <MapPin size={18} className="text-gold shrink-0 mt-0.5" />
-                  <span className="text-cream-light/70 text-sm">Av. Delamar Jose da Silva
-n° 186, loja 03,
-Kobrasol, São José/SC
-CEP: 88102-100<br />
+                  <span className="text-cream-light/70 text-sm">Av. Delamar Jose da Silva, 186, loja 03
+                    <br />
                     Kobrasol, São José/SC
                     <br />
                     CEP: 88102-100
                   </span>
                 </li>
                 <li>
-                  <a href="https://wa.me/5548988064337" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-cream-light/70 hover:text-gold transition-colors">
+                  <a href="https://wa.me/5548988064337" target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("whatsapp_click", { location: "footer" })} className="flex items-center gap-3 text-cream-light/70 hover:text-gold transition-colors">
                     <Phone size={18} className="text-gold" />
                     <span className="text-sm">+55 48 8806-4337</span>
                   </a>

@@ -1,4 +1,5 @@
 import { MessageCircle } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 const WhatsAppButton = () => {
   return (
@@ -6,6 +7,7 @@ const WhatsAppButton = () => {
       href="https://wa.me/5548988064337"
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackEvent("whatsapp_click", { location: "floating_button" })}
       className="fixed bottom-6 right-6 z-50 group"
       aria-label="Fale conosco no WhatsApp"
     >

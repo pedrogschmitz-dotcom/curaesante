@@ -1,4 +1,5 @@
 import { Stethoscope, Scale, Sparkles, ArrowRight } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 const services = [
   {
@@ -89,6 +90,7 @@ const Services = () => {
                 href="https://wa.me/5548988064337?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20a%20Curae%20Sant%C3%A9."
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("whatsapp_click", { location: `services_${service.title}` })}
                 className="inline-flex items-center gap-2 text-gold font-medium mt-auto group/link"
               >
                 Falar no WhatsApp

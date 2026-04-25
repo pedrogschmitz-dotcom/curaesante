@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { trackEvent } from "@/lib/analytics";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -29,6 +30,7 @@ const Contact = () => {
     const { name, email, phone, message } = formData;
     const whatsappMessage = `Olá! Meu nome é ${name}.%0A%0AE-mail: ${email}%0ATelefone: ${phone}%0A%0AMensagem: ${message}`;
     const whatsappUrl = `https://wa.me/5548988064337?text=${encodeURIComponent(whatsappMessage.replace(/%0A/g, '\n'))}`;
+    trackEvent("whatsapp_click", { location: "contact_form" });
     
     window.open(whatsappUrl, '_blank');
     
@@ -144,6 +146,7 @@ const Contact = () => {
                 href="https://wa.me/5548988064337"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("whatsapp_click", { location: "contact_quick_action" })}
                 className="btn-primary flex-1 flex items-center justify-center gap-2"
               >
                 <Phone size={18} />
