@@ -5,7 +5,7 @@ const BASE_URL = 'https://curaesante.com.br';
 const BLOG_DIR = path.resolve('content/blog');
 const OUT = path.resolve('public/sitemap.xml');
 
-const staticRoutes = ['/', '/sobre', '/servicos', '/equipe', '/blog', '/contato'];
+const staticRoutes = ['/', '/sobre', '/servicos', '/equipe', '/blog', '/faq', '/contato'];
 
 function parseFrontmatter(raw: string) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);

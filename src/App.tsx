@@ -12,6 +12,7 @@ import EquipePage from "./pages/EquipePage";
 import BlogListPage from "./pages/BlogListPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import ContatoPage from "./pages/ContatoPage";
+import FaqPage from "./pages/FaqPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/equipe" element={<EquipePage />} />
           <Route path="/blog" element={<BlogListPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="/faq" element={<FaqPage />} />
           <Route path="/contato" element={<ContatoPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

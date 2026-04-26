@@ -18,6 +18,9 @@ const Footer = () => {
     label: "Blog",
     href: "#blog"
   }, {
+    label: "FAQ",
+    href: "/faq"
+  }, {
     label: "Contato",
     href: "#contato"
   }];
