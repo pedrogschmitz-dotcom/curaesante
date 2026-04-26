@@ -28,7 +28,7 @@ function getBlogRoutes(): string[] {
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? "/curaesante/" : "/",
+  base: "/",
   server: {
     host: "::",
     port: 8080,
