@@ -4,8 +4,8 @@ slug: "metabolismo-depois-dos-40-investigacao-clinica"
 autor: "Dra. Júlia Longo Rodrigues Schmitz"
 data: "2026-04-25T12:00:00.000Z"
 resumo: "Entenda por que o metabolismo feminino muda após os 40, como a transição menopausal afeta gordura abdominal e resistência à insulina, e o que uma investigação clínica completa pode fazer por isso."
-imagem: "/lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg"
-imagem_alt: "Consulta médica para investigação metabólica feminina"
+imagem: "/images/blog/metabolismo-depois-dos-40.jpg"
+imagem_alt: "Representação visual do metabolismo e dos sistemas do corpo humano"
 tags: ["metabolismo", "perimenopausa", "saúde hormonal feminina", "resistência à insulina", "emagrecimento"]
 published: true
 ---
