@@ -33,7 +33,7 @@ const BlogPreview = () => {
                     src={post.imagem}
                     alt={post.imagem_alt}
                     loading="lazy"
-                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-48 object-cover photo-grade transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/15 to-transparent opacity-60" />
                 </div>

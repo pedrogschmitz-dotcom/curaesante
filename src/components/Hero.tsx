@@ -1,9 +1,31 @@
+import { useEffect, useState } from "react";
 import { Phone, MessageCircle, ArrowRight, Sparkles, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoImage from "@/assets/curae-sante-logo-transparent.png";
 import { trackEvent } from "@/lib/analytics";
 
 const Hero = () => {
+  const [parallaxY, setParallaxY] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.innerWidth < 1024) {
+        setParallaxY(0);
+        return;
+      }
+      const y = window.scrollY || 0;
+      setParallaxY(Math.min(28, y * 0.07));
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
   return (
     <section
       id="inicio"
@@ -79,12 +101,12 @@ const Hero = () => {
             className="lg:col-span-5 relative animate-fade-in"
             style={{ animationDelay: "0.3s" }}
           >
-            <div className="relative aspect-[4/5] max-w-md mx-auto">
+            <div className="relative aspect-[4/5] max-w-md mx-auto" style={{ transform: `translateY(${parallaxY}px)` }}>
               <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-brown-light/30 rounded-[3rem] transform rotate-3" />
               <div className="absolute inset-0 bg-card rounded-[3rem] shadow-card overflow-hidden transform -rotate-3 hover:rotate-0 transition-transform duration-500 hero-sheen">
                 <img
                   alt="Ambiente acolhedor da Curae Santé em Kobrasol"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover photo-grade"
                   src={`${import.meta.env.BASE_URL}lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg`}
                   fetchPriority="high"
                   decoding="async"

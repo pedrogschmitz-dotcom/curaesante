@@ -122,7 +122,7 @@ const BlogListPage = () => {
                         const img = e.currentTarget;
                         if (img.src !== DEFAULT_BLOG_IMAGE) img.src = DEFAULT_BLOG_IMAGE;
                       }}
-                      className="w-full h-72 lg:h-full object-cover"
+                      className="w-full h-72 lg:h-full object-cover photo-grade"
                       style={featuredPost.slug === METABOLISMO_POST_SLUG ? { objectPosition: "center 16%" } : undefined}
                     />
                   )}
@@ -165,7 +165,7 @@ const BlogListPage = () => {
                             const img = e.currentTarget;
                             if (img.src !== DEFAULT_BLOG_IMAGE) img.src = DEFAULT_BLOG_IMAGE;
                           }}
-                          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-48 object-cover photo-grade transition-transform duration-500 group-hover:scale-105"
                           style={post.slug === METABOLISMO_POST_SLUG ? { objectPosition: "center 18%" } : undefined}
                         />
                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/20 to-transparent opacity-55" />

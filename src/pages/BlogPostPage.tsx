@@ -53,7 +53,7 @@ const BlogPostPage = () => {
                 const img = e.currentTarget;
                 if (img.src !== DEFAULT_BLOG_IMAGE) img.src = DEFAULT_BLOG_IMAGE;
               }}
-              className="w-full rounded-xl mb-10 shadow-soft"
+              className="w-full rounded-xl mb-10 shadow-soft photo-grade"
             />
           )}
 

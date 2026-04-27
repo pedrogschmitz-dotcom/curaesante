@@ -217,6 +217,10 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  .photo-grade {
+    filter: saturate(0.92) contrast(1.05) brightness(1.02) sepia(0.05);
+  }
 }
 
 @layer components {

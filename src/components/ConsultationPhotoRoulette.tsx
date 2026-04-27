@@ -103,7 +103,7 @@ const ConsultationPhotoRoulette = () => {
                 key={`${image.src}-${layer}`}
                 className={`absolute inset-0 rounded-[2.5rem] overflow-hidden shadow-card border border-white/30 transition-all duration-500 ease-out ${layerClass}`}
               >
-                <img src={image.src} alt={image.alt} className="w-full h-full object-cover" />
+                <img src={image.src} alt={image.alt} className="w-full h-full object-cover photo-grade" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/35 via-transparent to-transparent" />
               </div>
             );

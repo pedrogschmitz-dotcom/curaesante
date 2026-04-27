@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { initAnalytics, trackPageView } from "@/lib/analytics";
+import { initAnalytics, trackEvent, trackPageView } from "@/lib/analytics";
 import Index from "./pages/Index";
 import SobrePage from "./pages/SobrePage";
 import ServicosPage from "./pages/ServicosPage";
@@ -23,11 +23,40 @@ const AnalyticsTracker = () => {
 
   useEffect(() => {
     initAnalytics();
+
+    const { protocol, hostname, href } = window.location;
+    const isLocal = hostname === "localhost" || hostname === "127.0.0.1";
+    if (!isLocal && protocol === "http:") {
+      window.location.replace(href.replace(/^http:/, "https:"));
+    }
   }, []);
 
   useEffect(() => {
     trackPageView(`${location.pathname}${location.search}`);
   }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      const anchor = target?.closest('a[href*="wa.me"], a[href*="api.whatsapp.com"]') as HTMLAnchorElement | null;
+      if (!anchor) return;
+
+      const sectionId =
+        anchor.getAttribute("data-wa-location") ||
+        anchor.closest("section")?.id ||
+        anchor.closest("[id]")?.id ||
+        location.pathname;
+
+      trackEvent("whatsapp_click_auto", {
+        location: sectionId,
+        href: anchor.href,
+        path: location.pathname,
+      });
+    };
+
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, [location.pathname]);
 
   return null;
 };

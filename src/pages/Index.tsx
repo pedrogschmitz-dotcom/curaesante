@@ -14,6 +14,8 @@ import InstagramFeed from "@/components/InstagramFeed";
 import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import MobileStickyCTA from "@/components/MobileStickyCTA";
+import OrganicDivider from "@/components/OrganicDivider";
 import SEO from "@/components/SEO";
 import SectionReveal from "@/components/SectionReveal";
 
@@ -42,17 +44,21 @@ const Index = () => {
       <Header />
       <Hero />
       <SectionReveal delayMs={40}><Identification /></SectionReveal>
+      <OrganicDivider />
       <SectionReveal delayMs={60}><HowItWorks /></SectionReveal>
       <SectionReveal delayMs={80}><Team /></SectionReveal>
+      <OrganicDivider flip />
       <SectionReveal delayMs={100}><Services /></SectionReveal>
       <SectionReveal delayMs={120}><Procedures /></SectionReveal>
       <SectionReveal delayMs={140}><Principles /></SectionReveal>
+      <OrganicDivider />
       <SectionReveal delayMs={160}><CTASection /></SectionReveal>
       <SectionReveal delayMs={180}><Location /></SectionReveal>
       <SectionReveal delayMs={200}><Testimonials /></SectionReveal>
       <SectionReveal delayMs={220}><BlogPreview /></SectionReveal>
       <SectionReveal delayMs={240}><InstagramFeed /></SectionReveal>
       <Footer />
+      <MobileStickyCTA />
       <WhatsAppButton />
     </main>
   );

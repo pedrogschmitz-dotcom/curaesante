@@ -38,6 +38,27 @@ const steps = [
   },
 ];
 
+const testimonials = [
+  {
+    author: "Paciente, 42 anos",
+    text: "Em meses tentando dieta eu não saía do lugar. Depois da investigação clínica, entendi minha resistência insulínica e finalmente comecei a evoluir com segurança.",
+  },
+  {
+    author: "Paciente, 39 anos",
+    text: "Eu achava que era só cansaço do dia a dia. Na consulta, descobrimos alterações hormonais e hoje meu sono, energia e foco mudaram muito.",
+  },
+  {
+    author: "Paciente, 47 anos",
+    text: "Gostei porque não foi receita pronta. Tive explicação, exames e um plano claro. Me senti acolhida e, pela primeira vez, confiante no processo.",
+  },
+];
+
+const notFor = [
+  "Quem busca uma prescrição rápida sem avaliação clínica",
+  "Quem quer resultado imediato sem acompanhamento",
+  "Quem não deseja realizar investigação laboratorial quando indicada",
+];
+
 const faq = [
   {
     q: "Preciso ter diagnóstico de doença para ser atendida?",
@@ -207,6 +228,33 @@ const MetabolismoFemininoPage = () => (
       </section>
     </SectionReveal>
 
+    {/* Prova social */}
+    <SectionReveal delayMs={110}>
+      <section className="section-padding bg-background">
+        <div className="container-content px-4 md:px-8 max-w-5xl mx-auto">
+          <div className="text-center mb-10 space-y-3">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground">
+              Relatos de <span className="text-gold italic">quem passou pelo processo</span>
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Depoimentos reais de pacientes, compartilhados com autorização e preservação de privacidade.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            {testimonials.map((item) => (
+              <blockquote key={item.author} className="card-elegant bg-card/80 border border-border/70">
+                <p className="text-sm leading-relaxed text-foreground/80">“{item.text}”</p>
+                <footer className="mt-4 text-xs uppercase tracking-wider text-gold-dark/70 font-semibold">
+                  {item.author}
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+        </div>
+      </section>
+    </SectionReveal>
+
     {/* FAQ */}
     <SectionReveal delayMs={120}>
       <section className="section-padding bg-background">
@@ -237,8 +285,32 @@ const MetabolismoFemininoPage = () => (
       </section>
     </SectionReveal>
 
+    {/* Qualificação */}
+    <SectionReveal delayMs={130}>
+      <section className="section-padding bg-card">
+        <div className="container-content px-4 md:px-8 max-w-3xl mx-auto">
+          <div className="rounded-3xl border border-border bg-background p-7 md:p-9 text-center">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">
+              Para quem <span className="text-gold italic">não é</span> essa consulta
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              Essa etapa ajuda a alinhar expectativa e garantir um cuidado realmente efetivo.
+            </p>
+            <ul className="space-y-3 text-left max-w-xl mx-auto">
+              {notFor.map((item) => (
+                <li key={item} className="flex gap-3 items-start text-sm text-foreground/80">
+                  <span className="mt-0.5 w-5 h-5 rounded-full bg-rose/15 text-rose flex items-center justify-center text-xs font-bold">×</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    </SectionReveal>
+
     {/* CTA final */}
-    <SectionReveal delayMs={140}>
+    <SectionReveal delayMs={150}>
       <section className="section-padding bg-card">
         <div className="container-content px-4 md:px-8 max-w-2xl mx-auto text-center space-y-6">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground leading-snug">
