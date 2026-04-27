@@ -15,6 +15,7 @@ import Testimonials from "@/components/Testimonials";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SEO from "@/components/SEO";
+import SectionReveal from "@/components/SectionReveal";
 
 const Index = () => {
   // Smooth scroll for in-page anchors only (mantido para o indicador do hero)
@@ -40,17 +41,17 @@ const Index = () => {
       <SEO path="/" />
       <Header />
       <Hero />
-      <Identification />
-      <HowItWorks />
-      <Team />
-      <Services />
-      <Procedures />
-      <Principles />
-      <CTASection />
-      <Location />
-      <Testimonials />
-      <BlogPreview />
-      <InstagramFeed />
+      <SectionReveal delayMs={40}><Identification /></SectionReveal>
+      <SectionReveal delayMs={60}><HowItWorks /></SectionReveal>
+      <SectionReveal delayMs={80}><Team /></SectionReveal>
+      <SectionReveal delayMs={100}><Services /></SectionReveal>
+      <SectionReveal delayMs={120}><Procedures /></SectionReveal>
+      <SectionReveal delayMs={140}><Principles /></SectionReveal>
+      <SectionReveal delayMs={160}><CTASection /></SectionReveal>
+      <SectionReveal delayMs={180}><Location /></SectionReveal>
+      <SectionReveal delayMs={200}><Testimonials /></SectionReveal>
+      <SectionReveal delayMs={220}><BlogPreview /></SectionReveal>
+      <SectionReveal delayMs={240}><InstagramFeed /></SectionReveal>
       <Footer />
       <WhatsAppButton />
     </main>

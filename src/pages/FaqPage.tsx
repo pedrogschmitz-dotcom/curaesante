@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -5,9 +6,20 @@ import SEO from "@/components/SEO";
 import { FAQ_ITEMS } from "@/lib/faq";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { trackEvent } from "@/lib/analytics";
 
 const FaqPage = () => {
+  const [search, setSearch] = useState("");
+  const filteredFaq = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return FAQ_ITEMS;
+    return FAQ_ITEMS.filter((item) => {
+      const fullText = `${item.question} ${item.answer}`.toLowerCase();
+      return fullText.includes(query);
+    });
+  }, [search]);
+
   return (
     <main className="min-h-screen bg-background">
       <SEO
@@ -28,9 +40,22 @@ const FaqPage = () => {
             Respostas diretas para perguntas que pacientes fazem no Google, Instagram e atendimentos da clínica.
           </p>
 
+          <div className="mb-6">
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Buscar dúvida (ex.: tirzepatida, botox, implante hormonal)"
+              className="h-12 rounded-xl bg-card"
+              aria-label="Buscar dúvida no FAQ"
+            />
+            <p className="mt-2 text-sm text-foreground/60">
+              {filteredFaq.length} {filteredFaq.length === 1 ? "resultado" : "resultados"} encontrado(s)
+            </p>
+          </div>
+
           <div className="rounded-2xl border border-border bg-card p-5 md:p-8 shadow-soft">
             <Accordion type="single" collapsible className="w-full">
-              {FAQ_ITEMS.map((item, index) => (
+              {filteredFaq.map((item, index) => (
                 <AccordionItem key={item.question} value={`item-${index}`}>
                   <AccordionTrigger className="text-left font-medium text-foreground">
                     {item.question}
@@ -41,6 +66,11 @@ const FaqPage = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+            {filteredFaq.length === 0 && (
+              <p className="text-center text-foreground/60 py-6">
+                Nenhuma dúvida encontrada para essa busca. Tente termos como "emagrecimento", "botox" ou "hormonal".
+              </p>
+            )}
           </div>
 
           <div className="mt-10 rounded-2xl border border-border bg-muted/30 p-6 md:p-8 text-center">

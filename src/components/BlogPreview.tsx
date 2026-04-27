@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { getPublishedPosts, formatDatePtBR } from "@/lib/blog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 const BlogPreview = () => {
   const navigate = useNavigate();
@@ -24,16 +24,19 @@ const BlogPreview = () => {
           {posts.map((post) => (
             <Card
               key={post.slug}
-              className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-300 bg-card border-border"
+              className="group overflow-hidden cursor-pointer border-border bg-card/95 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-card"
               onClick={() => navigate(`/blog/${post.slug}`)}
             >
               {post.imagem && (
-                <img
-                  src={post.imagem}
-                  alt={post.imagem_alt}
-                  loading="lazy"
-                  className="w-full h-48 object-cover"
-                />
+                <div className="relative overflow-hidden">
+                  <img
+                    src={post.imagem}
+                    alt={post.imagem_alt}
+                    loading="lazy"
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/15 to-transparent opacity-60" />
+                </div>
               )}
               <CardContent className="p-5">
                 <h3 className="font-serif text-lg text-foreground mb-2 line-clamp-2">
@@ -44,6 +47,10 @@ const BlogPreview = () => {
                 </p>
                 <p className="text-foreground/70 text-sm line-clamp-3">
                   {post.resumo}
+                </p>
+                <p className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-gold-dark">
+                  Ler artigo
+                  <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </p>
               </CardContent>
             </Card>
