@@ -11,12 +11,12 @@ const images: RouletteImage[] = [
     alt: "Consultorio da Curae Sante com mesa de atendimento",
   },
   {
-    src: `${import.meta.env.BASE_URL}images/experience/atendimento-fora-padrao-2.jpg`,
-    alt: "Seringas em fundo neutro representando procedimentos",
+    src: `${import.meta.env.BASE_URL}lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg`,
+    alt: "Recepcao da Curae Sante",
   },
   {
-    src: `${import.meta.env.BASE_URL}images/experience/atendimento-fora-padrao-3.jpg`,
-    alt: "Aplicacao estetica em close no rosto",
+    src: `${import.meta.env.BASE_URL}lovable-uploads/80a1e96e-7b92-4882-8534-15aa7e6e60df.jpg`,
+    alt: "Fachada da Curae Sante",
   },
 ];
 
