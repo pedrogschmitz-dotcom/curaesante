@@ -1,7 +1,7 @@
 ---
 title: "Tirzepatida para emagrecimento: o que esperar (e o que o hype não conta)"
 slug: "tirzepatida-emagrecimento-o-que-esperar"
-autor: "Dr. Pedro Schmitz"
+autor: "Dra. Júlia"
 data: "2026-04-27T09:00:00.000Z"
 resumo: "Tirzepatida é a medicação de emagrecimento com maior eficácia já registrada em ensaios clínicos. Mas o resultado real depende de avaliação cuidadosa, acompanhamento e expectativas realistas. Entenda o que funciona — e o que o hype não conta."
 imagem: "/images/blog/tirzepatida-emagrecimento.jpg"
