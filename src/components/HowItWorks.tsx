@@ -1,4 +1,5 @@
 import { Clock, Ear, ClipboardList, Compass } from "lucide-react";
+import ConsultationPhotoRoulette from "@/components/ConsultationPhotoRoulette";
 
 const steps = [
   {
@@ -66,19 +67,9 @@ const HowItWorks = () => {
             </div>
           </div>
 
-          {/* Image */}
-          <div className="relative">
-            <div className="relative aspect-[4/5] max-w-md mx-auto">
-              <div className="absolute inset-0 bg-gold/10 rounded-[2.5rem] transform rotate-3" />
-              <div className="relative bg-card rounded-[2.5rem] shadow-card overflow-hidden h-full">
-                <img
-                  src={`${import.meta.env.BASE_URL}lovable-uploads/dff79888-e876-4e1e-927b-e281cb68964d.jpg`}
-                  alt="Ambiente de consulta da Curae Santé em Kobrasol"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent" />
-              </div>
-            </div>
+          {/* Roleta de fotos do atendimento */}
+          <div className="relative pb-20">
+            <ConsultationPhotoRoulette />
           </div>
         </div>
       </div>
