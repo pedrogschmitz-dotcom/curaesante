@@ -13,6 +13,7 @@ import BlogListPage from "./pages/BlogListPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import ContatoPage from "./pages/ContatoPage";
 import FaqPage from "./pages/FaqPage";
+import MetabolismoFemininoPage from "./pages/MetabolismoFemininoPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const App = () => (
           <Route path="/blog" element={<BlogListPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />
           <Route path="/faq" element={<FaqPage />} />
+          <Route path="/metabolismo-feminino" element={<MetabolismoFemininoPage />} />
           <Route path="/contato" element={<ContatoPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
