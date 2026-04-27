@@ -54,4 +54,44 @@ export const FAQ_ITEMS: FAQItem[] = [
     answer:
       "Não. O cuidado é personalizado e pode complementar seu acompanhamento, mas decisões clínicas devem ser tomadas em consulta médica individual.",
   },
+  {
+    question: "Tirzepatida para emagrecer: quem pode se beneficiar?",
+    answer:
+      "A indicação depende de avaliação médica individual, histórico clínico, exames e metas terapêuticas. Nem todo paciente com sobrepeso ou obesidade terá a mesma estratégia.",
+  },
+  {
+    question: "Quais efeitos colaterais podem ocorrer com tirzepatida?",
+    answer:
+      "Podem ocorrer efeitos gastrointestinais, entre outros. O plano médico inclui ajuste progressivo, monitorização e orientação para reduzir riscos e melhorar tolerabilidade.",
+  },
+  {
+    question: "Implante hormonal é indicado para qualquer pessoa?",
+    answer:
+      "Não. A decisão deve ser médica e individualizada, com indicação precisa, avaliação de contraindicações e acompanhamento regular.",
+  },
+  {
+    question: "Botox deixa o rosto sem expressão?",
+    answer:
+      "Quando bem indicado e aplicado com técnica adequada, o objetivo é suavizar marcas mantendo naturalidade e expressão facial.",
+  },
+  {
+    question: "Quanto tempo dura o efeito do botox?",
+    answer:
+      "A duração varia entre pessoas e áreas tratadas. Em consulta, é definido um plano de manutenção conforme resposta clínica individual.",
+  },
+  {
+    question: "Harmonização facial com ácido hialurônico fica artificial?",
+    answer:
+      "A proposta é resultado natural e proporcional ao rosto. O planejamento considera anatomia, equilíbrio facial e expectativas realistas.",
+  },
+  {
+    question: "Bioestimulador de colágeno e ácido hialurônico são a mesma coisa?",
+    answer:
+      "Não. O ácido hialurônico atua principalmente em suporte e volume, enquanto o bioestimulador estimula produção de colágeno ao longo do tempo.",
+  },
+  {
+    question: "Em quanto tempo aparecem resultados com bioestimulador de colágeno?",
+    answer:
+      "Os resultados costumam ser progressivos. O cronograma depende da indicação clínica, número de sessões e resposta de cada paciente.",
+  },
 ];

@@ -24,7 +24,7 @@ const FaqPage = () => {
     <main className="min-h-screen bg-background">
       <SEO
         title="FAQ e Dúvidas Frequentes"
-        description="Perguntas frequentes sobre metabolismo após os 40, perimenopausa, emagrecimento médico, resistência à insulina e agendamento em São José/SC."
+        description="Perguntas frequentes sobre tirzepatida, implante hormonal, botox, ácido hialurônico, bioestimulador de colágeno, emagrecimento médico e agendamento em São José/SC."
         path="/faq"
         faq={FAQ_ITEMS}
       />
@@ -34,10 +34,10 @@ const FaqPage = () => {
       <section className="pt-28 pb-20">
         <div className="container-content px-4 md:px-8 max-w-4xl mx-auto">
           <h1 className="font-serif text-3xl md:text-4xl text-foreground mb-4 text-center">
-            FAQ: dúvidas comuns sobre metabolismo e saúde hormonal feminina
+            FAQ: dúvidas comuns sobre emagrecimento e procedimentos médicos estéticos
           </h1>
           <p className="text-foreground/70 text-center mb-10">
-            Respostas diretas para perguntas que pacientes fazem no Google, Instagram e atendimentos da clínica.
+            Respostas diretas para perguntas que pacientes fazem no Google, Instagram e nas consultas da clínica.
           </p>
 
           <div className="mb-6">
