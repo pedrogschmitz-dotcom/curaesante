@@ -1,10 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Red+Hat+Display:wght@300;400;500;600;700&display=swap');
 
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
@@ -139,11 +139,38 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Red Hat Display', sans-serif;
+    position: relative;
     background-image:
       radial-gradient(1200px circle at 8% -10%, hsl(var(--accent) / 0.12), transparent 42%),
       radial-gradient(900px circle at 92% 8%, hsl(var(--secondary) / 0.16), transparent 40%),
       radial-gradient(1000px circle at 50% 110%, hsl(var(--muted) / 0.45), transparent 46%);
     background-attachment: fixed;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.08;
+    background-image: radial-gradient(circle at 1px 1px, hsl(var(--foreground) / 0.45) 1px, transparent 0);
+    background-size: 3px 3px;
+    animation: grainShift 16s steps(8) infinite;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -20%;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(40% 55% at 20% 20%, hsl(var(--gold) / 0.09), transparent 70%),
+      radial-gradient(35% 50% at 80% 25%, hsl(var(--accent) / 0.08), transparent 72%),
+      radial-gradient(42% 60% at 50% 85%, hsl(var(--secondary) / 0.08), transparent 72%);
+    filter: blur(42px);
+    animation: auroraFloat 18s ease-in-out infinite;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -251,6 +278,31 @@
     }
   }
 
+  @keyframes grainShift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-1%, 1%); }
+    50% { transform: translate(1%, -1%); }
+    75% { transform: translate(1%, 1%); }
+    100% { transform: translate(0, 0); }
+  }
+
+  @keyframes auroraFloat {
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    50% { transform: translate3d(2%, -2%, 0) rotate(2deg); }
+  }
+
+  @keyframes heroSheen {
+    0% { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+    30% { opacity: 0.28; }
+    70% { opacity: 0.18; }
+    100% { transform: translateX(120%) skewX(-18deg); opacity: 0; }
+  }
+
+  @keyframes ctaShimmer {
+    0% { transform: translateX(-130%); }
+    100% { transform: translateX(130%); }
+  }
+
   .hover-lift {
     @apply transition-all duration-300 ease-out;
   }
@@ -276,6 +328,32 @@
     opacity: 0;
     transform: translateY(28px);
     transition: opacity 700ms ease, transform 700ms ease;
+  }
+
+  .hero-sheen::after {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    background: linear-gradient(110deg, transparent 36%, hsl(var(--cream-light) / 0.45) 50%, transparent 64%);
+    animation: heroSheen 7s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .cta-shimmer {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .cta-shimmer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 35%;
+    background: linear-gradient(120deg, transparent, hsl(var(--cream-light) / 0.38), transparent);
+    animation: ctaShimmer 3.4s ease-in-out infinite;
+    pointer-events: none;
   }
 
   .section-reveal.is-visible {

@@ -6,10 +6,13 @@ const CTASection = () => {
   return (
     <section className="section-padding bg-background">
       <div className="container-content px-4 md:px-8">
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary to-gold-dark p-10 md:p-16 text-center shadow-card">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-primary to-gold-dark p-10 md:p-16 text-center shadow-card border border-cream-light/20">
           {/* Decorative blobs */}
           <div className="absolute -top-20 -right-20 w-72 h-72 bg-gold/20 rounded-full blur-3xl" />
           <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-rose/20 rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent_20%,hsl(var(--cream-light)/0.08)_48%,transparent_74%)]" />
+
+          <div className="absolute inset-6 md:inset-8 rounded-[2rem] border border-cream-light/15 backdrop-blur-[1px]" />
 
           <div className="relative z-10 max-w-3xl mx-auto space-y-6">
             <span className="inline-block px-4 py-2 bg-cream-light/10 rounded-full text-sm font-medium text-cream-light backdrop-blur">
@@ -30,7 +33,7 @@ const CTASection = () => {
                 rel="noopener noreferrer"
                 onClick={() => trackEvent("whatsapp_click", { location: "cta_section" })}
               >
-                <Button className="bg-cream-light text-foreground hover:bg-cream-light/90 text-lg px-8 py-6 rounded-full flex items-center gap-3 group shadow-lg">
+                <Button className="bg-cream-light text-foreground hover:bg-cream-light/90 text-lg px-8 py-6 rounded-full flex items-center gap-3 group shadow-lg cta-shimmer">
                   <Phone size={20} />
                   Agendar consulta no WhatsApp
                   <ArrowRight

@@ -10,11 +10,14 @@ const Hero = () => {
       className="relative min-h-screen flex items-center justify-center gradient-hero overflow-hidden"
     >
       {/* Background ambient */}
-      <div className="absolute inset-0 opacity-30">
+      <div className="absolute inset-0 opacity-30 z-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gold/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-brown-light/20 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold/5 rounded-full blur-3xl" />
       </div>
+
+      <div className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--cream-light)/0.3),transparent_55%),radial-gradient(ellipse_at_bottom_left,hsl(var(--accent)/0.08),transparent_60%)]" />
+      <div className="absolute inset-y-0 left-1/2 w-[1px] bg-gradient-to-b from-transparent via-gold/25 to-transparent hidden xl:block z-0" />
 
       <div className="container-content relative z-10 pt-28 pb-20 px-4 md:px-8">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
@@ -78,7 +81,7 @@ const Hero = () => {
           >
             <div className="relative aspect-[4/5] max-w-md mx-auto">
               <div className="absolute inset-0 bg-gradient-to-br from-gold/20 to-brown-light/30 rounded-[3rem] transform rotate-3" />
-              <div className="absolute inset-0 bg-card rounded-[3rem] shadow-card overflow-hidden transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+              <div className="absolute inset-0 bg-card rounded-[3rem] shadow-card overflow-hidden transform -rotate-3 hover:rotate-0 transition-transform duration-500 hero-sheen">
                 <img
                   alt="Ambiente acolhedor da Curae Santé em Kobrasol"
                   className="w-full h-full object-cover"
@@ -111,6 +114,14 @@ const Hero = () => {
                     <p className="text-xs text-foreground/70">Personalizado</p>
                   </div>
                 </div>
+              </div>
+
+              <div className="absolute bottom-16 right-4 md:right-6 bg-card/80 backdrop-blur-md rounded-2xl border border-cream-light/45 px-4 py-3 shadow-soft">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-gold-dark/65 mb-1">Manifesto clínico</p>
+                <p className="text-xs text-foreground/80 leading-relaxed">
+                  Tempo real de consulta.<br />
+                  Investigação antes de conduta.
+                </p>
               </div>
             </div>
           </div>
