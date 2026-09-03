@@ -224,6 +224,74 @@
 }
 
 @layer components {
+  .blog-author-switcher {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .blog-author-option {
+    display: flex;
+    min-height: 142px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 7px;
+    border: 1px solid hsl(var(--border));
+    border-radius: 1rem;
+    background: hsl(var(--card) / 0.72);
+    padding: 20px 22px;
+    text-align: left;
+    color: hsl(var(--foreground) / 0.58);
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  }
+
+  .blog-author-option strong {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+
+  .blog-author-option:hover,
+  .blog-author-option.is-active {
+    border-color: hsl(var(--primary) / 0.7);
+    background: hsl(var(--card));
+  }
+
+  .blog-author-option.is-active {
+    box-shadow: var(--shadow-soft);
+    transform: translateY(-2px);
+  }
+
+  .blog-author-option.is-active > span:first-child {
+    color: hsl(var(--primary));
+  }
+
+  .blog-topic-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .blog-topic-filter {
+    border: 1px solid hsl(var(--border));
+    border-radius: 999px;
+    background: transparent;
+    padding: 9px 17px;
+    color: hsl(var(--foreground) / 0.7);
+    font-size: 0.875rem;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .blog-topic-filter:hover,
+  .blog-topic-filter.is-active {
+    border-color: hsl(var(--primary));
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
   .blog-carousel-track {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr) minmax(0, 1fr);
@@ -285,6 +353,19 @@
   }
 
   @media (max-width: 767px) {
+    .blog-author-switcher {
+      grid-template-columns: 1fr;
+    }
+
+    .blog-author-option {
+      min-height: 116px;
+      padding: 16px 18px;
+    }
+
+    .blog-author-option strong {
+      font-size: 1.2rem;
+    }
+
     .blog-carousel-track {
       grid-template-columns: 12% minmax(0, 76%) 12%;
       gap: 0;
