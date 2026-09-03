@@ -60,6 +60,11 @@ const ServicosPage = () => {
       tag: "Clínica",
     },
     {
+      question: "A Curae Santé realiza avaliação em tricologia e medicina capilar?",
+      answer: "A avaliação médica pode investigar queda de cabelo, alterações do couro cabeludo e outros sinais capilares. A conduta depende da história, do exame físico e, quando necessário, de exames complementares.",
+      tag: "Cabelo",
+    },
+    {
       question: "Como agendar uma avaliação?",
       answer: "Pelo WhatsApp oficial da clínica: +55 48 8806-4337.",
       tag: "Clínica",
@@ -72,7 +77,7 @@ const ServicosPage = () => {
     <main className="min-h-screen bg-background">
       <SEO
         title="Serviços — Emagrecimento, Saúde Hormonal e Procedimentos Estéticos em São José SC"
-        description="Tirzepatida, implante hormonal, botox, harmonização facial com ácido hialurônico e bioestimulador de colágeno. Avaliação médica individualizada em Kobrasol, São José/SC."
+        description="Avaliação médica individualizada em Kobrasol para emagrecimento, saúde hormonal, pele, tricologia e medicina capilar, além de procedimentos estéticos."
         path="/servicos"
         faq={faqItems.map(({ question, answer }) => ({ question, answer }))}
       />

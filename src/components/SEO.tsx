@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 const BASE_URL = "https://curaesante.com.br";
 const DEFAULT_TITLE = "Curae Santé — Clínica médica em Kobrasol, São José SC";
 const DEFAULT_DESCRIPTION =
-  "Clínica médica em Kobrasol com foco em saúde da pele, emagrecimento, saúde metabólica e saúde hormonal feminina. Consulta clínica extensa para quem já tentou outros caminhos.";
+  "Clínica médica em Kobrasol com foco em saúde da pele, tricologia, medicina capilar, emagrecimento, saúde metabólica e saúde hormonal feminina. Consulta clínica extensa para quem já tentou outros caminhos.";
 const DEFAULT_IMAGE = `${BASE_URL}/og-image.jpg`;
 
 interface SEOProps {

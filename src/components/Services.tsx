@@ -28,14 +28,14 @@ const services = [
   },
   {
     icon: Sparkles,
-    title: "Saúde da pele",
+    title: "Pele e saúde capilar",
     description:
-      "Cuidados com a pele com foco em naturalidade, qualidade de pele e contorno facial harmonioso.",
+      "Avaliação de pele, cabelo e couro cabeludo, com foco em diagnóstico, naturalidade e plano individualizado.",
     features: [
       "Rugas e marcas de expressão",
       "Firmeza e flacidez",
       "Contorno facial",
-      "Qualidade da pele",
+      "Queda de cabelo e couro cabeludo",
     ],
   },
 ];
