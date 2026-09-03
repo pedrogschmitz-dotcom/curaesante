@@ -1,140 +1,52 @@
-import { Instagram, Phone, MapPin, Clock, Heart } from "lucide-react";
-import { trackEvent } from "@/lib/analytics";
-const Footer = () => {
-  const currentYear = new Date().getFullYear();
-  const quickLinks = [{
-    label: "Início",
-    href: "#inicio"
-  }, {
-    label: "Sobre",
-    href: "#sobre"
-  }, {
-    label: "Serviços",
-    href: "#servicos"
-  }, {
-    label: "Equipe",
-    href: "#equipe"
-  }, {
-    label: "Blog",
-    href: "#blog"
-  }, {
-    label: "FAQ",
-    href: "/faq"
-  }, {
-    label: "Contato",
-    href: "#contato"
-  }];
-  const services = ["Medicina Estética", "Emagrecimento", "Performance", "Tecnologias"];
-  const socialLinks = [{
-    label: "@CuraeSante",
-    href: "https://instagram.com/CuraeSante",
-    icon: Instagram
-  }, {
-    label: "@DrPedroSchmitz",
-    href: "https://instagram.com/DrPedroSchmitz",
-    icon: Instagram
-  }, {
-    label: "@DraJuliaLongo",
-    href: "https://instagram.com/DraJuliaLongo",
-    icon: Instagram
-  }];
-  return <footer className="bg-foreground text-cream-light">
-      {/* Main Footer */}
-      <div className="section-padding py-16">
-        <div className="container-content px-4 md:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-            {/* Brand */}
-            <div className="lg:col-span-1 space-y-4">
-              <h3 className="font-display text-2xl font-semibold">
-                Curae <span className="text-gold">Santé</span>
-              </h3>
-              <p className="text-cream-light/70 leading-relaxed">
-                Clínica médica em Kobrasol com foco em saúde da pele, emagrecimento,
-                saúde metabólica e saúde hormonal feminina.
-              </p>
-              <div className="flex gap-4 pt-2">
-                {socialLinks.map(social => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-cream-light/10 rounded-full flex items-center justify-center hover:bg-gold transition-colors group" aria-label={social.label}>
-                    <social.icon size={18} className="text-cream-light group-hover:text-foreground" />
-                  </a>)}
-              </div>
-            </div>
+const WHATSAPP = "https://wa.me/5548988064337?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20a%20equipe%20da%20Curae%20Sant%C3%A9.";
+const INSTAGRAM = "https://www.instagram.com/CuraeSante";
 
-            {/* Quick Links */}
-            <div className="space-y-4">
-              <h4 className="font-display text-lg font-semibold text-gold">
-                Links Rápidos
-              </h4>
-              <ul className="space-y-2">
-                {quickLinks.map(link => <li key={link.label}>
-                    <a href={link.href} className="text-cream-light/70 hover:text-gold transition-colors">
-                      {link.label}
-                    </a>
-                  </li>)}
-              </ul>
-            </div>
+const links = [
+  { href: "#inicio", label: "INÍCIO" },
+  { href: "#sobre", label: "SOBRE" },
+  { href: "#servicos", label: "SERVIÇOS" },
+  { href: "#equipe", label: "EQUIPE" },
+  { href: "#blog", label: "BLOG" },
+];
 
-            {/* Services */}
-            <div className="space-y-4">
-              <h4 className="font-display text-lg font-semibold text-gold">
-                Serviços
-              </h4>
-              <ul className="space-y-2">
-                {services.map(service => <li key={service}>
-                    <a href="#servicos" className="text-cream-light/70 hover:text-gold transition-colors">
-                      {service}
-                    </a>
-                  </li>)}
-              </ul>
-            </div>
+export default function Footer() {
+  return (
+    <footer className="border-t border-[rgba(212,188,128,0.15)] bg-[var(--ink-soft)]">
+      <div className="mx-auto grid w-full max-w-7xl gap-10 px-6 py-16 md:grid-cols-3 md:px-8">
+        <div>
+          <p className="font-serif text-3xl tracking-wide text-[var(--gold)]">Curae Santé</p>
+          <p className="mt-4 text-sm font-medium tracking-[0.08em] text-[rgba(246,241,232,0.7)]">
+            Clínica médica · Kobrasol · São José SC
+          </p>
+        </div>
 
-            {/* Contact Info */}
-            <div className="space-y-4">
-              <h4 className="font-display text-lg font-semibold text-gold">
-                Contato
-              </h4>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3">
-                  <MapPin size={18} className="text-gold shrink-0 mt-0.5" />
-                  <span className="text-cream-light/70 text-sm">Av. Delamar Jose da Silva, 186, loja 03
-                    <br />
-                    Kobrasol, São José/SC
-                    <br />
-                    CEP: 88102-100
-                  </span>
-                </li>
-                <li>
-                  <a href="https://wa.me/5548988064337" target="_blank" rel="noopener noreferrer" onClick={() => trackEvent("whatsapp_click", { location: "footer" })} className="flex items-center gap-3 text-cream-light/70 hover:text-gold transition-colors">
-                    <Phone size={18} className="text-gold" />
-                    <span className="text-sm">+55 48 8806-4337</span>
-                  </a>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Clock size={18} className="text-gold" />
-                  <span className="text-cream-light/70 text-sm">
-                    Seg - Sex: 9h às 18h
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
+        <div>
+          <p className="label-track">NAVEGACAO</p>
+          <nav className="mt-4 flex flex-col gap-3">
+            {links.map((item) => (
+              <a key={item.href} href={item.href} className="text-xs font-semibold tracking-[0.2em] text-[var(--cream-dk)] transition-colors hover:text-[var(--gold)]" data-hover>
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+
+        <div>
+          <p className="label-track">CONTATO PRIVADO</p>
+          <a href={WHATSAPP} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-xs font-semibold tracking-[0.2em] text-[var(--gold)] transition-colors hover:text-[var(--gold-lt)]" data-hover>
+            FALE COM A EQUIPE
+          </a>
+          <a href={INSTAGRAM} target="_blank" rel="noreferrer" className="mt-3 block text-xs font-semibold tracking-[0.2em] text-[var(--cream-dk)] transition-colors hover:text-[var(--gold)]" data-hover>
+            @CuraeSante
+          </a>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-cream-light/10">
-        <div className="container-content px-4 md:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-cream-light/50">
-            <p>
-              © {currentYear} Curae Santé Clínica Médica. Todos os direitos
-              reservados.
-            </p>
-            <p className="flex items-center gap-1">
-              Feito com <Heart size={14} className="text-gold" /> em
-              Florianópolis
-            </p>
-          </div>
+      <div className="border-t border-[rgba(212,188,128,0.15)]">
+        <div className="mx-auto w-full max-w-7xl px-6 py-6 text-[11px] font-semibold tracking-[0.16em] text-[rgba(246,241,232,0.6)] md:px-8">
+          © 2026 Curae Santé. Todos os direitos reservados.
         </div>
       </div>
-    </footer>;
-};
-export default Footer;
+    </footer>
+  );
+}
