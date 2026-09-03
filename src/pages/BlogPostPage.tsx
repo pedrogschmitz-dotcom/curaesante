@@ -62,9 +62,7 @@ const BlogPostPage = () => {
             prose-p:text-foreground/80 prose-a:text-primary
             prose-img:rounded-lg prose-img:shadow-soft
             [&_img]:loading-lazy">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {post.body.replace(/^# .+(?:\r?\n)+/, "")}
-            </ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
           </div>
 
           {/* CTA */}
