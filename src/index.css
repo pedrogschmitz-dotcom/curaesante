@@ -224,6 +224,79 @@
 }
 
 @layer components {
+  .blog-carousel-track {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 18px;
+    min-height: 590px;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .blog-carousel-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid hsl(var(--border));
+    border-radius: 1rem;
+    background: hsl(var(--card) / 0.96);
+    box-shadow: var(--shadow-soft);
+    cursor: pointer;
+    transition: transform 0.45s ease, opacity 0.45s ease, box-shadow 0.45s ease;
+  }
+
+  .blog-carousel-card.is-featured {
+    position: relative;
+    z-index: 2;
+    box-shadow: var(--shadow-card);
+  }
+
+  .blog-carousel-card.is-side {
+    opacity: 0.62;
+    transform: scale(0.86);
+  }
+
+  .blog-carousel-card.is-side:hover {
+    opacity: 0.86;
+    transform: scale(0.9);
+  }
+
+  .blog-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 20;
+    display: flex;
+    height: 44px;
+    width: 44px;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    border: 1px solid hsl(var(--border));
+    border-radius: 999px;
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+    box-shadow: var(--shadow-soft);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .blog-carousel-arrow:hover {
+    background: hsl(var(--muted));
+    transform: translateY(-50%) scale(1.04);
+  }
+
+  @media (max-width: 767px) {
+    .blog-carousel-track {
+      grid-template-columns: 12% minmax(0, 76%) 12%;
+      gap: 0;
+      min-height: 560px;
+    }
+
+    .blog-carousel-card.is-side {
+      opacity: 0.45;
+      transform: scale(0.78);
+    }
+  }
+
   .animate-fade-up {
     animation: fadeUp 0.6s ease-out forwards;
   }
