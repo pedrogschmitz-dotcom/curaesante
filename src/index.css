@@ -303,6 +303,7 @@
   }
 
   .blog-carousel-card {
+    display: block;
     min-width: 0;
     overflow: hidden;
     border: 1px solid hsl(var(--border));
@@ -310,6 +311,8 @@
     background: hsl(var(--card) / 0.96);
     box-shadow: var(--shadow-soft);
     cursor: pointer;
+    font: inherit;
+    text-align: left;
     transition: transform 0.45s ease, opacity 0.45s ease, box-shadow 0.45s ease;
   }
 

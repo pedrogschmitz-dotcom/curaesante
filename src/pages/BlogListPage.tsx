@@ -63,6 +63,7 @@ const BlogListPage = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartX = useRef<number | null>(null);
+  const didDrag = useRef(false);
   const navigate = useNavigate();
 
   const authorPosts = useMemo(() => posts.filter((post) => getAuthorKey(post) === author), [posts, author]);
@@ -103,14 +104,17 @@ const BlogListPage = () => {
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     dragStartX.current = event.clientX;
+    didDrag.current = false;
     setIsDragging(true);
-    event.currentTarget.setPointerCapture(event.pointerId);
   };
 
   const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
     if (dragStartX.current !== null) {
       const distance = event.clientX - dragStartX.current;
-      if (Math.abs(distance) > 45) moveCarousel(distance < 0 ? 1 : -1);
+      if (Math.abs(distance) > 45) {
+        didDrag.current = true;
+        moveCarousel(distance < 0 ? 1 : -1);
+      }
     }
     dragStartX.current = null;
     setIsDragging(false);
@@ -208,8 +212,12 @@ const BlogListPage = () => {
                       post={post}
                       position={offset}
                       onClick={() => {
-                        if (offset === 0 && !isDragging) navigate(`/blog/${post.slug}`);
-                        if (offset !== 0 && !isDragging) setActiveIndex(getWrappedIndex(activeIndex + offset, filteredPosts.length));
+                        if (didDrag.current) {
+                          didDrag.current = false;
+                          return;
+                        }
+                        if (offset === 0) navigate(`/blog/${post.slug}`);
+                        if (offset !== 0) setActiveIndex(getWrappedIndex(activeIndex + offset, filteredPosts.length));
                       }}
                     />
                   ))}
@@ -241,7 +249,17 @@ interface BlogCarouselCardProps {
 function BlogCarouselCard({ post, position, onClick }: BlogCarouselCardProps) {
   const isFeatured = position === 0;
   return (
-    <article className={`blog-carousel-card ${isFeatured ? "is-featured" : "is-side"}`} aria-hidden={!isFeatured} onClick={onClick}>
+    <a
+      href={`/blog/${post.slug}`}
+      className={`blog-carousel-card ${isFeatured ? "is-featured" : "is-side"}`}
+      aria-hidden={!isFeatured}
+      onClick={(event) => {
+        if (!isFeatured) {
+          event.preventDefault();
+          onClick();
+        }
+      }}
+    >
       <div className="relative overflow-hidden">
         <img
           src={post.imagem || DEFAULT_BLOG_IMAGE}
@@ -261,7 +279,7 @@ function BlogCarouselCard({ post, position, onClick }: BlogCarouselCardProps) {
         <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-foreground/75">{post.resumo}</p>
         <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-gold-dark">{isFeatured ? "Ler artigo completo" : "Ver artigo"}<ArrowUpRight size={15} /></span>
       </div>
-    </article>
+    </a>
   );
 }
 
