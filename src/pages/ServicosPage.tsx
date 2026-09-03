@@ -76,8 +76,8 @@ const ServicosPage = () => {
   return (
     <main className="min-h-screen bg-background">
       <SEO
-        title="Serviços — Emagrecimento, Saúde Hormonal e Procedimentos Estéticos em São José SC"
-        description="Avaliação médica individualizada em Kobrasol para emagrecimento, saúde hormonal, pele, tricologia e medicina capilar, além de procedimentos estéticos."
+        title="Tricologista e Medicina Capilar em São José SC — Curae Santé"
+        description="Avaliação médica em Kobrasol com atuação em tricologia e medicina capilar para queda de cabelo, couro cabeludo e saúde dos fios, além de emagrecimento, saúde hormonal e pele."
         path="/servicos"
         faq={faqItems.map(({ question, answer }) => ({ question, answer }))}
       />
