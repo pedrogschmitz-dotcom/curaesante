@@ -4,7 +4,7 @@ import { trackEvent } from "@/lib/analytics";
 const WhatsAppButton = () => {
   return (
     <a
-      href="https://wa.me/5548988064337?text=Ol%C3%A1%2C%20gostaria%20de%20falar%20com%20a%20equipe%20da%20Curae%20Sant%C3%A9."
+      href="https://wa.me/5548988064337"
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => trackEvent("whatsapp_click", { location: "floating_button" })}

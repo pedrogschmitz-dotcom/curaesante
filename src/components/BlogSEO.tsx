@@ -25,7 +25,7 @@ const BlogSEO = ({ post }: BlogSEOProps) => {
       name: "Curae Santé",
       logo: {
         "@type": "ImageObject",
-        url: `${BASE_URL}/images/og-cover.jpg`,
+        url: `${BASE_URL}/logo-curae.png`,
       },
     },
     mainEntityOfPage: url,
