@@ -13,6 +13,7 @@ interface SEOProps {
   image?: string;
   type?: "website" | "article";
   faq?: Array<{ question: string; answer: string }>;
+  noIndex?: boolean;
 }
 
 const SEO = ({
@@ -22,6 +23,7 @@ const SEO = ({
   image,
   type = "website",
   faq = [],
+  noIndex = false,
 }: SEOProps) => {
   const fullTitle = title ? `${title} — Curae Santé` : DEFAULT_TITLE;
   const desc = description ?? DEFAULT_DESCRIPTION;
@@ -78,6 +80,7 @@ const SEO = ({
       <title>{fullTitle}</title>
       <meta name="description" content={desc} />
       <link rel="canonical" href={url} />
+      {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
       <meta property="og:type" content={type} />
       <meta property="og:title" content={fullTitle} />

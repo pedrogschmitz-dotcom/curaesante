@@ -1,16 +1,21 @@
 User-agent: Googlebot
 Allow: /
+Disallow: /orcamento
 
 User-agent: Bingbot
 Allow: /
+Disallow: /orcamento
 
 User-agent: Twitterbot
 Allow: /
+Disallow: /orcamento
 
 User-agent: facebookexternalhit
 Allow: /
+Disallow: /orcamento
 
 User-agent: *
 Allow: /
+Disallow: /orcamento
 
 Sitemap: https://curaesante.com.br/sitemap.xml

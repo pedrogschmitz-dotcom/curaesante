@@ -14,6 +14,8 @@ import BlogPostPage from "./pages/BlogPostPage";
 import ContatoPage from "./pages/ContatoPage";
 import FaqPage from "./pages/FaqPage";
 import MetabolismoFemininoPage from "./pages/MetabolismoFemininoPage";
+import OrcamentoPage from "./pages/OrcamentoPage";
+import OrcamentoGeradorPage from "./pages/OrcamentoGeradorPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -78,6 +80,8 @@ const App = () => (
           <Route path="/faq" element={<FaqPage />} />
           <Route path="/metabolismo-feminino" element={<MetabolismoFemininoPage />} />
           <Route path="/contato" element={<ContatoPage />} />
+          <Route path="/orcamento" element={<OrcamentoPage />} />
+          <Route path="/orcamento/criar" element={<OrcamentoGeradorPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

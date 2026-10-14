@@ -221,6 +221,18 @@
   .photo-grade {
     filter: saturate(0.92) contrast(1.05) brightness(1.02) sepia(0.05);
   }
+
+  .btn-shimmer {
+    background-image: linear-gradient(
+      110deg,
+      hsl(var(--gold)) 0%,
+      hsl(var(--gold)) 40%,
+      hsl(var(--gold-light)) 50%,
+      hsl(var(--gold)) 60%,
+      hsl(var(--gold)) 100%
+    );
+    background-size: 200% 100%;
+  }
 }
 
 @layer components {
