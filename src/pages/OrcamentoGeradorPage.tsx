@@ -10,15 +10,12 @@ import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
 import OrcamentoCard from "@/components/OrcamentoCard";
 import {
-  calcularSinal,
-  calcularTotal,
   codificarOrcamento,
   formatBRL,
   type OrcamentoData,
   type OrcamentoItem,
   type PlanoTratamentoItem,
 } from "@/lib/orcamento";
-import { gerarLinkPagamento } from "@/lib/infinitepay";
 
 const SENHA_ADMIN = import.meta.env.VITE_ORCAMENTO_SENHA || "curaesante-orcamento";
 const SESSION_KEY = "orcamento_admin_unlocked";
@@ -96,7 +93,6 @@ const OrcamentoGeradorPage = () => {
   const [gerarPagamento, setGerarPagamento] = useState(true);
   const [gerando, setGerando] = useState(false);
   const [link, setLink] = useState<string | null>(null);
-  const [linkPagamentoGerado, setLinkPagamentoGerado] = useState<string | null>(null);
 
   const previewData: OrcamentoData = useMemo(() => {
     const criadoEm = Date.now();
@@ -112,10 +108,24 @@ const OrcamentoGeradorPage = () => {
       desconto: desconto || 0,
       sinalPercentual: sinalPercentual || undefined,
       observacoes: observacoes.trim(),
+      aceitaPagamento: gerarPagamento || undefined,
       criadoEm,
       expiraEm: criadoEm + validadeDias * 24 * 60 * 60 * 1000,
     };
-  }, [cliente, planoNome, selo, responsavelTecnico, crm, planoTratamento, itens, desconto, sinalPercentual, observacoes, validadeDias]);
+  }, [
+    cliente,
+    planoNome,
+    selo,
+    responsavelTecnico,
+    crm,
+    planoTratamento,
+    itens,
+    desconto,
+    sinalPercentual,
+    observacoes,
+    gerarPagamento,
+    validadeDias,
+  ]);
 
   if (!desbloqueado) {
     return <PortaoDeSenha onUnlock={() => setDesbloqueado(true)} />;
@@ -157,35 +167,11 @@ const OrcamentoGeradorPage = () => {
       return;
     }
 
+    setGerando(true);
     const dadosBase: OrcamentoData = { ...previewData, itens: itensValidos };
-    let linkPagamento: string | undefined;
-
-    if (gerarPagamento) {
-      setGerando(true);
-      const sinal = calcularSinal(dadosBase);
-      const valorCobranca = sinal > 0 ? sinal : calcularTotal(dadosBase);
-      try {
-        linkPagamento = await gerarLinkPagamento({
-          descricao: sinal > 0 ? `Sinal — ${dadosBase.cliente}` : `Orçamento — ${dadosBase.cliente}`,
-          valor: valorCobranca,
-          orderNsu: `orc-${dadosBase.criadoEm}`,
-        });
-      } catch (error) {
-        toast({
-          title: "Link de pagamento não gerado",
-          description:
-            error instanceof Error
-              ? error.message
-              : "Não foi possível falar com a InfinitePay. O orçamento será gerado sem o botão de pagamento.",
-          variant: "destructive",
-        });
-      }
-      setGerando(false);
-    }
-
-    const encoded = await codificarOrcamento({ ...dadosBase, linkPagamento });
+    const encoded = await codificarOrcamento(dadosBase);
     setLink(`${window.location.origin}/orcamento#${encoded}`);
-    setLinkPagamentoGerado(linkPagamento ?? null);
+    setGerando(false);
   };
 
   const copiarLink = async () => {
@@ -425,14 +411,14 @@ const OrcamentoGeradorPage = () => {
                   <div className="flex items-center gap-2">
                     <CreditCard className="w-4 h-4 text-muted-foreground shrink-0" />
                     <Label htmlFor="gerar-pagamento" className="text-sm font-normal cursor-pointer">
-                      Gerar link de pagamento (InfinitePay — Pix, cartão, débito)
+                      Mostrar botão de pagamento (InfinitePay — Pix, cartão, débito)
                     </Label>
                   </div>
                   <Switch id="gerar-pagamento" checked={gerarPagamento} onCheckedChange={setGerarPagamento} />
                 </div>
 
                 <Button onClick={gerarLink} className="w-full gradient-gold" size="lg" disabled={gerando}>
-                  {gerando ? "Gerando link de pagamento…" : "Gerar link do orçamento"}
+                  {gerando ? "Gerando…" : "Gerar link do orçamento"}
                 </Button>
               </CardContent>
             </Card>
@@ -444,9 +430,7 @@ const OrcamentoGeradorPage = () => {
                   <CardDescription>
                     Válido até {dataExpiraFormatada}.{" "}
                     {gerarPagamento &&
-                      (linkPagamentoGerado
-                        ? "Com botão de pagamento (Pix/cartão/débito)."
-                        : "Sem link de pagamento — a InfinitePay não respondeu, veja o aviso acima.")}
+                      "O link de pagamento é gerado na hora em que a cliente abrir a página."}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">

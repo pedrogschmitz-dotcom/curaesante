@@ -21,7 +21,7 @@ export interface OrcamentoData {
   desconto: number;
   sinalPercentual?: number;
   observacoes: string;
-  linkPagamento?: string;
+  aceitaPagamento?: boolean;
   criadoEm: number;
   expiraEm: number;
 }

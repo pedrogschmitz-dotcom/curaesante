@@ -14,6 +14,7 @@ import {
   formatBRL,
   formatarContagemRegressiva,
 } from "@/lib/orcamento";
+import { gerarLinkPagamento } from "@/lib/infinitepay";
 
 const WHATSAPP_NUMBER = "5548988064337";
 
@@ -84,6 +85,42 @@ function useRelogio(ativo: boolean) {
   return agora;
 }
 
+// Gerado ao vivo, no navegador de quem abre a página — não fica salvo no
+// link compartilhado, então o link do orçamento continua curto.
+function useLinkPagamento(data: OrcamentoData, ativo: boolean) {
+  const [link, setLink] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!ativo || !data.aceitaPagamento) {
+      setLink(null);
+      return;
+    }
+    let cancelado = false;
+    const sinal = calcularSinal(data);
+    const valor = sinal > 0 ? sinal : calcularTotal(data);
+    if (valor <= 0) return;
+
+    gerarLinkPagamento({
+      descricao: sinal > 0 ? `Sinal — ${data.cliente}` : `Orçamento — ${data.cliente}`,
+      valor,
+      orderNsu: `orc-${data.criadoEm}`,
+    })
+      .then((url) => {
+        if (!cancelado) setLink(url);
+      })
+      .catch(() => {
+        // Sem link de pagamento, a cliente ainda confirma pelo WhatsApp.
+      });
+
+    return () => {
+      cancelado = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ativo, data.aceitaPagamento, data.criadoEm]);
+
+  return link;
+}
+
 interface OrcamentoCardProps {
   data: OrcamentoData;
   isPreview?: boolean;
@@ -95,6 +132,7 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
   const sinal = calcularSinal(data);
   const temDesconto = data.desconto > 0;
   const temSinal = sinal > 0;
+  const linkPagamento = useLinkPagamento(data, !isPreview);
 
   const agora = useRelogio(!isPreview);
   const msRestante = Math.max(0, data.expiraEm - agora);
@@ -316,13 +354,19 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
         )}
 
         <div className={`${entrada} mt-8 flex flex-col gap-3 print:hidden`} style={delay(320)}>
-          {data.linkPagamento && (
+          {data.aceitaPagamento && !linkPagamento && (
+            <Button size="lg" disabled className="opacity-70">
+              <CreditCard className="w-4 h-4" />
+              Preparando pagamento…
+            </Button>
+          )}
+          {linkPagamento && (
             <Button
               asChild
               size="lg"
               className="btn-shimmer bg-[position:0%_0%] hover:bg-[position:100%_0%] transition-[background-position,transform] duration-700 text-primary-foreground border-0 shadow-gold hover:scale-[1.02]"
             >
-              <a href={data.linkPagamento} target="_blank" rel="noopener noreferrer">
+              <a href={linkPagamento} target="_blank" rel="noopener noreferrer">
                 <CreditCard className="w-4 h-4" />
                 Pagar agora (Pix, cartão ou débito)
               </a>
@@ -332,9 +376,9 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
             <Button
               asChild
               size="lg"
-              variant={data.linkPagamento ? "outline" : undefined}
+              variant={data.aceitaPagamento ? "outline" : undefined}
               className={
-                data.linkPagamento
+                data.aceitaPagamento
                   ? "flex-1"
                   : "flex-1 btn-shimmer bg-[position:0%_0%] hover:bg-[position:100%_0%] transition-[background-position,transform] duration-700 text-primary-foreground border-0 shadow-gold hover:scale-[1.02]"
               }
