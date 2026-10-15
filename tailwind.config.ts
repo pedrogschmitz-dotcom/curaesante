@@ -150,14 +150,6 @@ export default {
   					opacity: '0.5'
   				}
   			},
-  			shimmer: {
-  				'0%': {
-  					backgroundPosition: '-200% 0'
-  				},
-  				'100%': {
-  					backgroundPosition: '200% 0'
-  				}
-  			},
   			'count-pop': {
   				'0%': {
   					transform: 'scale(1)'
@@ -175,7 +167,6 @@ export default {
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			float: 'float 3s ease-in-out infinite',
   			pulse: 'pulse 2s ease-in-out infinite',
-  			shimmer: 'shimmer 2.5s linear infinite',
   			'count-pop': 'count-pop 0.4s ease-out'
   		}
   	}

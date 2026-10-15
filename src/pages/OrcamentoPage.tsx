@@ -68,9 +68,9 @@ const OrcamentoPage = () => {
 
   if (expirado) {
     return (
-      <main className="min-h-screen bg-background py-10 px-4 relative">
+      <main className="min-h-screen bg-background py-6 px-4 relative">
         <SEO title={`Orçamento — ${data.cliente}`} noIndex />
-        <div className="max-w-2xl mx-auto relative">
+        <div className="max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto relative">
           <div className="pointer-events-none select-none blur-sm opacity-40">
             <OrcamentoCard data={data} isPreview />
           </div>
@@ -106,9 +106,9 @@ const OrcamentoPage = () => {
   }
 
   return (
-    <main className="min-h-screen bg-background py-10 px-4 print:py-0 print:bg-white">
+    <main className="min-h-screen bg-background py-6 px-4 print:py-0 print:bg-white">
       <SEO title={`Orçamento — ${data.cliente}`} noIndex />
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto">
         <OrcamentoCard data={data} />
         <p className="text-center text-xs text-muted-foreground mt-6 print:hidden">
           Curae Santé Clínica Médica — este link é pessoal e deixa de funcionar após o prazo de validade.

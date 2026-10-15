@@ -1,20 +1,24 @@
 import { useMemo, useState } from "react";
-import { Copy, Lock, MessageCircle, Plus, Trash2, ExternalLink } from "lucide-react";
+import { Copy, Lock, MessageCircle, Plus, Trash2, ExternalLink, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import SEO from "@/components/SEO";
 import OrcamentoCard from "@/components/OrcamentoCard";
 import {
+  calcularSinal,
+  calcularTotal,
   codificarOrcamento,
   formatBRL,
   type OrcamentoData,
   type OrcamentoItem,
   type PlanoTratamentoItem,
 } from "@/lib/orcamento";
+import { gerarLinkPagamento } from "@/lib/infinitepay";
 
 const SENHA_ADMIN = import.meta.env.VITE_ORCAMENTO_SENHA || "curaesante-orcamento";
 const SESSION_KEY = "orcamento_admin_unlocked";
@@ -89,7 +93,10 @@ const OrcamentoGeradorPage = () => {
   const [sinalPercentual, setSinalPercentual] = useState(0);
   const [observacoes, setObservacoes] = useState("");
   const [validadeDias, setValidadeDias] = useState(DIAS_VALIDADE_PADRAO);
+  const [gerarPagamento, setGerarPagamento] = useState(true);
+  const [gerando, setGerando] = useState(false);
   const [link, setLink] = useState<string | null>(null);
+  const [linkPagamentoGerado, setLinkPagamentoGerado] = useState<string | null>(null);
 
   const previewData: OrcamentoData = useMemo(() => {
     const criadoEm = Date.now();
@@ -138,7 +145,7 @@ const OrcamentoGeradorPage = () => {
     setPlanoTratamento((atual) => atual.filter((_, i) => i !== index));
   };
 
-  const gerarLink = () => {
+  const gerarLink = async () => {
     const itensValidos = itens.filter((item) => item.descricao.trim() && item.valor > 0);
 
     if (!cliente.trim() || itensValidos.length === 0) {
@@ -150,8 +157,35 @@ const OrcamentoGeradorPage = () => {
       return;
     }
 
-    const encoded = codificarOrcamento({ ...previewData, itens: itensValidos });
+    const dadosBase: OrcamentoData = { ...previewData, itens: itensValidos };
+    let linkPagamento: string | undefined;
+
+    if (gerarPagamento) {
+      setGerando(true);
+      const sinal = calcularSinal(dadosBase);
+      const valorCobranca = sinal > 0 ? sinal : calcularTotal(dadosBase);
+      try {
+        linkPagamento = await gerarLinkPagamento({
+          descricao: sinal > 0 ? `Sinal — ${dadosBase.cliente}` : `Orçamento — ${dadosBase.cliente}`,
+          valor: valorCobranca,
+          orderNsu: `orc-${dadosBase.criadoEm}`,
+        });
+      } catch (error) {
+        toast({
+          title: "Link de pagamento não gerado",
+          description:
+            error instanceof Error
+              ? error.message
+              : "Não foi possível falar com a InfinitePay. O orçamento será gerado sem o botão de pagamento.",
+          variant: "destructive",
+        });
+      }
+      setGerando(false);
+    }
+
+    const encoded = codificarOrcamento({ ...dadosBase, linkPagamento });
     setLink(`${window.location.origin}/orcamento#${encoded}`);
+    setLinkPagamentoGerado(linkPagamento ?? null);
   };
 
   const copiarLink = async () => {
@@ -387,8 +421,18 @@ const OrcamentoGeradorPage = () => {
                   </span>
                 </div>
 
-                <Button onClick={gerarLink} className="w-full gradient-gold" size="lg">
-                  Gerar link do orçamento
+                <div className="flex items-center justify-between gap-3 rounded-lg border border-border p-3">
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <Label htmlFor="gerar-pagamento" className="text-sm font-normal cursor-pointer">
+                      Gerar link de pagamento (InfinitePay — Pix, cartão, débito)
+                    </Label>
+                  </div>
+                  <Switch id="gerar-pagamento" checked={gerarPagamento} onCheckedChange={setGerarPagamento} />
+                </div>
+
+                <Button onClick={gerarLink} className="w-full gradient-gold" size="lg" disabled={gerando}>
+                  {gerando ? "Gerando link de pagamento…" : "Gerar link do orçamento"}
                 </Button>
               </CardContent>
             </Card>
@@ -397,7 +441,13 @@ const OrcamentoGeradorPage = () => {
               <Card className="border-gold/40">
                 <CardHeader>
                   <CardTitle className="font-display text-lg">Link gerado</CardTitle>
-                  <CardDescription>Válido até {dataExpiraFormatada}.</CardDescription>
+                  <CardDescription>
+                    Válido até {dataExpiraFormatada}.{" "}
+                    {gerarPagamento &&
+                      (linkPagamentoGerado
+                        ? "Com botão de pagamento (Pix/cartão/débito)."
+                        : "Sem link de pagamento — a InfinitePay não respondeu, veja o aviso acima.")}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex gap-2">

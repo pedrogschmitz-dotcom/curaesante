@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { Clock, MessageCircle, Printer, Sparkles } from "lucide-react";
+import { Clock, CreditCard, Download, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import logoImage from "@/assets/logo-curae.png";
+import logoFullImage from "@/assets/curae-sante-logo-transparent.png";
 import drPedroImage from "@/assets/dr-pedro.jpeg";
 import draJuliaImage from "@/assets/dra-julia.jpeg";
 import {
@@ -100,7 +100,7 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
   const msRestante = Math.max(0, data.expiraEm - agora);
   const duracaoTotal = Math.max(1, data.expiraEm - data.criadoEm);
   const pctRestante = Math.min(100, Math.max(0, (msRestante / duracaoTotal) * 100));
-  const corBarra = pctRestante > 50 ? "bg-gold" : pctRestante > 20 ? "bg-gold-dark" : "bg-destructive";
+  const corBarra = pctRestante > 30 ? "bg-gold" : "bg-gold-dark";
 
   const totalAnimado = useCountUp(total, !isPreview);
   const medico = encontrarMedico(data.responsavelTecnico);
@@ -123,26 +123,22 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
 
   return (
     <Card className="overflow-hidden border-gold/30 shadow-gold print:shadow-none print:border-none">
-      <div className="gradient-gold px-6 sm:px-10 py-8 text-center">
-        <img src={logoImage} alt="Curae Santé" className="h-12 mx-auto mb-3 print:hidden" />
-        <p className="text-sm uppercase tracking-widest text-primary-foreground/80">Orçamento personalizado</p>
-        <h1 className="font-display text-2xl sm:text-3xl font-semibold text-primary-foreground mt-1">
-          Para {data.cliente || "sua cliente"}
-        </h1>
-        {data.planoNome && (
-          <p className="font-display italic text-primary-foreground/85 mt-1">{data.planoNome}</p>
-        )}
-      </div>
+      <div className="gradient-gold h-3" />
 
-      <CardContent className="p-6 sm:p-10">
-        {data.selo && (
-          <div className={`${entrada} flex justify-center -mt-14 mb-6 print:hidden`} style={delay(0)}>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-foreground text-background px-4 py-1.5 text-xs font-semibold uppercase tracking-wide shadow-lg animate-pulse">
-              <Sparkles className="w-3.5 h-3.5" />
-              {data.selo}
-            </span>
-          </div>
-        )}
+      <CardContent className="p-6 sm:p-10 lg:p-14">
+        <div className="flex justify-center py-6 sm:py-8">
+          <img src={logoFullImage} alt="Curae Santé Clínica Médica" className="h-20 sm:h-24 lg:h-28 max-w-[85%]" />
+        </div>
+
+        <div className={`${entrada} text-center py-8 sm:py-10 mb-8 border-b border-border`} style={delay(0)}>
+          <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground mb-3">
+            Preparado especialmente para
+          </p>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-semibold text-foreground leading-tight">
+            {data.cliente || "sua cliente"}
+          </h1>
+          <div className="w-14 h-px bg-gold mx-auto mt-5" />
+        </div>
 
         <div className={`${entrada} mb-6 print:hidden`} style={delay(80)}>
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-1.5">
@@ -160,46 +156,21 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
           </div>
         </div>
 
-        {(data.responsavelTecnico || data.crm) && (
-          <div
-            className={`${entrada} grid grid-cols-2 sm:grid-cols-3 gap-4 rounded-lg border border-border bg-muted/40 p-4 mb-6 text-sm`}
-            style={delay(140)}
-          >
-            <div>
-              <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-0.5">Paciente</p>
-              <p className="font-medium text-foreground">{data.cliente || "—"}</p>
-            </div>
-            {data.responsavelTecnico && (
-              <div>
-                <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-0.5">
-                  Responsável técnico
-                </p>
-                <p className="font-medium text-foreground">{data.responsavelTecnico}</p>
-              </div>
-            )}
-            {data.crm && (
-              <div>
-                <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-0.5">CRM</p>
-                <p className="font-medium text-foreground">{data.crm}</p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className={`${entrada} rounded-lg border border-border bg-muted/30 p-5 sm:p-6 mb-8`} style={delay(160)}>
+        <div className={`${entrada} rounded-lg border border-border bg-muted/30 p-5 sm:p-6 mb-8`} style={delay(140)}>
           {medico && (
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
               <img
                 src={medico.foto}
-                alt={data.responsavelTecnico}
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-gold/40 shadow-gold mx-auto sm:mx-0 shrink-0"
+                alt={`Foto de ${data.responsavelTecnico}`}
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover object-[50%_28%] border-2 border-gold/40 shadow-gold mx-auto sm:mx-0 shrink-0"
               />
-              <div>
+              <div className="flex-1 min-w-0">
                 <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1">
                   Sobre quem vai cuidar de você
                 </p>
                 <h3 className="font-display text-lg font-semibold text-foreground mb-2">
                   {data.responsavelTecnico}
+                  {data.crm && <span className="font-sans text-sm font-normal text-muted-foreground"> | {data.crm}</span>}
                 </h3>
                 <div className="space-y-2 text-sm text-muted-foreground leading-relaxed">
                   {medico.bio.map((paragrafo, i) => (
@@ -218,27 +189,27 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
         {data.planoTratamento && data.planoTratamento.length > 0 && (
           <div className={`${entrada} mb-8`} style={delay(180)}>
             <h2 className="font-display text-lg font-semibold text-foreground mb-3">Plano de tratamento</h2>
-            <div className="overflow-x-auto rounded-lg border border-border">
+            <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-foreground text-background">
-                    <th className="text-left font-semibold uppercase text-[11px] tracking-wide px-4 py-2.5">
+                  <tr className="border-b-2 border-gold/50">
+                    <th className="text-left font-semibold uppercase text-[11px] tracking-wide px-4 py-3 text-muted-foreground">
                       Área
                     </th>
-                    <th className="text-left font-semibold uppercase text-[11px] tracking-wide px-4 py-2.5">
+                    <th className="text-left font-semibold uppercase text-[11px] tracking-wide px-4 py-3 text-muted-foreground">
                       Produto
                     </th>
-                    <th className="text-right font-semibold uppercase text-[11px] tracking-wide px-4 py-2.5">
+                    <th className="text-right font-semibold uppercase text-[11px] tracking-wide px-4 py-3 text-muted-foreground">
                       Volume
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.planoTratamento.map((linha, i) => (
-                    <tr key={i} className="odd:bg-muted/30 hover:bg-gold/10 transition-colors">
-                      <td className="px-4 py-2.5 text-foreground whitespace-nowrap">{linha.area}</td>
-                      <td className="px-4 py-2.5 text-muted-foreground">{linha.produto}</td>
-                      <td className="px-4 py-2.5 text-right text-foreground whitespace-nowrap">{linha.volume}</td>
+                    <tr key={i} className="border-b border-border/60 last:border-b-0 hover:bg-muted/30 transition-colors">
+                      <td className="px-4 py-3 text-foreground whitespace-nowrap">{linha.area}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{linha.produto}</td>
+                      <td className="px-4 py-3 text-right text-foreground whitespace-nowrap">{linha.volume}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -249,42 +220,42 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
 
         <div className={entrada} style={delay(220)}>
           <h2 className="font-display text-lg font-semibold text-foreground mb-3">Investimento</h2>
-          <div className="overflow-x-auto rounded-lg border border-border">
+          <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-foreground text-background">
-                  <th className="text-left font-semibold uppercase text-[11px] tracking-wide px-4 py-2.5">
+                <tr className="border-b-2 border-gold/50">
+                  <th className="text-left font-semibold uppercase text-[11px] tracking-wide px-4 py-3 text-muted-foreground">
                     Item
                   </th>
-                  <th className="text-right font-semibold uppercase text-[11px] tracking-wide px-4 py-2.5">
+                  <th className="text-right font-semibold uppercase text-[11px] tracking-wide px-4 py-3 text-muted-foreground">
                     Valor
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {data.itens.map((item, i) => (
-                  <tr key={i} className="odd:bg-muted/30 hover:bg-gold/10 transition-colors">
-                    <td className="px-4 py-2.5 text-foreground">{item.descricao}</td>
-                    <td className="px-4 py-2.5 text-right font-medium text-foreground whitespace-nowrap">
+                  <tr key={i} className="border-b border-border/60 hover:bg-muted/30 transition-colors">
+                    <td className="px-4 py-3 text-foreground">{item.descricao}</td>
+                    <td className="px-4 py-3 text-right font-medium text-foreground whitespace-nowrap">
                       {formatBRL(item.valor)}
                     </td>
                   </tr>
                 ))}
                 {temDesconto && (
-                  <tr className="bg-muted/20">
+                  <tr className="border-b border-border/60">
                     <td className="px-4 py-2 text-muted-foreground text-xs">Subtotal</td>
                     <td className="px-4 py-2 text-right text-muted-foreground text-xs">{formatBRL(subtotal)}</td>
                   </tr>
                 )}
                 {temDesconto && (
-                  <tr className="bg-muted/20">
+                  <tr className="border-b border-border/60">
                     <td className="px-4 py-2 text-muted-foreground text-xs">Desconto</td>
                     <td className="px-4 py-2 text-right text-muted-foreground text-xs">
                       - {formatBRL(data.desconto)}
                     </td>
                   </tr>
                 )}
-                <tr className="bg-gold/15">
+                <tr className="border-t-2 border-gold/50">
                   <td className="px-4 py-3 font-semibold text-foreground">Total</td>
                   <td className="px-4 py-3 text-right">
                     <span
@@ -298,9 +269,12 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
                 {temSinal && (
                   <tr>
                     <td className="px-4 py-2 text-muted-foreground text-xs">
-                      Sinal para reserva ({data.sinalPercentual}% do total, abatido no dia)
+                      Sinal para reserva do horário ({data.sinalPercentual}% do total, abatido no dia do
+                      procedimento)
                     </td>
-                    <td className="px-4 py-2 text-right text-muted-foreground text-xs">{formatBRL(sinal)}</td>
+                    <td className="px-4 py-2 text-right text-muted-foreground text-xs whitespace-nowrap">
+                      {formatBRL(sinal)}
+                    </td>
                   </tr>
                 )}
               </tbody>
@@ -316,7 +290,7 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
                   Ver condições e observações
                 </AccordionTrigger>
                 <AccordionContent className="px-4">
-                  <ul className="space-y-1.5 text-sm text-muted-foreground pt-1">
+                  <ul className="space-y-1.5 text-sm text-muted-foreground pt-1 max-w-prose">
                     {condicoes.map((linha, i) => (
                       <li key={i} className="flex gap-2">
                         <span className="text-gold-dark mt-1">•</span>
@@ -341,25 +315,44 @@ const OrcamentoCard = ({ data, isPreview = false }: OrcamentoCardProps) => {
           </div>
         )}
 
-        <div className={`${entrada} mt-8 flex flex-col sm:flex-row gap-3 print:hidden`} style={delay(320)}>
-          <Button
-            asChild
-            size="lg"
-            className="flex-1 btn-shimmer animate-shimmer text-primary-foreground border-0 shadow-gold hover:scale-[1.02] transition-transform"
-          >
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${mensagemConfirmacao}`}
-              target="_blank"
-              rel="noopener noreferrer"
+        <div className={`${entrada} mt-8 flex flex-col gap-3 print:hidden`} style={delay(320)}>
+          {data.linkPagamento && (
+            <Button
+              asChild
+              size="lg"
+              className="btn-shimmer bg-[position:0%_0%] hover:bg-[position:100%_0%] transition-[background-position,transform] duration-700 text-primary-foreground border-0 shadow-gold hover:scale-[1.02]"
             >
-              <MessageCircle className="w-4 h-4" />
-              Confirmar pelo WhatsApp
-            </a>
-          </Button>
-          <Button variant="outline" size="lg" onClick={() => window.print()}>
-            <Printer className="w-4 h-4" />
-            Salvar / imprimir
-          </Button>
+              <a href={data.linkPagamento} target="_blank" rel="noopener noreferrer">
+                <CreditCard className="w-4 h-4" />
+                Pagar agora (Pix, cartão ou débito)
+              </a>
+            </Button>
+          )}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button
+              asChild
+              size="lg"
+              variant={data.linkPagamento ? "outline" : undefined}
+              className={
+                data.linkPagamento
+                  ? "flex-1"
+                  : "flex-1 btn-shimmer bg-[position:0%_0%] hover:bg-[position:100%_0%] transition-[background-position,transform] duration-700 text-primary-foreground border-0 shadow-gold hover:scale-[1.02]"
+              }
+            >
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${mensagemConfirmacao}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Confirmar pelo WhatsApp
+              </a>
+            </Button>
+            <Button variant="outline" size="lg" onClick={() => window.print()}>
+              <Download className="w-4 h-4" />
+              Baixar orçamento
+            </Button>
+          </div>
         </div>
 
         {(data.responsavelTecnico || data.crm) && (

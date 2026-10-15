@@ -26,6 +26,9 @@ jobs:
       
       - name: Build
         run: npm run build
+        env:
+          VITE_ORCAMENTO_SENHA: ${{ secrets.VITE_ORCAMENTO_SENHA }}
+          VITE_INFINITEPAY_HANDLE: ${{ secrets.VITE_INFINITEPAY_HANDLE }}
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4

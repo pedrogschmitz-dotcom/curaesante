@@ -21,6 +21,7 @@ export interface OrcamentoData {
   desconto: number;
   sinalPercentual?: number;
   observacoes: string;
+  linkPagamento?: string;
   criadoEm: number;
   expiraEm: number;
 }
@@ -47,15 +48,15 @@ export function estaExpirado(data: OrcamentoData): boolean {
 }
 
 export function formatarContagemRegressiva(msRestante: number): string {
-  if (msRestante <= 0) return "Expirado";
+  if (msRestante <= 0) return "Orçamento expirado";
   const totalMinutos = Math.floor(msRestante / 60000);
   const dias = Math.floor(totalMinutos / (60 * 24));
   const horas = Math.floor((totalMinutos % (60 * 24)) / 60);
   const minutos = totalMinutos % 60;
 
-  if (dias > 0) return `${dias}d ${horas}h restantes`;
-  if (horas > 0) return `${horas}h ${minutos}min restantes`;
-  return `${minutos}min restantes`;
+  if (dias > 0) return `Disponível por mais ${dias} ${dias === 1 ? "dia" : "dias"}`;
+  if (horas > 0) return `Disponível por mais ${horas} ${horas === 1 ? "hora" : "horas"}`;
+  return `Disponível por mais ${minutos} min`;
 }
 
 export function percentualValidadeRestante(data: OrcamentoData): number {
