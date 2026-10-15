@@ -66,12 +66,7 @@ export function percentualValidadeRestante(data: OrcamentoData): number {
   return Math.min(100, Math.max(0, (restante / total) * 100));
 }
 
-// Os dados do orçamento viajam inteiros na fragment (#) da URL: o navegador
-// nunca envia esse trecho ao servidor, então nada fica em logs de acesso.
-// Não é criptografia — só ofuscação — então nenhum dado sensível deve entrar aqui.
-export function codificarOrcamento(data: OrcamentoData): string {
-  const json = JSON.stringify(data);
-  const bytes = new TextEncoder().encode(json);
+function bytesParaBase64Url(bytes: Uint8Array): string {
   let binary = "";
   bytes.forEach((b) => {
     binary += String.fromCharCode(b);
@@ -80,12 +75,48 @@ export function codificarOrcamento(data: OrcamentoData): string {
   return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-export function decodificarOrcamento(encoded: string): OrcamentoData | null {
+function base64UrlParaBytes(encoded: string): Uint8Array {
+  const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+  const binary = atob(padded);
+  return Uint8Array.from(binary, (c) => c.charCodeAt(0));
+}
+
+async function lerStream(stream: ReadableStream<Uint8Array>): Promise<Uint8Array> {
+  const partes: Uint8Array[] = [];
+  const reader = stream.getReader();
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    partes.push(value);
+  }
+  const total = partes.reduce((acc, p) => acc + p.length, 0);
+  const resultado = new Uint8Array(total);
+  let offset = 0;
+  for (const parte of partes) {
+    resultado.set(parte, offset);
+    offset += parte.length;
+  }
+  return resultado;
+}
+
+// Os dados do orçamento viajam comprimidos (gzip) na fragment (#) da URL: o
+// navegador nunca envia esse trecho ao servidor, então nada fica em logs de
+// acesso. Não é criptografia — só compressão + ofuscação — então nenhum dado
+// sensível deve entrar aqui.
+export async function codificarOrcamento(data: OrcamentoData): Promise<string> {
+  const json = JSON.stringify(data);
+  const bytesOriginais = new TextEncoder().encode(json);
+  const stream = new Blob([bytesOriginais]).stream().pipeThrough(new CompressionStream("gzip"));
+  const bytesComprimidos = await lerStream(stream);
+  return bytesParaBase64Url(bytesComprimidos);
+}
+
+export async function decodificarOrcamento(encoded: string): Promise<OrcamentoData | null> {
   try {
-    const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
-    const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
-    const binary = atob(padded);
-    const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+    const bytesComprimidos = base64UrlParaBytes(encoded);
+    const stream = new Blob([bytesComprimidos]).stream().pipeThrough(new DecompressionStream("gzip"));
+    const bytes = await lerStream(stream);
     const json = new TextDecoder().decode(bytes);
     const data = JSON.parse(json) as OrcamentoData;
 

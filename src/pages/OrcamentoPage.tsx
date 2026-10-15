@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { MessageCircle, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -47,12 +47,26 @@ const EstadoMensagem = ({
 
 const OrcamentoPage = () => {
   const location = useLocation();
+  const [data, setData] = useState<OrcamentoData | null>(null);
+  const [carregando, setCarregando] = useState(true);
 
-  const data = useMemo<OrcamentoData | null>(() => {
+  useEffect(() => {
     const hash = location.hash.replace(/^#/, "");
-    if (!hash) return null;
-    return decodificarOrcamento(hash);
+    if (!hash) {
+      setData(null);
+      setCarregando(false);
+      return;
+    }
+    setCarregando(true);
+    decodificarOrcamento(hash).then((resultado) => {
+      setData(resultado);
+      setCarregando(false);
+    });
   }, [location.hash]);
+
+  if (carregando) {
+    return <main className="min-h-screen bg-background" />;
+  }
 
   if (!data) {
     return (

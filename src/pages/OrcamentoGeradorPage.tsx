@@ -183,7 +183,7 @@ const OrcamentoGeradorPage = () => {
       setGerando(false);
     }
 
-    const encoded = codificarOrcamento({ ...dadosBase, linkPagamento });
+    const encoded = await codificarOrcamento({ ...dadosBase, linkPagamento });
     setLink(`${window.location.origin}/orcamento#${encoded}`);
     setLinkPagamentoGerado(linkPagamento ?? null);
   };
