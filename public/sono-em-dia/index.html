@@ -186,7 +186,40 @@ section{position:relative}
 @media(max-width:860px){.mesa .grid{grid-template-columns:1fr}.feel{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.feel{grid-template-columns:1fr}}
 
-/* PARCEIROS */
+/* PARCEIROS (cards a partir de parceiros.json) */
+.pgrid[hidden]{display:none}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:56px}
+.pc{position:relative;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 20px 60px rgba(93,68,36,.08);display:flex;flex-direction:column;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+.pc:hover{transform:translateY(-6px);box-shadow:0 30px 80px rgba(93,68,36,.16)}
+.pc .ph{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--creme)}
+.pc .ph img.bg{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+.pc:hover .ph img.bg{transform:scale(1.06)}
+.pc .ph:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,31,20,0) 40%,rgba(42,31,20,.55) 100%)}
+.pc .lg{position:relative;margin:-34px 0 0 20px;z-index:2;width:120px;height:68px;border-radius:16px;display:flex;align-items:center;justify-content:center;padding:10px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.pc .lg.escuro{background:var(--escuro)}.pc .lg.claro{background:#fff}
+.pc .lg img{max-width:100%;max-height:100%;object-fit:contain}
+.pc .lg.vertical{width:76px;height:104px;margin-top:-60px;padding:12px}
+.pc .cat{position:absolute;top:16px;right:16px;z-index:2;background:rgba(249,246,242,.92);color:var(--escuro);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:8px 13px;border-radius:999px}
+.pc .bd{padding:18px 24px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.pc h3{font-size:34px;line-height:1;color:var(--escuro)}
+.pc .x{font-size:14px;line-height:1.55;color:var(--sub)}
+.pc .x b{display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dour);margin-bottom:3px}
+.ig{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:12px 18px 12px 14px;border-radius:999px;text-decoration:none;font-weight:700;font-size:14px;color:var(--off);
+ background:linear-gradient(120deg,#5D4424 0%,#8A6A4A 45%,#BC9FA5 100%);background-size:200% 100%;transition:background-position .5s,transform .3s}
+.ig:hover{background-position:100% 0;transform:translateY(-2px)}
+.ig svg{flex:none}
+.pc.pend{background:transparent;box-shadow:none;border:1.5px dashed rgba(93,68,36,.3)}
+.pc.pend:hover{transform:none;box-shadow:none}
+.pc.pend .ph img.bg{filter:grayscale(1) blur(2px);opacity:.35}
+.pc.pend .ph:after{display:none}
+.pc.pend .soon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.pc.pend .soon span{font-family:"Cormorant Garamond";font-style:italic;font-size:30px;color:var(--marrom)}
+.pc.pend .bd{padding-top:24px}
+.pc.pend h3{color:var(--sub)}
+.pc .chip{align-self:flex-start;margin-top:auto;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dour);border:1px solid rgba(188,167,142,.6);padding:9px 14px;border-radius:999px}
+@media(max-width:980px){.pgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.pgrid{grid-template-columns:1fr}}
+/* PARCEIROS (lista estática de reserva) */
 .parc{background:var(--off)}
 .plist{margin-top:50px;border-top:1px solid rgba(93,68,36,.18)}
 .prow{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:26px;padding:28px 0;border-bottom:1px solid rgba(93,68,36,.18);position:relative;transition:padding .4s}
@@ -363,7 +396,8 @@ footer a{color:var(--dour)}
 <section class="parc pad">
   <div class="wrap">
     <div class="kick" data-fade>Os parceiros</div><h2 data-split="words">Quem faz <em>a manhã acontecer</em></h2>
-    <div class="plist">
+    <div class="pgrid" id="pgrid" hidden></div>
+    <div class="plist" id="plist">
       <div class="prow" data-fade><div class="p">Cama Pimenta<small>loja anfitriã</small></div><div class="x"><b>Participa com</b>Espaço, divulgação para a base de clientes e a estação “a cama ideal”</div><div class="x"><b>Ganha</b>Fluxo de público, conteúdo e associação com saúde</div></div>
       <div class="prow" data-fade><div class="p">Curae Santé<small>curadoria</small></div><div class="x"><b>Participa com</b>Curadoria, duas rodas de conversa (sono, pele e cabelo com o Dr. Pedro; sono, hormônios e peso com a Dra. Júlia) e o autoteste educativo de ronco e apneia</div><div class="x"><b>Ganha</b>Contato com um novo público</div></div>
       <div class="prow" data-fade><div class="p">Nutricionista</div><div class="x"><b>Participa com</b>Conversa sobre alimentação e sono, e cardápio do café da manhã</div><div class="x"><b>Ganha</b>Visibilidade e contatos</div></div>
@@ -417,7 +451,7 @@ footer a{color:var(--dour)}
   try { if (localStorage.getItem('sed_mute') === '1') wanted = false; } catch (e) {}
   const ui = () => { const on = !a.paused; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Desligar música de fundo' : 'Ligar música de fundo'); if (on) tip.classList.remove('show'); };
   const fade = (to, ms, done) => { clearInterval(fadeT); const st = a.volume, t0 = performance.now(); fadeT = setInterval(() => { const k = Math.min(1, (performance.now() - t0) / ms); a.volume = st + (to - st) * k; if (k >= 1) { clearInterval(fadeT); done && done(); } }, 30); };
-  const play = () => { a.volume = 0; const p = a.play(); if (p) p.then(() => { fade(.45, 1200); ui(); }).catch(() => { ui(); tip.classList.add('show'); }); };
+  const play = () => { a.volume = 0; const p = a.play(); if (p) p.then(() => { fade(.45, 1200); ui(); }).catch(() => { ui(); tip.classList.add('show'); setTimeout(() => tip.classList.remove('show'), 6000); }); };
   const stop = () => fade(0, 400, () => { a.pause(); ui(); });
   b.addEventListener('click', e => { e.stopPropagation(); if (a.paused) { wanted = true; play(); } else { wanted = false; stop(); } try { localStorage.setItem('sed_mute', wanted ? '0' : '1'); } catch (e) {} });
   const first = () => { if (wanted && a.paused) play(); ['pointerdown','keydown','touchend'].forEach(ev => window.removeEventListener(ev, first, true)); };
@@ -592,6 +626,32 @@ if (window.matchMedia('(hover:hover)').matches) {
 }
 window.addEventListener('load', () => ScrollTrigger.refresh());
 })();
+// parceiros a partir de parceiros.json
+(function(){
+  const grid = document.getElementById('pgrid'), list = document.getElementById('plist');
+  if (!grid || !window.fetch) return;
+  const esc = t => String(t || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const IG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>';
+  fetch('parceiros.json', { cache: 'no-cache' }).then(r => r.json()).then(d => {
+    const ps = (d.parceiros || []).slice().sort((a, b) => (b.confirmado ? 1 : 0) - (a.confirmado ? 1 : 0));
+    grid.innerHTML = ps.map(p => {
+      const ig = (p.instagram || '').replace(/^@/, '').trim();
+      const x = `${p.participa ? `<div class="x"><b>Participa com</b>${esc(p.participa)}</div>` : ''}${p.ganha ? `<div class="x"><b>Ganha</b>${esc(p.ganha)}</div>` : ''}`;
+      if (!p.confirmado) return `<article class="pc pend"><div class="ph">${p.imagem ? `<img class="bg" src="${esc(p.imagem)}" alt="" loading="lazy">` : ''}<div class="soon"><span>em breve</span></div><div class="cat">${esc(p.categoria)}</div></div>
+        <div class="bd"><h3>${esc(p.categoria)}</h3>${x}<div class="chip">Parceiro em confirmação</div></div></article>`;
+      return `<article class="pc"><div class="ph">${p.imagem ? `<img class="bg" src="${esc(p.imagem)}" alt="${esc(p.nome)}" loading="lazy"${p.imagem_posicao ? ` style="object-position:${esc(p.imagem_posicao)}"` : ''}>` : ''}<div class="cat">${esc(p.categoria)}</div></div>
+        ${p.logo ? `<div class="lg ${p.logo_fundo === 'escuro' ? 'escuro' : 'claro'} ${p.logo_formato === 'vertical' ? 'vertical' : ''}"><img src="${esc(p.logo)}" alt="Logo ${esc(p.nome)}"></div>` : '<div style="height:16px"></div>'}
+        <div class="bd"><h3>${esc(p.nome)}</h3>${x}
+        ${ig ? `<a class="ig" href="https://instagram.com/${encodeURIComponent(ig)}" target="_blank" rel="noopener">${IG}@${esc(ig)}</a>` : ''}</div></article>`;
+    }).join('');
+    grid.hidden = false; list.remove();
+    if (window.gsap && window.ScrollTrigger && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.from(grid.children, { opacity: 0, y: 50, duration: 1, ease: 'power3.out', stagger: .08, scrollTrigger: { trigger: grid, start: 'top 85%' } });
+      ScrollTrigger.refresh();
+    }
+  }).catch(() => {});
+})();
+
 </script>
 </body>
 </html>

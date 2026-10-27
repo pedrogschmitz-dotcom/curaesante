@@ -1,0 +1,73 @@
+{
+  "_como_usar": "Para cada parceiro confirmado: confirmado=true, preencha nome e instagram (sem @), coloque logo/imagem em img/parceiros/. logo_fundo: escuro|claro. logo_formato: vertical (logo empilhado) ou omitir. Campos vazios ficam ocultos.",
+  "parceiros": [
+    {
+      "categoria": "Loja anfitriã",
+      "confirmado": true,
+      "nome": "Cama Pimenta",
+      "instagram": "camapimenta",
+      "logo": "img/cp_logo_light.png",
+      "logo_fundo": "escuro",
+      "imagem": "img/loja_fachada.jpg",
+      "participa": "Espaço, divulgação para a base de clientes e a estação “a cama ideal”",
+      "ganha": "Fluxo de público, conteúdo e associação com saúde"
+    },
+    {
+      "categoria": "Curadoria",
+      "confirmado": true,
+      "nome": "Curae Santé",
+      "instagram": "curaesante",
+      "logo": "img/cs_logo_light.png",
+      "logo_fundo": "escuro",
+      "imagem": "img/parceiros/curae_fachada.jpg",
+      "participa": "Curadoria, duas rodas de conversa (sono, pele e cabelo com o Dr. Pedro; sono, hormônios e peso com a Dra. Júlia) e o autoteste educativo de ronco e apneia",
+      "ganha": "Contato com um novo público",
+      "imagem_posicao": "50% 4%"
+    },
+    {
+      "categoria": "Nutricionista",
+      "confirmado": false,
+      "nome": "",
+      "instagram": "",
+      "logo": "",
+      "logo_fundo": "claro",
+      "imagem": "img/nutricao.jpg",
+      "participa": "Conversa sobre alimentação e sono, e cardápio do café da manhã",
+      "ganha": "Visibilidade e contatos"
+    },
+    {
+      "categoria": "Skincare",
+      "confirmado": false,
+      "nome": "",
+      "instagram": "",
+      "logo": "",
+      "logo_fundo": "claro",
+      "imagem": "img/autocuidado.jpg",
+      "participa": "Estação de rotina noturna, amostras de creme da noite e itens para o kit",
+      "ganha": "Experimentação e cadastro de público"
+    },
+    {
+      "categoria": "Chá e aromas",
+      "confirmado": false,
+      "nome": "",
+      "instagram": "",
+      "logo": "",
+      "logo_fundo": "claro",
+      "imagem": "img/aroma.jpg",
+      "participa": "Degustação de chás, aromas para o quarto e itens para o kit",
+      "ganha": "Experimentação e cadastro de público"
+    },
+    {
+      "categoria": "Moda fitness",
+      "confirmado": true,
+      "nome": "VOREA",
+      "instagram": "voreabr",
+      "logo": "img/parceiros/vorea_logo.png",
+      "logo_fundo": "escuro",
+      "imagem": "img/parceiros/vorea.jpg",
+      "participa": "Alongamento para dormir melhor, provador e brinde",
+      "ganha": "Vitrine para a coleção",
+      "logo_formato": "vertical"
+    }
+  ]
+}
