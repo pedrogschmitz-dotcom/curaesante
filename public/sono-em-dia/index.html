@@ -54,7 +54,15 @@ section{position:relative}
 .brand .wrap{display:flex;align-items:center;gap:14px}
 .brand .cs{height:40px}.brand .cp{height:42px}.brand .xx{font-family:"Cormorant Garamond";font-style:italic;color:var(--dour);font-size:26px}
 .brand .go{margin-left:auto;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--off);border:1px solid rgba(249,246,242,.4);padding:10px 18px;border-radius:999px}
-@media(max-width:620px){.brand .cs{height:28px}.brand .cp{height:30px}.brand .xx{font-size:20px}.brand .go{display:none}}
+.snd{width:44px;height:44px;border-radius:50%;border:1px solid rgba(249,246,242,.4);background:rgba(42,31,20,.35);display:flex;align-items:center;justify-content:center;gap:3px;cursor:pointer;margin-left:12px;flex:none;-webkit-tap-highlight-color:transparent}
+.snd i{display:block;width:3px;height:14px;border-radius:2px;background:var(--off);transform-origin:50% 100%;transform:scaleY(.25);transition:transform .3s}
+.snd.on i{animation:eq 1s ease-in-out infinite}.snd.on i:nth-child(2){animation-delay:-.4s}.snd.on i:nth-child(3){animation-delay:-.7s}.snd.on i:nth-child(4){animation-delay:-.2s}
+@keyframes eq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.snd i{display:none}.snd.on i{display:block}.snd.on .mute{display:none}
+.snd .tip{position:absolute;top:58px;right:0;white-space:nowrap;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--escuro);background:var(--off);padding:8px 12px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .4s}
+.snd .tip.show{opacity:1}
+.brand .wrap{position:relative}
+@media(max-width:620px){.brand .cs{height:28px}.brand .cp{height:30px}.brand .xx{font-size:20px}.brand .go{display:none}.snd{margin-left:auto}}
 
 /* HERO */
 .hero{height:100svh;min-height:620px;overflow:hidden;color:var(--off);display:flex;align-items:flex-end;background:var(--escuro)}
@@ -224,6 +232,8 @@ footer a{color:var(--dour)}
 <header class="brand" id="brand"><div class="wrap">
   <img class="cs" src="img/cs_logo_light.png" alt="Curae Santé Clínica Médica"><span class="xx">×</span><img class="cp" src="img/cp_logo_light.png" alt="Cama Pimenta">
   <a class="go" href="#filme">Ver o vídeo</a>
+  <button class="snd" id="snd" type="button" aria-label="Ligar música de fundo" aria-pressed="false"><svg class="mute" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F9F6F2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg><i></i><i></i><i></i><i></i><span class="tip" id="sndTip">Toque para ouvir</span></button>
+  <audio id="bgm" src="audio/earth.mp3" loop preload="none"></audio>
 </div></header>
 
 <section class="hero" id="top">
@@ -393,13 +403,31 @@ footer a{color:var(--dour)}
 <footer>
   Curae Santé Clínica Médica · Av. Delamar José da Silva, 186, sala 03 · Kobrasol · São José/SC · <a href="https://curaesante.com.br">curaesante.com.br</a><br>
   Evento de caráter educativo; o autoteste de ronco e apneia é informativo e não substitui avaliação médica. A Curae Santé não realiza atendimento médico no evento nem recomenda marcas ou produtos. Dr. Pedro Schmitz · CRM/SC 38229 · RQE em Medicina de Família e Comunidade. Dra. Júlia Schmitz · CRM/SC 34242.<br>
-  Imagens ilustrativas (Unsplash). Música: “Everything You Ever Dreamed”, HoliznaCC0 (CC0).
+  Imagens ilustrativas (Unsplash). Músicas: “Everything You Ever Dreamed” e “Earth”, HoliznaCC0 (CC0).
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
+// música de fundo
+(function(){
+  const a = document.getElementById('bgm'), b = document.getElementById('snd'), tip = document.getElementById('sndTip');
+  let wanted = true, fadeT;
+  try { if (localStorage.getItem('sed_mute') === '1') wanted = false; } catch (e) {}
+  const ui = () => { const on = !a.paused; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.setAttribute('aria-label', on ? 'Desligar música de fundo' : 'Ligar música de fundo'); if (on) tip.classList.remove('show'); };
+  const fade = (to, ms, done) => { clearInterval(fadeT); const st = a.volume, t0 = performance.now(); fadeT = setInterval(() => { const k = Math.min(1, (performance.now() - t0) / ms); a.volume = st + (to - st) * k; if (k >= 1) { clearInterval(fadeT); done && done(); } }, 30); };
+  const play = () => { a.volume = 0; const p = a.play(); if (p) p.then(() => { fade(.45, 1200); ui(); }).catch(() => { ui(); tip.classList.add('show'); }); };
+  const stop = () => fade(0, 400, () => { a.pause(); ui(); });
+  b.addEventListener('click', e => { e.stopPropagation(); if (a.paused) { wanted = true; play(); } else { wanted = false; stop(); } try { localStorage.setItem('sed_mute', wanted ? '0' : '1'); } catch (e) {} });
+  const first = () => { if (wanted && a.paused) play(); ['pointerdown','keydown','touchend'].forEach(ev => window.removeEventListener(ev, first, true)); };
+  ['pointerdown','keydown','touchend'].forEach(ev => window.addEventListener(ev, first, true));
+  if (wanted) setTimeout(play, 2600);
+  // o vídeo com som tem prioridade
+  const v = document.querySelector('#vbox video');
+  if (v) v.addEventListener('volumechange', () => { if (!v.muted && !v.paused && !a.paused) stop(); });
+  if (v) v.addEventListener('play', () => { if (!v.muted && !a.paused) stop(); });
+})();
 (function(){
 const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const pre = document.getElementById('pre');
