@@ -2,25 +2,30 @@ User-agent: Googlebot
 Allow: /
 Disallow: /orcamento
 Disallow: /dia-wellness
+Disallow: /sono-em-dia
 
 User-agent: Bingbot
 Allow: /
 Disallow: /orcamento
 Disallow: /dia-wellness
+Disallow: /sono-em-dia
 
 User-agent: Twitterbot
 Allow: /
 Disallow: /orcamento
 Disallow: /dia-wellness
+Disallow: /sono-em-dia
 
 User-agent: facebookexternalhit
 Allow: /
 Disallow: /orcamento
 Disallow: /dia-wellness
+Disallow: /sono-em-dia
 
 User-agent: *
 Allow: /
 Disallow: /orcamento
 Disallow: /dia-wellness
+Disallow: /sono-em-dia
 
 Sitemap: https://curaesante.com.br/sitemap.xml
