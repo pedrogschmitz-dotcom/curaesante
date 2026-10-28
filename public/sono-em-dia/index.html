@@ -29,7 +29,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{background:var(--escuro)}
 html,body{overflow-x:clip}
-body{font-family:"Red Hat Display",system-ui,sans-serif;color:var(--marrom);background:var(--off);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:"Red Hat Display",system-ui,sans-serif;color:var(--marrom);background:var(--off);-webkit-font-smoothing:antialiased}
 img,video{display:block;max-width:100%}
 a{color:inherit}
 em{font-style:italic;color:var(--rosa)}
@@ -168,8 +168,8 @@ section{position:relative}
 @media(max-width:860px){.prog .grid{grid-template-columns:1fr}.prog .side{position:relative;top:0}.prog .side .im{display:none}}
 
 /* LOJA */
-.loja{height:220vh;background:var(--escuro)}
-.loja .stick{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--off);text-align:center}
+.loja{background:var(--escuro)}
+.loja .stick{position:relative;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--off);text-align:center}
 .loja .ph{position:absolute;inset:0;background:url(img/loja_fachada.jpg) center 30%/cover;clip-path:circle(12% at 50% 50%);will-change:clip-path}
 .loja .ph:after{content:"";position:absolute;inset:0;background:rgba(42,31,20,.72)}
 .loja .in{position:relative;z-index:2;max-width:820px;padding:0 24px}
@@ -180,6 +180,7 @@ section{position:relative}
 .loja .ben div{border-top:1px solid rgba(188,167,142,.45);padding-top:14px}
 .loja .ben b{font-family:"Cormorant Garamond";font-size:24px;font-weight:500;display:block}
 .loja .ben span{font-size:14px;line-height:1.55;color:var(--creme);opacity:.85}
+@media(max-height:820px) and (min-width:761px){.loja .cp{width:130px;margin-bottom:14px}.loja h2{font-size:clamp(36px,5vw,60px);margin:10px 0 12px}.loja p{font-size:16px;line-height:1.55}.loja .ben{margin-top:22px}.loja .ben span{font-size:13px}}
 @media(max-width:760px){.loja{height:auto}.loja .stick{position:relative;height:auto;padding:110px 0}.loja .ph{clip-path:none!important}.loja .ben{grid-template-columns:1fr}}
 
 /* MESA 25 */
@@ -612,7 +613,7 @@ gsap.utils.toArray('#tl li').forEach(li => {
 
 // loja circle reveal
 mm.add('(min-width: 761px)', () => {
-  gsap.timeline({ scrollTrigger: { trigger: '#loja', start: 'top top', end: 'bottom bottom', scrub: true } })
+  gsap.timeline({ scrollTrigger: { trigger: '#loja', start: 'top top', end: '+=120%', pin: true, scrub: true, anticipatePin: 1, invalidateOnRefresh: true } })
     .fromTo('#lojaPh', { clipPath: 'circle(10% at 50% 50%)' }, { clipPath: 'circle(75% at 50% 50%)', ease: 'none', duration: 1 })
     .fromTo('#lojaIn', { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: .5 }, .35);
 });
