@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estúdio Curae · Antes e Depois</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@500;600;700;800&family=Red+Hat+Display:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{--off:#F9F6F2;--creme:#EAE4DA;--rosa:#BC9FA5;--dour:#BCA78E;--marrom:#5D4424;--esc:#1E1610;--esc2:#2A1F14;--card:#33261A;--line:rgba(234,228,218,.14);--sub:#B9A995}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--esc);color:var(--off);font-family:"Red Hat Display",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{padding:env(safe-area-inset-top) 0 calc(84px + env(safe-area-inset-bottom))}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px 40px}
+h1,h2,.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500}
+header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:10px 0 18px}
+header.top h1{font-size:38px;line-height:1}
+header.top h1 em{color:var(--dour)}
+.kick{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dour);font-weight:700}
+.pill{font-size:12px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);color:var(--sub);white-space:nowrap}
+.step{background:var(--esc2);border:1px solid var(--line);border-radius:22px;padding:18px 16px;margin:14px 0}
+.step>.hd{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.num{width:30px;height:30px;border-radius:50%;border:1px solid var(--dour);color:var(--dour);display:grid;place-items:center;font-size:14px;font-weight:700;flex:none}
+.step h2{font-size:28px;line-height:1}
+.hint{color:var(--sub);font-size:14px;line-height:1.45}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.slot{position:relative;aspect-ratio:3/4;border:1.5px dashed rgba(188,167,142,.45);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;padding:10px;cursor:pointer;background:rgba(0,0,0,.15)}
+.slot.ok{border-style:solid;border-color:var(--dour)}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.slot .lab{position:relative;z-index:2;font-size:11px;letter-spacing:.18em;font-weight:700;color:var(--sub)}
+.slot .big{position:relative;z-index:2;font-family:"Cormorant Garamond",serif;font-size:30px;color:var(--dour);font-weight:600}
+.slot .st{position:absolute;z-index:3;left:8px;right:8px;bottom:8px;font-size:12px;font-weight:700;padding:6px 8px;border-radius:10px;background:rgba(20,15,10,.82);color:var(--off)}
+.slot .st.warn{color:#FFD39A}
+.slot .req{position:absolute;top:8px;left:8px;z-index:3;font-size:10px;letter-spacing:.14em;font-weight:700;background:rgba(20,15,10,.75);padding:4px 8px;border-radius:99px;color:var(--sub)}
+.slot input{display:none}
+.btn{appearance:none;border:0;border-radius:99px;padding:14px 20px;font:700 15px "Red Hat Display",sans-serif;background:var(--dour);color:#2A1F14;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.ghost{background:transparent;color:var(--off);border:1px solid var(--line)}
+.btn.small{padding:9px 14px;font-size:13px}
+.btn.full{width:100%}
+.btn:disabled{opacity:.4}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+label.f{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--sub);font-weight:700;margin:14px 0 6px}
+input[type=text],select,textarea{width:100%;background:#1A130D;border:1px solid var(--line);border-radius:12px;color:var(--off);font:500 16px "Red Hat Display",sans-serif;padding:12px}
+textarea{min-height:72px;resize:vertical;line-height:1.4}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 13px;border-radius:99px;border:1px solid var(--line);font-size:14px;font-weight:600;color:var(--creme);cursor:pointer;user-select:none}
+.chip.on{background:var(--dour);color:#2A1F14;border-color:var(--dour)}
+.tog{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.tog b{font-weight:600}
+.sw{width:50px;height:30px;border-radius:99px;background:#4a3a2a;position:relative;flex:none;cursor:pointer;transition:.2s}
+.sw:after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--dour)}.sw.on:after{left:23px}
+.mlrow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.step-ml{display:flex;align-items:center;gap:6px}
+.step-ml button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--off);font-size:18px}
+.step-ml input{width:64px;text-align:center;padding:7px}
+.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.sty{border-radius:14px;overflow:hidden;border:1.5px solid transparent;background:#1A130D;cursor:pointer;position:relative}
+.sty canvas{width:100%;display:block;aspect-ratio:9/16;background:#0d0a07}
+.sty .nm{font-size:13px;font-weight:700;padding:7px 8px 2px}
+.sty .ds{font-size:11px;color:var(--sub);padding:0 8px 8px;line-height:1.3}
+.sty.on{border-color:var(--dour)}
+.sty.dis{opacity:.35;pointer-events:none}
+.player{display:flex;flex-direction:column;align-items:center;gap:10px}
+.player canvas{width:min(78vw,340px);aspect-ratio:9/16;border-radius:18px;background:#000;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+input[type=range]{width:100%;accent-color:var(--dour)}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line);font-size:15px;line-height:1.35;cursor:pointer}
+.check i{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--dour);flex:none;display:grid;place-items:center;font-style:normal;font-weight:800;color:#2A1F14}
+.check.on i{background:var(--dour)}
+.check.on i:after{content:"✓"}
+.copybox{background:#1A130D;border:1px solid var(--line);border-radius:14px;padding:14px;white-space:pre-wrap;font-size:14.5px;line-height:1.5;margin:8px 0}
+.bar{height:8px;border-radius:99px;background:#1A130D;overflow:hidden}
+.bar>div{height:100%;width:0;background:var(--dour);transition:width .2s}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(20,15,10,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:50}
+nav.tabs button{background:none;border:0;color:var(--sub);font:700 11px "Red Hat Display";letter-spacing:.08em;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 10px;text-transform:uppercase}
+nav.tabs button.on{color:var(--dour)}
+nav.tabs svg{width:22px;height:22px}
+.view{display:none}.view.on{display:block}
+.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--off);color:#2A1F14;padding:12px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1}
+.modal{position:fixed;inset:0;background:rgba(10,7,5,.92);z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:12px}
+.modal.on{display:flex}
+.modal canvas{max-width:100%;max-height:68vh;border-radius:12px;touch-action:none}
+.week{display:grid;gap:10px}
+.day{display:flex;gap:12px;align-items:center;background:#1A130D;border:1px solid var(--line);border-radius:16px;padding:12px}
+.day .d{width:54px;text-align:center;font-family:"Cormorant Garamond";font-size:24px;color:var(--dour);flex:none}
+.day .t{flex:1}.day .t b{display:block;font-size:15px}.day .t span{font-size:13px;color:var(--sub)}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gal .it{border-radius:12px;overflow:hidden;background:#1A130D;cursor:pointer;position:relative}
+.gal img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.gal .it .del{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(20,15,10,.85);color:#fff;font-size:14px}
+.gal .it.arm .del{background:#B3261E}
+.gal .it span{position:absolute;left:6px;bottom:6px;right:6px;font-size:11px;background:rgba(20,15,10,.8);padding:4px 6px;border-radius:8px}
+.note{font-size:13px;color:var(--sub);background:rgba(188,167,142,.08);border:1px solid rgba(188,167,142,.25);border-radius:12px;padding:10px 12px;line-height:1.45}
+.seg{display:flex;background:#1A130D;border-radius:99px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:transparent;color:var(--sub);font:700 13px "Red Hat Display";padding:10px;border-radius:99px}
+.seg button.on{background:var(--dour);color:#2A1F14}
+.adj{display:grid;grid-template-columns:70px 1fr 44px;gap:8px;align-items:center;font-size:13px;color:var(--sub)}
+#resVideo{width:min(78vw,340px);border-radius:18px;display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div><div class="kick">Curae Santé · estúdio</div><h1>Antes <em>&amp;</em> Depois</h1></div>
+  <span class="pill" id="mpState">rosto: aguardando foto</span>
+</header>
+
+<!-- ================= CRIAR ================= -->
+<section class="view on" id="v-criar">
+  <div class="step" id="s1">
+    <div class="hd"><span class="num">1</span><div><h2>Fotos</h2><div class="hint">Mesma luz e mesmo enquadramento. As fotos ficam só neste aparelho.</div></div></div>
+    <div class="grid2">
+      <label class="slot" data-k="fa"><span class="req">OBRIGATÓRIA</span><span class="lab">FRENTE</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
+      <label class="slot" data-k="fd"><span class="req">OBRIGATÓRIA</span><span class="lab">FRENTE</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
+      <label class="slot" data-k="pa"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
+      <label class="slot" data-k="pd"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
+    </div>
+  </div>
+
+  <div class="step" id="s2">
+    <div class="hd"><span class="num">2</span><div><h2>Encaixe pelo rosto</h2><div class="hint">Alinho os dois rostos pelos olhos. Confira deslizando a mistura.</div></div></div>
+    <div class="player"><canvas id="cvAlign" width="540" height="960"></canvas></div>
+    <label class="f">Mistura antes ↔ depois</label>
+    <input type="range" id="mix" min="0" max="100" value="50">
+    <div class="row" style="margin:10px 0"><button class="btn small ghost" id="blink">Piscar</button><button class="btn small ghost" id="reAuto">Reencaixar automático</button><button class="btn small ghost" id="manEyes">Marcar olhos à mão</button></div>
+    <div class="note" style="margin-bottom:8px">Ajuste fino da foto do <b>depois</b> (só posição, nunca cor ou retoque):</div>
+    <div class="note" id="lightWarn" style="display:none;margin-bottom:8px;border-color:#E8A05A;color:#FFD39A"></div>
+    <div class="adj"><span>Horizontal</span><input type="range" id="adx" min="-150" max="150" value="0"><span id="adxv">0</span></div>
+    <div class="adj"><span>Vertical</span><input type="range" id="ady" min="-150" max="150" value="0"><span id="adyv">0</span></div>
+    <div class="adj"><span>Zoom</span><input type="range" id="ads" min="-30" max="30" value="0"><span id="adsv">0</span></div>
+    <div class="adj"><span>Girar</span><input type="range" id="adr" min="-15" max="15" value="0" step=".5"><span id="adrv">0</span></div>
+  </div>
+
+  <div class="step" id="s3">
+    <div class="hd"><span class="num">3</span><div><h2>O caso</h2><div class="hint">Marque só as regiões tratadas. Até 6 deixa o vídeo mais ágil.</div></div></div>
+    <label class="f">Procedimento</label>
+    <select id="proc"></select>
+    <label class="f">Regiões tratadas</label>
+    <div class="chips" id="regs"></div>
+    <label class="f">Posição das regiões</label>
+    <div class="hint" style="margin-bottom:8px">Se algum círculo caiu fora do lugar, arraste. O lado oposto acompanha espelhado.</div>
+    <div class="player"><canvas id="cvReg" width="540" height="960" style="touch-action:none"></canvas></div>
+    <div class="row" style="margin-top:8px"><button class="btn small ghost" id="regReset">Voltar posições automáticas</button></div>
+    <div class="tog" style="margin-top:12px"><div><b>Mostrar ml no vídeo</b><div class="hint">Quanto foi usado em cada região e o total.</div></div><div class="sw" id="swMl"></div></div>
+    <div id="mlBox" style="display:none"></div>
+    <label class="f">Indicação (para quem é)</label><textarea id="indic"></textarea>
+    <label class="f">Evolução</label>
+    <div class="grid2"><select id="interval"></select><select id="sess"></select></div>
+    <label class="f">Possíveis efeitos e complicações</label><textarea id="compl"></textarea>
+    <label class="f">Frase de abertura</label>
+    <div class="grid2"><input type="text" id="hook1"><input type="text" id="hook2"></div>
+    <label class="f">Profissional</label><select id="profSel"></select>
+    <div class="row" style="margin-top:14px"><button class="btn small ghost" id="saveCase">Guardar caso na galeria</button></div>
+  </div>
+
+  <div class="step" id="s4">
+    <div class="hd"><span class="num">4</span><div><h2>Estilo</h2><div class="hint">Mesmas fotos, vários vídeos. Toque para escolher.</div></div></div>
+    <label class="f">Identidade</label>
+    <div class="seg" id="theme"><button data-v="curae" class="on">Curae Santé</button><button data-v="drpedro">Dr. Pedro</button></div>
+    <label class="f">Estilos</label>
+    <div class="styles" id="styles"></div>
+    <label class="f">Trilha (original, sem direitos de terceiros)</label>
+    <div class="seg" id="music"><button data-v="suave" class="on">Suave</button><button data-v="elegante">Elegante</button><button data-v="nenhuma">Sem trilha</button></div>
+    <div class="tog"><div><b>Efeitos de transição discretos</b></div><div class="sw on" id="swSfx"></div></div>
+    <div class="tog" id="profTog" style="display:none"><div><b>Incluir fotos de perfil no fim</b><div class="hint">Lado a lado, antes do cartão do caso.</div></div><div class="sw on" id="swProf"></div></div>
+    <label class="f">Sua narração (opcional)</label>
+    <div class="hint" style="margin-bottom:8px">Grave no celular (Gravador ou vídeo de selfie) e suba aqui. A trilha abaixa por baixo da sua voz, e o vídeo estica ou encurta para caber na fala.</div>
+    <div class="row"><label class="btn small ghost" style="cursor:pointer">Subir áudio ou vídeo<input type="file" id="voiceIn" accept="audio/*,video/*" style="display:none"></label><button class="btn small ghost" id="voiceDel" style="display:none">Tirar narração</button></div>
+    <div class="hint" id="voiceInfo" style="margin-top:8px"></div>
+    <div class="tog"><div><b>Tarja nos olhos</b><div class="hint">Para quando o paciente não autorizou ser identificado.</div></div><div class="sw" id="swTarja"></div></div>
+  </div>
+
+  <div class="step" id="s5">
+    <div class="hd"><span class="num">5</span><div><h2>Prévia e vídeo</h2><div class="hint" id="durInfo">—</div></div></div>
+    <div class="player">
+      <canvas id="cvPrev" width="1080" height="1920"></canvas>
+      <video id="resVideo" controls playsinline></video>
+      <div class="row" style="width:min(78vw,340px)"><button class="btn small" id="play">▶ Tocar</button><input type="range" id="scrub" min="0" max="1000" value="0" style="flex:1"></div>
+    </div>
+    <label class="f">Checklist CFM (Res. 2.336/2023)</label>
+    <div class="check" data-c="consent"><i></i><span><b>O paciente assinou o termo de uso de imagem.</b> Obrigatório.</span></div>
+    <div class="check" data-c="real"><i></i><span><b>Fotos sem filtro nem retoque</b>, só alinhadas. Obrigatório.</span></div>
+    <div class="check" data-c="edu"><i></i><span>A legenda traz indicação, evolução e possíveis complicações (já vem pronta abaixo).</span></div>
+    <div class="check" data-c="semp"><i></i><span>Sem preço, sem promessa de resultado, sem comparação com colegas.</span></div>
+    <div style="height:12px"></div>
+    <button class="btn full" id="gen">Gerar vídeo</button>
+    <div class="bar" style="margin-top:12px;display:none" id="genBar"><div></div></div>
+    <div class="hint" id="genInfo" style="margin-top:8px"></div>
+    <div class="row" style="margin-top:12px"><button class="btn ghost small" id="saveVid" style="display:none">Salvar vídeo</button><button class="btn ghost small" id="saveCover">Salvar capa (PNG)</button></div>
+
+    <label class="f">Legenda</label>
+    <div class="seg" id="angle" style="flex-wrap:wrap"></div>
+    <div class="copybox" id="cap"></div><button class="btn small ghost" data-copy="cap">Copiar legenda</button>
+    <label class="f">Comentário fixado</label>
+    <div class="copybox" id="pin"></div><button class="btn small ghost" data-copy="pin">Copiar</button>
+    <label class="f">Respostas prontas (direct e comentários)</label>
+    <div class="copybox" id="faq"></div><button class="btn small ghost" data-copy="faq">Copiar</button>
+  </div>
+</section>
+
+<!-- ================= SEMANA ================= -->
+<section class="view" id="v-semana">
+  <div class="step"><div class="hd"><span class="num">7</span><div><h2>Um caso, sete posts</h2><div class="hint">Mesmas fotos, um ângulo por dia. O sábado cumpre a exigência do CFM de mostrar o que pode acontecer depois.</div></div></div>
+  <div class="week" id="week"></div></div>
+</section>
+
+<!-- ================= GALERIA ================= -->
+<section class="view" id="v-galeria">
+  <div class="step"><div class="hd"><span class="num">◎</span><div><h2>Galeria de casos</h2><div class="hint">Guardada só neste aparelho e neste navegador. Para não perder, mantenha as fotos originais no seu arquivo.</div></div></div>
+  <div class="gal" id="gal"></div><div class="hint" id="galEmpty" style="margin-top:10px">Nenhum caso guardado ainda.</div></div>
+</section>
+
+<!-- ================= AJUSTES ================= -->
+<section class="view" id="v-ajustes">
+  <div class="step"><div class="hd"><span class="num">⚙</span><div><h2>Ajustes</h2><div class="hint">Ficam salvos neste aparelho.</div></div></div>
+    <label class="f">Profissional 1</label><div class="grid2"><input type="text" id="p1n"><input type="text" id="p1c"></div>
+    <label class="f">Profissional 2</label><div class="grid2"><input type="text" id="p2n" placeholder="Nome"><input type="text" id="p2c" placeholder="CRM/UF 00000"></div>
+    <label class="f">Marca no topo do vídeo</label><input type="text" id="marca">
+    <label class="f">Perfil (@)</label><input type="text" id="handle">
+    <label class="f">Chamada final</label><div class="grid2"><input type="text" id="cta1"><input type="text" id="cta2"></div>
+    <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
+  </div>
+</section>
+</div>
+
+<nav class="tabs">
+  <button data-v="criar" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>Criar</button>
+  <button data-v="semana"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Semana</button>
+  <button data-v="galeria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>Galeria</button>
+  <button data-v="ajustes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>Ajustes</button>
+</nav>
+
+<div class="modal" id="eyeModal">
+  <div class="serif" style="font-size:26px" id="eyeTitle">Toque no centro de cada olho</div>
+  <div class="hint" id="eyeHint">Primeiro o olho que está à esquerda da foto.</div>
+  <canvas id="cvEye"></canvas>
+  <div class="row"><button class="btn ghost small" id="eyeCancel">Cancelar</button><button class="btn small" id="eyeRedo">Refazer</button></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="mp/mp4-muxer.js"></script>
+<script src="canon.js"></script>
+<script src="app.js"></script>
+<script src="ui.js"></script>
+</body>
+</html>
