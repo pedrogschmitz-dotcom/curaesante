@@ -31,7 +31,7 @@ const WEEK = [
 const S = {
   img: {}, blob: {}, lm: {}, eyes: {}, adj: { dx: 0, dy: 0, ds: 0, dr: 0 },
   frames: {}, proc: 'ah', regs: new Set(PROCS.ah.regs), ml: {}, showMl: false,
-  theme: 'curae', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
+  theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
   orig: {}, crop: {}, lmOrig: {}, eyesOrig: {}, checks: {}, caseNo: 1, prof: 0, result: null, roff: {}, mlSide: {}, perSide: false, voice: null, voiceName: '', withProfile: true,
 };
 const DEF = { p1n: 'Dr. Pedro Schmitz', p1c: 'CRM/SC 38229', p2n: '', p2c: '', marca: 'Curae Santé', handle: '@curaesante', cta1: 'Agende sua', cta2: 'avaliação' };
@@ -39,6 +39,18 @@ let CFG = Object.assign({}, DEF);
 try { Object.assign(CFG, JSON.parse(localStorage.getItem('estudio-cfg') || '{}')); } catch (e) { }
 const saveCfg = () => { try { localStorage.setItem('estudio-cfg', JSON.stringify(CFG)); } catch (e) { } };
 
+/* ---------------- senha (só no site) ---------------- */
+(async () => {
+  if (!/curaesante\.com\.br$/.test(location.hostname)) return;
+  const H = '4ca454c123366c1601c79ca3d14e77fcfd374e4559953c96f27ed3cdb417a74a';
+  try { if (localStorage.getItem('estudio-ok') === H) return; } catch (e) { }
+  const g = document.createElement('div'); g.className = 'modal on'; g.style.zIndex = 200; g.style.background = '#1E1610';
+  g.innerHTML = '<div class="kick">Curae Santé · estúdio</div><div class="serif" style="font-size:34px">Acesso restrito</div><input type="password" id="pwIn" placeholder="Senha" style="max-width:280px;text-align:center" autocomplete="current-password"><button class="btn" id="pwOk" style="min-width:200px">Entrar</button><div class="hint" id="pwMsg"></div>';
+  document.body.append(g);
+  const sha = async t => { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); };
+  const tryIt = async () => { const h = await sha('estudio:' + document.getElementById('pwIn').value.trim()); if (h === H) { try { localStorage.setItem('estudio-ok', H); } catch (e) { } g.remove(); } else document.getElementById('pwMsg').textContent = 'Senha incorreta.'; };
+  document.getElementById('pwOk').onclick = tryIt; document.getElementById('pwIn').addEventListener('keydown', e => { if (e.key === 'Enter') tryIt(); });
+})();
 const toast = (m, ms = 2400) => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), ms); };
 
 /* ---------------- MediaPipe (local, sem internet externa) ---------------- */
@@ -144,9 +156,12 @@ async function applyCrop(k, r) {
   const slot = $(`.slot[data-k="${k}"]`); const im = slot.querySelector('img'); if (im) im.src = URL.createObjectURL(S.blob[k]);
   slotStatus(k); buildFrames();
 }
+function base0(k) {}
+function addCamBtns() { $$('.slot').forEach(sl => { const k = sl.dataset.k; if (sl.querySelector('.camb')) return; const b = document.createElement('button'); b.className = 'camb'; b.textContent = '📷'; b.title = 'Câmera'; sl.append(b); b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); if (REF[k] && !S.orig[REF[k]]) toast('Dica: suba primeiro a foto do antes para aparecer o fantasma.', 3200); openCam(k); }); }); }
 function slotStatus(k) {
   const slot = $(`.slot[data-k="${k}"]`); let st = slot.querySelector('.st'); if (!st) { st = document.createElement('div'); st.className = 'st'; slot.append(st); }
   let b = slot.querySelector('.cropb'); if (!b) { b = document.createElement('button'); b.className = 'cropb'; b.textContent = '✂'; b.title = 'Recortar'; slot.append(b); b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openCrop(k); }); }
+  base0(k);
   const base = S.lm[k] ? '✓ rosto encontrado' : S.eyes[k] ? '✓ olhos marcados à mão' : (k[0] === 'f' ? 'rosto não achado: toque em “marcar olhos”' : 'perfil: encaixe pela foto');
   st.textContent = base + (S.crop[k] && S.crop[k].auto ? ' · ✂ marca cortada' : S.crop[k] ? ' · ✂ recortada' : '');
   st.classList.toggle('warn', !S.lm[k] && !S.eyes[k]);
@@ -167,6 +182,54 @@ async function setPhoto(k, src, opts = {}) {
   else if (bl.length) toast('Parece haver marca d’água ' + bl.join(' e ') + ', mas encostada no rosto: cortar tiraria parte do rosto. Use outra foto ou ajuste no ✂.', 5000);
   await applyCrop(k, r);
 }
+/* ---------------- câmera com fantasma ---------------- */
+const REF = { fa: null, fd: 'fa', pa: null, pd: 'pa' };
+let camK = null, camStream = null, camRaf = 0, camRefLuma = null, camFacing = 'environment';
+function regionLuma(src, sw, sh) { const c = M.mk(32, 32), x = c.getContext('2d'); x.drawImage(src, sw * .3, sh * .3, sw * .4, sh * .4, 0, 0, 32, 32); const d = x.getImageData(0, 0, 32, 32).data; let s = 0; for (let i = 0; i < d.length; i += 4) s += .2126 * d[i] + .7152 * d[i + 1] + .0722 * d[i + 2]; return s / 1024; }
+async function openCam(k) {
+  camK = k; const ref = REF[k] && S.orig[REF[k]];
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast('A câmera não abre aqui. Use o estúdio pelo site no Safari.', 4000); return; }
+  try { camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: camFacing, width: { ideal: 2160 }, height: { ideal: 3840 } }, audio: false }); }
+  catch (e) { toast('Sem acesso à câmera. Libere a câmera para o site nas permissões do Safari.', 4500); return; }
+  const v = $('#camVid'); v.srcObject = camStream; await v.play().catch(() => { });
+  $('#camTitle').textContent = ({ fa: 'Frente · antes', fd: 'Frente · depois', pa: 'Perfil · antes', pd: 'Perfil · depois' })[k];
+  $('#camGhostRow').style.display = ref ? 'grid' : 'none';
+  camRefLuma = ref ? regionLuma(ref, ref.width, ref.height) : null;
+  $('#camModal').classList.add('on'); camLoop();
+}
+function camLoop() {
+  const v = $('#camVid'), c = $('#cvCam'), x = c.getContext('2d');
+  const vw = v.videoWidth || 1080, vh = v.videoHeight || 1920;
+  const box = c.getBoundingClientRect(); const dpr = Math.min(2, devicePixelRatio || 1);
+  if (c.width !== Math.round(box.width * dpr)) { c.width = Math.round(box.width * dpr); c.height = Math.round(box.height * dpr); }
+  const cover = (iw, ih) => { const s2 = Math.max(c.width / iw, c.height / ih); return [(c.width - iw * s2) / 2, (c.height - ih * s2) / 2, iw * s2, ih * s2]; };
+  x.fillStyle = '#000'; x.fillRect(0, 0, c.width, c.height);
+  if (vw) { x.save(); if (camFacing === 'user') { x.translate(c.width, 0); x.scale(-1, 1); } x.drawImage(v, ...cover(vw, vh)); x.restore(); }
+  const ref = REF[camK] && S.orig[REF[camK]];
+  if (ref) { x.globalAlpha = +$('#camGhost').value / 100; x.drawImage(ref, ...cover(ref.width, ref.height)); x.globalAlpha = 1; }
+  // guias
+  x.strokeStyle = 'rgba(188,167,142,.7)'; x.lineWidth = 1.5 * dpr; x.setLineDash([8 * dpr, 8 * dpr]);
+  x.beginPath(); x.moveTo(c.width / 2, 0); x.lineTo(c.width / 2, c.height); x.moveTo(0, c.height * .417); x.lineTo(c.width, c.height * .417); x.stroke(); x.setLineDash([]);
+  // medidor de luz
+  const m = $('#camLight');
+  if (camRefLuma != null && vw) { const l = regionLuma(v, vw, vh), d = (l - camRefLuma) / Math.max(camRefLuma, 1);
+    const ok = Math.abs(d) <= .08, mid = Math.abs(d) <= .15;
+    m.textContent = ok ? 'Luz igual à do antes ✓' : (d > 0 ? `Mais claro que o antes (+${Math.round(d * 100)}%)` : `Mais escuro que o antes (${Math.round(d * 100)}%)`);
+    m.style.background = ok ? '#2E7D32' : mid ? '#B26A00' : '#B3261E'; m.style.display = 'block'; }
+  else m.style.display = 'none';
+  camRaf = requestAnimationFrame(camLoop);
+}
+function closeCam() { cancelAnimationFrame(camRaf); if (camStream) camStream.getTracks().forEach(t => t.stop()); camStream = null; $('#camModal').classList.remove('on'); }
+$('#camClose').onclick = closeCam;
+$('#camFlip').onclick = async () => { const k = camK; closeCam(); camFacing = camFacing === 'environment' ? 'user' : 'environment'; openCam(k); };
+$('#camShot').onclick = async () => {
+  const v = $('#camVid'); const vw = v.videoWidth, vh = v.videoHeight; if (!vw) return;
+  const c = M.mk(vw, vh), x = c.getContext('2d'); if (camFacing === 'user') { x.translate(vw, 0); x.scale(-1, 1); } x.drawImage(v, 0, 0);
+  const k = camK; closeCam();
+  try { const b = await toBlob(c, 'image/jpeg', .95); const a = document.createElement('a'); } catch (e) { }
+  await setPhoto(k, c); toast('Foto registrada. Guarde também no seu arquivo (galeria do estúdio fica só neste aparelho).', 3500);
+};
+
 /* recorte manual */
 let cropK = null, cropR = null;
 function openCrop(k) {
@@ -698,7 +761,8 @@ function go(v) { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-'
 $$('nav.tabs button').forEach(b => b.onclick = () => go(b.dataset.v));
 
 /* ---------------- início ---------------- */
-applyProc('ah'); renderProfs(); renderGal();
+applyProc('ah'); renderProfs(); renderGal(); addCamBtns();
+$$('#theme button').forEach(b => b.classList.toggle('on', b.dataset.v === S.theme));
 const fontsReady = Promise.all(['500 40px "Cormorant Garamond"', 'italic 500 40px "Cormorant Garamond"', '600 40px "Red Hat Display"', '700 40px "Red Hat Display"', '40px Anton', '800 40px Inter', '600 40px Inter', '700 40px "Space Mono"'].map(f => document.fonts.load(f).catch(() => { })));
 fontsReady.then(() => { refresh(); drawAlign(); });
 refresh(); drawAlign();

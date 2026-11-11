@@ -992,9 +992,66 @@ ST.lupa = {
     } else tag(ctx, D, 'DEPOIS', CX, 1560, seg(t, tEnd + .6, tEnd + 1));
   },
 };
+
+// Relevo: malha do rosto sombreada por luz rasante (ilustrativo, não é medida de volume)
+ST.relevo = {
+  nome: 'Relevo 3D', desc: 'Luz rasante mostra o volume do rosto',
+  dur: () => 9.8,
+  cues: () => [2.2, 4.8, 6.6],
+  draw(ctx, D, t) {
+    const T = D.T;
+    const s = E.io(seg(t, 4.8, 6.4));
+    const P = lerpL(D.LA, D.LB, s);
+    face(ctx, D.A, 1.02, CX, EYE_Y + 150, CX, EYE_Y + 150);
+    face(ctx, D.B, 1.02, CX, EYE_Y + 150, CX, EYE_Y + 150, s);
+    const ra = seg(t, 2.0, 3.0) * (1 - seg(t, 8.4, 9.4));
+    ctx.fillStyle = `rgba(8,6,4,${.55 * ra})`; ctx.fillRect(0, 0, W, H);
+    vignette(ctx);
+    if (ra > 0 && tris()) {
+      // luz gira de um lado ao outro (rasante)
+      const ang = t < 4.8 ? lerp(-1.1, 1.1, E.io(seg(t, 2.0, 4.8))) : t < 6.6 ? 1.1 : lerp(1.1, -1.1, E.io(seg(t, 6.6, 8.6)));
+      const lx = Math.sin(ang), ly = -.35, lz = -Math.cos(ang) * .9; const ll = Math.hypot(lx, ly, lz);
+      const Lx = lx / ll, Ly = ly / ll, Lz = lz / ll;
+      const Pz = s > 0 && s < 1 ? P : (s >= 1 ? D.LB : D.LA);
+      const col = T.ac, rgb = [parseInt(col.slice(1, 3), 16), parseInt(col.slice(3, 5), 16), parseInt(col.slice(5, 7), 16)];
+      ctx.save(); ctx.translate(CX, EYE_Y + 150); ctx.scale(1.02, 1.02); ctx.translate(-CX, -(EYE_Y + 150));
+      if (!ST.relevo.F) { // triângulos do rosto sem os "grandes" que atravessam olhos e boca
+        const C = window.CANON, F0 = TRIF, out = [];
+        for (let i = 0; i < F0.length; i += 3) { const a = C[F0[i]], b = C[F0[i + 1]], c = C[F0[i + 2]]; const m = Math.max(Math.hypot(a.x - b.x, a.y - b.y), Math.hypot(b.x - c.x, b.y - c.y), Math.hypot(a.x - c.x, a.y - c.y)); if (m < 125) out.push(F0[i], F0[i + 1], F0[i + 2]); }
+        ST.relevo.F = out;
+      }
+      const F = ST.relevo.F, dots = new Float32Array(F.length / 3);
+      for (let i = 0, j = 0; i < F.length; i += 3, j++) {
+        const a = Pz[F[i]], b = Pz[F[i + 1]], c = Pz[F[i + 2]];
+        const ux = b.x - a.x, uy = b.y - a.y, uz = ((b.z || 0) - (a.z || 0)) * 1.4, vx = c.x - a.x, vy = c.y - a.y, vz = ((c.z || 0) - (a.z || 0)) * 1.4;
+        let nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx; const nl = Math.hypot(nx, ny, nz) || 1; nx /= nl; ny /= nl; nz /= nl;
+        if (nz > 0) { nx = -nx; ny = -ny; nz = -nz; }
+        dots[j] = -(nx * Lx + ny * Ly + nz * Lz);
+      }
+      const srt = Array.from(dots).sort((p, q) => p - q), lo = srt[Math.floor(srt.length * .05)], hi = srt[Math.floor(srt.length * .97)];
+      for (let i = 0, j = 0; i < F.length; i += 3, j++) {
+        const a = Pz[F[i]], b = Pz[F[i + 1]], c = Pz[F[i + 2]];
+        const k = clamp((dots[j] - lo) / Math.max(.0001, hi - lo));
+        const kk = k * k;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineTo(c.x, c.y); ctx.closePath();
+        ctx.fillStyle = `rgba(${Math.round(lerp(14, rgb[0], kk) + 60 * Math.max(0, k - .85) / .15)},${Math.round(lerp(10, rgb[1], kk) + 60 * Math.max(0, k - .85) / .15)},${Math.round(lerp(8, rgb[2], kk))},${(.55 + .35 * kk) * ra})`;
+        ctx.fill(); ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = .8; ctx.stroke();
+      }
+      // malha fina por cima
+      meshLines(ctx, Pz, 'rgba(255,255,255,.9)', .07 * ra, .6);
+      ctx.restore();
+      // regiões tratadas pulsando
+      if (t > 6.4) { const R = regList(D); R.forEach((r, i) => r.ptsB.forEach(q => { const pp = (t * .8 + i * .2) % 1; ctx.beginPath(); ctx.arc(q.x, q.y, q.r * (.5 + pp * .8), 0, 7); ctx.strokeStyle = `rgba(255,255,255,${(1 - pp) * .7 * ra})`; ctx.lineWidth = 3; ctx.stroke(); })); }
+      txt(ctx, 'RELEVO ILUSTRATIVO · LUZ RASANTE', CX, 1660, { font: font(T, 'mono', 22, 700), color: T.sub, ls: 4, alpha: ra * .9 });
+    }
+    hook(ctx, D, t, 0, 2.2);
+    tag(ctx, D, s < .5 ? 'ANTES' : 'DEPOIS', CX, 1560, seg(t, 2.4, 2.8));
+    regChips(ctx, D, 1420, seg(t, 6.8, 7.4) * (1 - seg(t, 8.8, 9.3)));
+  },
+};
 ['lado', 'vaivolta', 'linhameio', 'polaroid', 'editorial', 'tresatos', 'topografia', 'constelacao', 'respiracao', 'perfil'].forEach(k => ST[k].hidden = true);
 // ordem de exibição
-const ORDEM = ['cortina', 'morph', 'hightech', 'camera25d', 'zoomreg', 'scanner', 'lupa', 'diagonal'];
+const ORDEM = ['cortina', 'morph', 'relevo', 'hightech', 'camera25d', 'zoomreg', 'scanner', 'lupa', 'diagonal'];
 
 /* perfil no final (opcional) */
 const PROF_DUR = 3.0;
