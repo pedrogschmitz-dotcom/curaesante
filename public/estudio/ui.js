@@ -42,7 +42,7 @@ const saveCfg = () => { try { localStorage.setItem('estudio-cfg', JSON.stringify
 /* ---------------- senha (só no site) ---------------- */
 (async () => {
   if (!/curaesante\.com\.br$/.test(location.hostname)) return;
-  const H = '4ca454c123366c1601c79ca3d14e77fcfd374e4559953c96f27ed3cdb417a74a';
+  const H = 'b3dbed9d716ffed8c1bce4cfa563390efb6f9acf876525044d8406779c2c5f8f';
   try { if (localStorage.getItem('estudio-ok') === H) return; } catch (e) { }
   const g = document.createElement('div'); g.className = 'modal on'; g.style.zIndex = 200; g.style.background = '#1E1610';
   g.innerHTML = '<div class="kick">Curae Santé · estúdio</div><div class="serif" style="font-size:34px">Acesso restrito</div><input type="password" id="pwIn" placeholder="Senha" style="max-width:280px;text-align:center" autocomplete="current-password"><button class="btn" id="pwOk" style="min-width:200px">Entrar</button><div class="hint" id="pwMsg"></div>';
