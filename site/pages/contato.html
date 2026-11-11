@@ -1,0 +1,43 @@
+<!--meta {"url":"/contato/","nav":"contato","title":"Contato e endereço · Curae Santé, Kobrasol, São José/SC","description":"Agende sua consulta na Curae Santé pelo WhatsApp (48) 98806-4337. Av. Delamar José da Silva, 186, Sala 3, Kobrasol, São José/SC."} -->
+<section class="phead"><div class="wrap">
+  <div class="crumbs" data-in><a href="/">Início</a> · Contato</div>
+  <span class="kick" data-in>Contato</span>
+  <h1>Vamos <em>conversar</em></h1>
+  <p class="lead" data-in>Agende sua consulta ou tire uma dúvida. A equipe responde pelo WhatsApp em horário comercial.</p>
+</div></section>
+
+<section class="pad-s">
+  <div class="wrap">
+    <div class="g4" data-stagger>
+      <a class="card" href="{{WA}}" target="_blank" rel="noopener" style="text-decoration:none"><div class="n">WhatsApp</div><h3>(48) 98806-4337</h3><p>Toque para iniciar a conversa.</p></a>
+      <a class="card" href="https://maps.google.com/?q=Curae+Sant%C3%A9+Av.+Delamar+Jos%C3%A9+da+Silva+186+Kobrasol+S%C3%A3o+Jos%C3%A9+SC" target="_blank" rel="noopener" style="text-decoration:none"><div class="n">Endereço</div><h3>Kobrasol</h3><p>Av. Delamar José da Silva, 186, Sala 3 · São José/SC · 88102-100</p></a>
+      <a class="card" href="mailto:curaesante@gmail.com" style="text-decoration:none"><div class="n">E-mail</div><h3>curaesante@gmail.com</h3><p>Para documentos e assuntos administrativos.</p></a>
+      <a class="card" href="https://www.instagram.com/curaesante/" target="_blank" rel="noopener" style="text-decoration:none"><div class="n">Instagram</div><h3>@curaesante</h3><p>Conteúdo e novidades da clínica.</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="pad-s">
+  <div class="wrap g2" style="align-items:start">
+    <form class="card" id="fwa" style="display:grid;gap:14px">
+      <span class="kick">Mensagem rápida</span>
+      <h3>Escreva e envie pelo WhatsApp</h3>
+      <label>Nome<input name="nome" required autocomplete="name" style="display:block;width:100%;margin-top:6px;padding:14px;border-radius:12px;border:1px solid var(--linha);font:inherit"></label>
+      <label>Assunto<select name="assunto" style="display:block;width:100%;margin-top:6px;padding:14px;border-radius:12px;border:1px solid var(--linha);font:inherit;background:#fff"><option>Agendar consulta</option><option>Emagrecimento e metabolismo</option><option>Saúde hormonal feminina</option><option>Pele e procedimentos</option><option>Cisto, lipoma ou pinta</option><option>Outro assunto</option></select></label>
+      <label>Mensagem<textarea name="msg" rows="4" style="display:block;width:100%;margin-top:6px;padding:14px;border-radius:12px;border:1px solid var(--linha);font:inherit"></textarea></label>
+      <p class="note" style="margin:0">Não escreva dados de saúde detalhados aqui. Isso é conversado na consulta.</p>
+      <button class="btn dark" type="submit" style="justify-self:start">{{ICO_WA}} Enviar pelo WhatsApp</button>
+    </form>
+    <div>
+      <div class="map"><iframe title="Mapa da Curae Santé" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Av.+Delamar+Jos%C3%A9+da+Silva,+186,+Kobrasol,+S%C3%A3o+Jos%C3%A9+-+SC,+88102-100&output=embed"></iframe></div>
+      <p class="cap">Segunda a sexta, das 9h às 18h, com hora marcada.</p>
+    </div>
+  </div>
+</section>
+<script>
+document.getElementById('fwa').addEventListener('submit', function (e) {
+  e.preventDefault(); const f = new FormData(this);
+  const t = `Olá! Meu nome é ${f.get('nome')}. Assunto: ${f.get('assunto')}.` + (f.get('msg') ? ` ${f.get('msg')}` : '');
+  window.open('https://wa.me/5548988064337?text=' + encodeURIComponent(t), '_blank', 'noopener');
+});
+</script>

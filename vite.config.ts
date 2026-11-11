@@ -39,7 +39,8 @@ export default defineConfig(({ mode }) => ({
     mode === "production" &&
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (prerender as any)({
-        routes: ["/", "/sobre", "/servicos", "/equipe", "/blog", "/faq", "/metabolismo-feminino", "/contato", "/orcamento", "/orcamento/criar", ...getBlogRoutes()],
+        // As páginas públicas agora são HTML estático (scripts/build-html.mjs). O React fica só no orçamento.
+        routes: ["/orcamento", "/orcamento/criar"],
         renderer: "@prerenderer/renderer-puppeteer",
         rendererOptions: {
           // Mais resiliente que evento para evitar timeout em CI
