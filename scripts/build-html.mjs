@@ -131,7 +131,7 @@ ${body}
     <div><img src="/s/img/logo-claro.png" alt="Curae Santé" width="220" height="54"><p>Clínica médica no Kobrasol, São José/SC. Consulta com tempo, investigação e plano individualizado.</p>
       <p class="med">Dr. Pedro Schmitz · CRM/SC 38229<br>Dra. Júlia Schmitz · CRM/SC 34242</p></div>
     <div><h4>Páginas</h4><ul>${NAV.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul></div>
-    <div><h4>Áreas</h4><ul><li><a href="/servicos/#clinica">Saúde clínica</a></li><li><a href="/metabolismo-feminino/">Metabolismo feminino</a></li><li><a href="/servicos/#pele">Pele e cabelo</a></li><li><a href="/blog/">Guias e artigos</a></li><li><a href="/servicos/retirada-de-cisto-lipoma-e-pintas/">Cistos, lipomas e pintas</a></li><li><a href="/clinica-medica-kobrasol-sao-jose/">Clínica no Kobrasol</a></li></ul></div>
+    <div><h4>Áreas</h4><ul><li><a href="/servicos/#clinica">Saúde clínica</a></li><li><a href="/metabolismo-feminino/">Metabolismo feminino</a></li><li><a href="/servicos/programa-de-emagrecimento/">Programa de emagrecimento</a></li><li><a href="/servicos/menopausa-e-insonia/">Menopausa e insônia</a></li><li><a href="/servicos/#pele">Pele e cabelo</a></li><li><a href="/blog/">Guias e artigos</a></li><li><a href="/servicos/retirada-de-cisto-lipoma-e-pintas/">Cistos, lipomas e pintas</a></li><li><a href="/clinica-medica-kobrasol-sao-jose/">Clínica no Kobrasol</a></li></ul></div>
     <div><h4>Contato</h4><ul><li>Av. Delamar José da Silva, 186, Sala 3<br>Kobrasol · São José/SC · 88102-100</li><li><a href="${WA_PADRAO}" target="_blank" rel="noopener">WhatsApp (48) 98806-4337</a></li><li><a href="mailto:curaesante@gmail.com">curaesante@gmail.com</a></li><li><a href="https://www.instagram.com/curaesante/" target="_blank" rel="noopener">@curaesante</a></li><li>Seg a sex · 9h às 18h</li></ul></div>
   </div>
   <div class="bot"><span>© ${new Date().getFullYear()} Curae Santé Clínica Médica</span><span>Conteúdo informativo. Não substitui a consulta médica.</span></div>
@@ -214,6 +214,15 @@ ${posts.map(postCard).join('\n')}
 write('blog/index.html', layout({ title: 'Blog: pele, cabelo e metabolismo | Curae Santé', description: 'Conteúdo educativo revisado pela equipe médica da Curae Santé sobre pele, cabelo, emagrecimento e saúde hormonal feminina.', url: '/blog/', nav: 'blog', body: blogBody, crumbs: [['Início', '/'], ['Blog', '/blog/']] }));
 urls.push('/blog/');
 
+const SVC = [
+  [/tirzepatida|semaglutida|emagrec|peso|obesidade|massa muscular|fome|dieta|plateau|álcool|sono/i, '/servicos/programa-de-emagrecimento/', 'programa de emagrecimento'],
+  [/menopausa|perimenopausa|hormon/i, '/servicos/menopausa-e-insonia/', 'menopausa e insônia'],
+  [/insulina|glicada|esteatose|fígado|cortisol|tireoid|ferritina|ferro|cardiovascular/i, '/servicos/investigacao-metabolica/', 'investigação metabólica'],
+  [/toxina|botox|harmoniza|ruga/i, '/servicos/toxina-botulinica/', 'toxina botulínica'],
+  [/bioestimul|flacidez|colágeno|envelhecimento/i, '/servicos/bioestimuladores-de-colageno/', 'bioestimuladores de colágeno'],
+  [/mancha na pele|pinta|cisto|lipoma/i, '/servicos/retirada-de-cisto-lipoma-e-pintas/', 'retirada de cistos, lipomas e pintas'],
+];
+const svcLink = (p) => SVC.filter(([re]) => re.test(p.title + ' ' + (p.tags || []).join(' '))).slice(0, 2).map(([, u, t]) => `<a href="${u}" style="color:var(--dour)">${t}</a>`).join(' e ');
 // blog: posts
 const related = (p) => posts.filter(o => o !== p && o.cats.some(c => p.cats.includes(c))).slice(0, 3);
 for (const p of posts) {
@@ -231,7 +240,7 @@ ${p.capa ? `<figure style="margin-top:0"><img src="${p.capa}" alt="${esc(p.capaA
 ${html}
 <div class="tags">${(p.tags || []).map(t => `<span>${esc(t)}</span>`).join('')}</div>
 <p class="note" style="margin-top:30px">Conteúdo informativo. Não substitui a consulta. A indicação de qualquer tratamento depende de avaliação médica individual.</p>
-<div class="ctabox"><h3>Quer conversar sobre o seu caso?</h3><p>Na consulta, a equipe ouve sua história, examina e explica as opções com calma.</p><a class="btn gold" href="${waLink(`Olá! Li o artigo "${p.title}" no site e quero agendar uma consulta.`)}" target="_blank" rel="noopener">Falar com a clínica</a></div>
+<div class="ctabox"><h3>Quer conversar sobre o seu caso?</h3><p>Na consulta, a equipe ouve sua história, examina e explica as opções com calma.${svcLink(p) ? ` Conheça também: ${svcLink(p)}.` : ''}</p><a class="btn gold" href="${waLink(`Olá! Li o artigo "${p.title}" no site e quero agendar uma consulta.`)}" target="_blank" rel="noopener">Falar com a clínica</a></div>
 </div></article>
 ${related(p).length ? `<section class="pad-s cr"><div class="wrap"><span class="kick">Leia também</span><h2 style="font-size:clamp(32px,4vw,48px)">Artigos relacionados</h2><div class="posts">${related(p).map(postCard).join('')}</div></div></section>` : ''}`;
   const ld = [...MEDICOS_LD, { '@type': 'BlogPosting', headline: p.title, description: p.resumo, datePublished: p.data, dateModified: mod, image: p.capa ? `${SITE}${p.capa}` : undefined, author: autorLd, publisher: { '@id': `${SITE}/#clinica` }, mainEntityOfPage: `${SITE}/blog/${p.slug}/`, keywords: (p.tags || []).join(', '), inLanguage: 'pt-BR' }];

@@ -1,7 +1,10 @@
 # Gera site/pages/proc-*.html (páginas de procedimento). Rodar: python3 site/_procedimentos.py
 import json, os
 
-WA = 'Olá! Quero agendar uma avaliação com o Dr. Pedro Schmitz sobre {}.'
+MED = {
+ 'pedro': {'nome': 'Dr. Pedro Schmitz', 'crm': 'CRM/SC 38229', 'perfil': '/equipe/dr-pedro-schmitz/', 'curto': 'o Dr. Pedro', 'wa': 'Olá! Quero agendar uma avaliação com o Dr. Pedro Schmitz sobre {}.'},
+ 'julia': {'nome': 'Dra. Júlia Schmitz', 'crm': 'CRM/SC 34242', 'perfil': '/equipe/dra-julia-schmitz/', 'curto': 'a Dra. Júlia', 'wa': 'Olá! Quero agendar uma consulta com a Dra. Júlia Schmitz sobre {}.'},
+}
 
 PROCS = [
  {
@@ -81,16 +84,90 @@ PROCS = [
  }
 ]
 
+PROCS += [
+ {
+  "medico": "julia", "tipo": "terapia",
+  "slug": "programa-de-emagrecimento", "nome": "Programa de emagrecimento", "kick": "Emagrecimento com acompanhamento",
+  "foto": "/s/img/dra-julia.jpg", "assunto": "o programa de emagrecimento",
+  "title": "Programa de emagrecimento em São José/SC | Curae Santé",
+  "description": "Emagrecimento com acompanhamento médico: investigação do que trava o peso, plano alimentar, movimento, sono e medicamentos quando indicados. Curae Santé, Kobrasol, São José/SC.",
+  "lead": "Para quem já tentou de tudo e o peso não sai, ou sai e volta. Primeiro entender o porquê, depois montar um plano que cabe na sua rotina.",
+  "oque": "É um acompanhamento médico contínuo, não uma dieta pronta. Começa por investigar o que dificulta o emagrecimento: resistência à insulina, alterações hormonais, sono, estresse, medicamentos em uso e histórico de tentativas. A partir disso, o plano combina alimentação, movimento, sono e, quando há indicação, medicamentos, sempre com retornos para ajustar o caminho e preservar massa muscular.",
+  "para": ["Peso que não sai mesmo com esforço", "Efeito sanfona e reganho depois de dietas", "Resistência à insulina, pré-diabetes ou gordura no fígado", "Ganho de peso na perimenopausa e menopausa", "Quem quer emagrecer preservando músculo"],
+  "nao_kick": "Para alinhar expectativas", "nao_titulo": "O que o programa não é",
+  "nao": ["Prescrição rápida de remédio sem avaliação", "Dieta restritiva genérica", "Promessa de quilos em prazo fixo", "Atendimento sem retornos: o acompanhamento faz parte do tratamento"],
+  "como": [["Consulta inicial longa", "História, rotina, alimentação, sono, tentativas anteriores e objetivos."], ["Exames direcionados", "Avaliação metabólica e hormonal pensada para o seu caso."], ["Plano individualizado", "Alimentação, movimento, sono e medicamentos quando indicados, explicados com calma."], ["Retornos", "Acompanhamento de peso, composição corporal e exames, com ajustes do plano."]],
+  "riscos_titulo": "Segurança e acompanhamento",
+  "riscos": "Quando há uso de medicamentos para obesidade, os efeitos mais comuns são náusea, alteração do intestino e menos apetite, principalmente no início. Por isso a dose é ajustada aos poucos e acompanhada nos retornos. A perda de peso muito rápida também pode causar queda de cabelo e perda de massa muscular, o que o plano busca evitar.",
+  "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> Nenhum medicamento é prescrito sem consulta, exames e acompanhamento.",
+  "faq": [
+   {"q": "Vou precisar tomar remédio?", "a": "Não necessariamente. Medicamentos são uma ferramenta usada quando há indicação clínica, sempre junto com alimentação, movimento e sono."},
+   {"q": "Em quanto tempo vejo resultado?", "a": "Varia muito entre pessoas. O objetivo é uma perda sustentável, que se mantenha depois, e não a mais rápida possível."},
+   {"q": "Como evitar o reganho?", "a": "Com acompanhamento na fase de manutenção, preservação de massa muscular e um plano que caiba na rotina. Essa fase é tão importante quanto a de perda."},
+   {"q": "Preciso fazer exames antes?", "a": "Os exames são pedidos de forma direcionada na primeira consulta. Se você já tem exames recentes, leve para a consulta."}
+  ],
+  "rel": ["manutencao-do-peso-emagrecimento", "medicamentos-emagrecimento-quando-indicar", "massa-muscular-emagrecimento"]
+ },
+ {
+  "medico": "julia", "tipo": "terapia",
+  "slug": "menopausa-e-insonia", "nome": "Menopausa e insônia", "kick": "Saúde da mulher",
+  "foto": "/s/img/recepcao.jpg", "assunto": "menopausa e insônia",
+  "title": "Menopausa e insônia em São José/SC | Curae Santé",
+  "description": "Perimenopausa, menopausa e insônia: calores, sono ruim, irritabilidade e ganho de peso investigados com calma. Reposição hormonal só quando indicada. Curae Santé, São José/SC.",
+  "lead": "Calores, noites mal dormidas, irritabilidade, ganho de peso. Os sintomas da transição para a menopausa merecem ser levados a sério, e o sono costuma ser o primeiro a sofrer.",
+  "oque": "A perimenopausa pode começar anos antes da última menstruação, com mudanças no ciclo, no sono, no humor e no peso. A insônia nessa fase tem muitas causas possíveis: calores noturnos, ansiedade, hábitos, medicamentos, apneia do sono e outras doenças. O atendimento investiga o conjunto, explica as opções com riscos e benefícios, e decide junto com você o que faz sentido, da mudança de rotina ao tratamento medicamentoso, incluindo a reposição hormonal quando indicada.",
+  "para": ["Calores e suores noturnos", "Dificuldade para dormir ou acordar várias vezes à noite", "Irritabilidade, ansiedade ou queda de libido", "Ganho de peso e mudança no formato do corpo", "Ciclos irregulares depois dos 40"],
+  "nao_kick": "Para alinhar expectativas", "nao_titulo": "O que não fazemos",
+  "nao": ["Reposição hormonal para todas, sem avaliação de riscos", "Implantes hormonais para fins estéticos ou de desempenho", "Remédio para dormir como primeira e única resposta", "Conduta sem exames e sem acompanhamento"],
+  "como": [["Escuta e história", "Sintomas, ciclo, sono, humor, rotina, histórico pessoal e familiar."], ["Exames", "Avaliação laboratorial e rastreamentos adequados à idade, quando indicados."], ["Plano conjunto", "Hábitos e higiene do sono, tratamento da causa e opções hormonais ou não hormonais, discutidas com você."], ["Acompanhamento", "Retornos para avaliar sintomas, sono e efeitos do tratamento."]],
+  "riscos_titulo": "Segurança",
+  "riscos": "A reposição hormonal tem benefícios e riscos que dependem da idade, do tempo desde a menopausa e do histórico de cada mulher, como trombose, câncer de mama e doenças do coração. Por isso a decisão é individual, revista ao longo do tempo. Medicamentos para dormir podem causar dependência e sonolência no dia seguinte, e são usados com critério.",
+  "aviso": "<strong>Cada mulher vive essa fase de um jeito.</strong> Procure atendimento se houver sangramento fora do padrão depois da menopausa, falta de ar, dor no peito ou ronco com pausas na respiração.",
+  "faq": [
+   {"q": "Toda mulher precisa de reposição hormonal?", "a": "Não. A reposição tem indicações e contraindicações claras. Muitas mulheres melhoram com outras medidas. A decisão é individual."},
+   {"q": "Insônia na menopausa é normal?", "a": "É comum, mas não é algo para simplesmente aguentar. Tem causas que podem ser investigadas e tratadas."},
+   {"q": "A partir de que idade começa a perimenopausa?", "a": "Costuma começar entre os 40 e os 50 anos, mas varia. Mudanças no ciclo e no sono podem ser os primeiros sinais."},
+   {"q": "Ganhar peso na menopausa é inevitável?", "a": "Não. As mudanças hormonais favorecem o acúmulo de gordura abdominal, mas alimentação, treino de força e sono fazem diferença."}
+  ],
+  "rel": ["perimenopausa-sinais-iniciais", "menopausa-ganho-peso-abdominal", "sono-e-emagrecimento"]
+ },
+ {
+  "medico": "julia", "tipo": "terapia",
+  "slug": "investigacao-metabolica", "nome": "Investigação metabólica", "kick": "Metabolismo",
+  "foto": "/s/img/consultorio.jpg", "assunto": "investigação metabólica",
+  "title": "Resistência à insulina e investigação metabólica | Curae Santé",
+  "description": "Investigação de resistência à insulina, pré-diabetes, colesterol, gordura no fígado e tireoide, com plano de acompanhamento. Curae Santé, Kobrasol, São José/SC.",
+  "lead": "Cansaço, ganho de peso, exames alterados que ninguém explicou direito. A investigação metabólica junta as peças e transforma números em um plano.",
+  "oque": "É uma avaliação clínica focada em como o seu corpo usa e armazena energia. Inclui história, exame físico, medidas e exames laboratoriais direcionados, como glicose, insulina, hemoglobina glicada, colesterol, função do fígado e da tireoide. O objetivo é entender o risco e a causa, e não apenas tratar um exame isolado.",
+  "para": ["Resistência à insulina e pré-diabetes", "Colesterol ou triglicerídeos alterados", "Gordura no fígado (esteatose)", "Alterações da tireoide", "Gordura abdominal e risco cardiovascular"],
+  "nao_kick": "Para alinhar expectativas", "nao_titulo": "O que não fazemos",
+  "nao": ["Pedido de exames em excesso sem indicação", "Tratar número de exame sem olhar a pessoa", "Soluções milagrosas ou suplementos sem evidência"],
+  "como": [["Consulta", "História, sintomas, rotina, histórico familiar e exames anteriores."], ["Exames", "Pedidos de forma direcionada, explicados um a um."], ["Plano", "Alimentação, movimento, sono e medicamentos quando indicados."], ["Retornos", "Reavaliação dos marcadores e ajuste do plano."]],
+  "riscos_titulo": "Por que investigar",
+  "riscos": "Alterações metabólicas costumam ser silenciosas por anos e aumentam o risco de diabetes, doenças do coração e do fígado. Identificar cedo permite agir com mudanças de rotina antes que os problemas se instalem.",
+  "aviso": "<strong>Exame alterado não é diagnóstico isolado.</strong> A interpretação considera a sua história e o conjunto dos resultados.",
+  "faq": [
+   {"q": "Resistência à insulina tem sintomas?", "a": "Muitas vezes não. Alguns sinais são ganho de gordura abdominal, manchas escuras no pescoço e axilas, cansaço depois das refeições. Os exames ajudam a confirmar."},
+   {"q": "Gordura no fígado tem tratamento?", "a": "Sim. A principal estratégia é a perda de peso com mudança de hábitos, e em alguns casos há medicamentos indicados."},
+   {"q": "Preciso estar em jejum para os exames?", "a": "Depende dos exames pedidos. As orientações são passadas junto com o pedido."}
+  ],
+  "rel": ["resistencia-a-insulina-sintomas-exames", "esteatose-hepatica-reversao", "gordura-abdominal-e-risco-cardiovascular"]
+ },
+]
+
 def li(items): return ''.join(f'<li>{x}</li>' for x in items)
 
 for p in PROCS:
+    m = MED[p.get('medico', 'pedro')]
+    WA = m['wa']
     url = f"/servicos/{p['slug']}/"
     meta = {"url": url, "nav": "servicos", "title": p["title"], "description": p["description"],
             "parent": ["Serviços", "/servicos/"], "crumb": p["nome"], "faqItems": p["faq"],
             "ld": [{"@type": "MedicalProcedure", "name": p["nome"], "url": "https://curaesante.com.br" + url,
                     "description": p["description"], "howPerformed": p["oque"], "followup": "Retorno combinado na consulta.",
-                    "procedureType": "https://schema.org/NoninvasiveProcedure" if p["slug"] != "retirada-de-cisto-lipoma-e-pintas" else "https://schema.org/SurgicalProcedure"}]}
+                    "procedureType": "https://schema.org/NoninvasiveProcedure" if p["slug"] != "retirada-de-cisto-lipoma-e-pintas" else "https://schema.org/SurgicalProcedure"} if p.get("tipo") != "terapia" else {"@type": "MedicalTherapy", "name": p["nome"], "url": "https://curaesante.com.br" + url, "description": p["description"]}]}
     steps = ''.join(f'<div class="s"><h3>{t}</h3><p>{d}</p></div>' for t, d in p['como'])
+    irmaos = ''.join(f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/servicos/{o["slug"]}/">{o["nome"]}</a>' for o in PROCS if o.get('medico','pedro') == p.get('medico','pedro') and o is not p) + (f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/metabolismo-feminino/">Metabolismo feminino</a>' if p.get('medico')=='julia' else f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/blog/bigode-chines/">Guia: bigode chinês</a>')
     rel = ''.join(f'{{{{POST:{r}}}}}' for r in p['rel'])
     body = f'''<!--meta {json.dumps(meta, ensure_ascii=False)} -->
 <section class="phead"><div class="wrap g2" style="align-items:center">
@@ -106,7 +183,7 @@ for p in PROCS:
 
 <section class="pad">
   <div class="wrap g2" style="align-items:start">
-    <div><span class="kick" data-fade>O que é</span><h2 data-split>Entenda o procedimento</h2></div>
+    <div><span class="kick" data-fade>O que é</span><h2 data-split>Entenda {'o tratamento' if p.get('tipo')=='terapia' else 'o procedimento'}</h2></div>
     <div><p class="lead" data-fade>{p['oque']}</p></div>
   </div>
 </section>
@@ -114,7 +191,7 @@ for p in PROCS:
 <section class="pad cr">
   <div class="wrap g2" style="align-items:start">
     <div><span class="kick" data-fade>Para quem é</span><h2 data-split>Quando costuma ser indicado</h2><ul class="chk" data-stagger>{li(p['para'])}</ul></div>
-    <div><span class="kick" data-fade>Quando não fazer</span><h2 data-split>Quando adiar ou evitar</h2><ul class="chk" data-stagger>{li(p['nao'])}</ul></div>
+    <div><span class="kick" data-fade>{p.get('nao_kick','Quando não fazer')}</span><h2 data-split>{p.get('nao_titulo','Quando adiar ou evitar')}</h2><ul class="chk" data-stagger>{li(p['nao'])}</ul></div>
   </div>
 </section>
 
@@ -128,8 +205,8 @@ for p in PROCS:
 <section class="pad">
   <div class="wrap narrow">
     <span class="kick" data-fade>Segurança</span>
-    <h2 data-split>Efeitos esperados e riscos</h2>
-    <div class="warn" data-fade><p>{p['riscos']}</p><p><strong>Resultados variam de pessoa para pessoa.</strong> Procure a clínica se notar dor forte, mudança de cor da pele, febre ou qualquer sinal fora do esperado.</p></div>
+    <h2 data-split>{p.get('riscos_titulo','Efeitos esperados e riscos')}</h2>
+    <div class="warn" data-fade><p>{p['riscos']}</p><p>{p.get('aviso','<strong>Resultados variam de pessoa para pessoa.</strong> Procure a clínica se notar dor forte, mudança de cor da pele, febre ou qualquer sinal fora do esperado.')}</p></div>
   </div>
 </section>
 
@@ -149,12 +226,19 @@ for p in PROCS:
   </div>
 </section>
 
+<section class="pad-s cr">
+  <div class="wrap">
+    <span class="kick" data-fade>Outros tratamentos com {m['curto'].split(' ',1)[1]}</span>
+    <div class="chips" style="margin-top:16px" data-fade>{irmaos}</div>
+  </div>
+</section>
+
 <section class="pad dk" style="text-align:center">
   <div class="wrap narrow">
     <h2 data-split>Quer saber se é indicado para você?</h2>
-    <p class="lead" data-fade>A avaliação é feita pelo Dr. Pedro Schmitz (CRM/SC 38229), na Curae Santé, no Kobrasol.</p>
+    <p class="lead" data-fade>A avaliação é feita {'pela' if p.get('medico')=='julia' else 'pelo'} {m['nome']} ({m['crm']}), na Curae Santé, no Kobrasol.</p>
     <a class="btn gold" href="{{{{WA:{WA.format(p['assunto'])}}}}}" target="_blank" rel="noopener" data-fade>{{{{ICO_WA}}}} Agendar avaliação</a>
-    <p style="margin-top:22px" data-fade><a href="/equipe/dr-pedro-schmitz/" style="color:var(--dour)">Conheça o Dr. Pedro →</a></p>
+    <p style="margin-top:22px" data-fade><a href="{m['perfil']}" style="color:var(--dour)">Conheça {m['curto']} →</a></p>
   </div>
 </section>
 '''
