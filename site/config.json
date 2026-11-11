@@ -1,0 +1,7 @@
+{
+  "_leia": "Preencha os IDs para ligar a medição. Vazio = desligado. ga4 ex.: G-XXXXXXX; metaPixel ex.: 1234567890; gsc = código da meta google-site-verification; bing = código msvalidate.01",
+  "ga4": "",
+  "metaPixel": "",
+  "gsc": "",
+  "bing": ""
+}

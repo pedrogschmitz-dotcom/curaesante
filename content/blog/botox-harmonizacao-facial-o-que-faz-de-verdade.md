@@ -1,18 +1,18 @@
 ---
-title: "Botox e harmonização facial: o que a medicina estética faz de verdade (e o que não faz)"
+title: "Toxina botulínica e harmonização facial: o que faz de verdade (e o que não faz)"
 slug: "botox-harmonizacao-facial-o-que-faz-de-verdade"
 autor: "Dr. Pedro Schmitz"
 data: "2026-04-27T09:30:00.000Z"
 resumo: "Toxina botulínica e ácido hialurônico são dois dos procedimentos mais realizados no mundo. Mas há muito ruído sobre o que cada um faz, quando indica e o que esperar. Um guia clínico direto."
 imagem: "/images/blog/botox-harmonizacao-facial.jpg"
 imagem_alt: "Rosto feminino em perfil, tons neutros, foco em contorno natural"
-tags: ["botox", "harmonização facial", "ácido hialurônico", "procedimentos estéticos", "pele"]
+tags: ["toxina botulínica", "harmonização facial", "ácido hialurônico", "procedimentos estéticos", "pele"]
 published: true
 ---
 
-# Botox e harmonização facial: o que a medicina estética faz de verdade (e o que não faz)
+# Toxina botulínica e harmonização facial: o que faz de verdade (e o que não faz)
 
-Toxina botulínica — o nome comercial "botox" virou genérico no uso popular — é o procedimento estético mais realizado no mundo. Ácido hialurônico para preenchimento e harmonização facial vem em segundo. Juntos, são amplamente mal compreendidos: ora superestimados como soluções definitivas, ora reduzidos a "coisas que deixam o rosto artificial". A realidade é mais interessante e mais técnica do que qualquer um dos dois extremos.
+Toxina botulínica, popularmente chamada pelo nome de uma marca, é o procedimento estético mais realizado no mundo. Ácido hialurônico para preenchimento e harmonização facial vem em segundo. Juntos, são amplamente mal compreendidos: ora superestimados como soluções definitivas, ora reduzidos a "coisas que deixam o rosto artificial". A realidade é mais interessante e mais técnica do que qualquer um dos dois extremos.
 
 Este texto explica o que cada procedimento faz de verdade, como funciona biologicamente, para quem faz sentido e o que distingue um resultado natural de um resultado que chama atenção pelo motivo errado.
 

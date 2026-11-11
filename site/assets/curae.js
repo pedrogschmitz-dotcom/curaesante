@@ -178,3 +178,36 @@
 
   window.addEventListener('load', () => { toTop(); ScrollTrigger.refresh(); toTop(); });
 })();
+
+/* Medição (só liga quando houver IDs em site/config.json) + aviso de cookies */
+(function () {
+  const C = window.CURAE_CFG || {};
+  if (!C.ga4 && !C.metaPixel) return;
+  const KEY = 'cs_consent';
+  let choice = null; try { choice = localStorage.getItem(KEY); } catch (e) {}
+  function load() {
+    if (C.ga4 && !window.gtag) {
+      const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + C.ga4; document.head.appendChild(s);
+      window.dataLayer = window.dataLayer || []; window.gtag = function () { dataLayer.push(arguments); };
+      gtag('js', new Date()); gtag('config', C.ga4, { anonymize_ip: true });
+    }
+    if (C.metaPixel && !window.fbq) {
+      !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s) }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', C.metaPixel); fbq('track', 'PageView');
+    }
+  }
+  // clique no WhatsApp = conversão
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href*="wa.me"]'); if (!a) return;
+    if (window.gtag) gtag('event', 'whatsapp_click', { page_path: location.pathname, link_text: (a.textContent || '').trim().slice(0, 60) });
+    if (window.fbq) fbq('track', 'Contact');
+  });
+  if (choice === 'sim') return load();
+  if (choice === 'nao') return;
+  const bar = document.createElement('div');
+  bar.setAttribute('role', 'dialog'); bar.setAttribute('aria-label', 'Aviso de cookies');
+  bar.style.cssText = 'position:fixed;left:16px;right:16px;bottom:16px;z-index:95;max-width:560px;margin:0 auto;background:#2A1F14;color:#EAE4DA;border-radius:18px;padding:18px 20px;box-shadow:0 20px 50px rgba(0,0,0,.35);font:15px/1.5 "Red Hat Display",system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;align-items:center';
+  bar.innerHTML = '<span style="flex:1 1 260px">Usamos cookies para medir as visitas e melhorar o site. Nenhum dado de saúde é coletado.</span><button data-c="nao" style="font:inherit;font-weight:700;background:none;border:1px solid rgba(234,228,218,.4);color:#EAE4DA;border-radius:99px;padding:9px 16px;cursor:pointer">Recusar</button><button data-c="sim" style="font:inherit;font-weight:700;background:#BCA78E;border:0;color:#2A1F14;border-radius:99px;padding:10px 18px;cursor:pointer">Aceitar</button>';
+  bar.addEventListener('click', e => { const c = e.target.dataset && e.target.dataset.c; if (!c) return; try { localStorage.setItem(KEY, c); } catch (x) {} bar.remove(); if (c === 'sim') load(); });
+  document.body.appendChild(bar);
+})();

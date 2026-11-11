@@ -13,6 +13,17 @@ const WA = 'https://wa.me/5548988064337';
 const waLink = (msg) => `${WA}?text=${encodeURIComponent(msg)}`;
 const WA_PADRAO = waLink('Olá! Vim pelo site da Curae Santé e quero agendar uma consulta.');
 const VER = Date.now().toString(36);
+const CFG = JSON.parse(readFileSync(path.join(ROOT, 'site/config.json'), 'utf8'));
+// título para o Google: até ~62 caracteres com a marca; se não couber, só o título
+const seoTitle = (t, suf = ' | Curae Santé') => {
+  if ((t + suf).length <= 62) return t + suf;
+  if (t.length <= 62) return t;
+  const head = t.split(/:| — | - /)[0].trim();
+  return (head + suf).length <= 62 ? head + suf : head.slice(0, 60);
+};
+// imagens: usar WebP nas páginas (o JPG fica para a prévia de link)
+const toWebp = (html) => html.replace(/(\/s\/img\/[^"')\s]+)\.jpg/g, '$1.webp');
+const crumbLd = (items) => ({ '@type': 'BreadcrumbList', itemListElement: items.map(([name, u], i) => ({ '@type': 'ListItem', position: i + 1, name, item: `${SITE}${u}` })) });
 
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const write = (rel, html) => { const f = path.join(OUT, rel); mkdirSync(path.dirname(f), { recursive: true }); writeFileSync(f, html); };
@@ -79,8 +90,9 @@ const MEDICOS_LD = [
   { '@type': 'Physician', '@id': `${SITE}/#dra-julia`, name: 'Dra. Júlia Schmitz', identifier: 'CRM/SC 34242', worksFor: { '@id': `${SITE}/#clinica` }, sameAs: ['https://www.instagram.com/drajulialongo/'] },
 ];
 
-function layout({ title, description, url, nav, body, cta = true, pre = false, ld = [], ogImage = '/og-image.jpg', ogType = 'website', light = false }) {
-  const graph = { '@context': 'https://schema.org', '@graph': [CLINICA_LD, ...ld] };
+function layout({ title, description, url, nav, body, cta = true, pre = false, ld = [], ogImage = '/og-image.jpg', ogType = 'website', light = false, crumbs = null, preload = null }) {
+  const graph = { '@context': 'https://schema.org', '@graph': [CLINICA_LD, ...ld, ...(crumbs ? [crumbLd(crumbs)] : [])] };
+  body = toWebp(body);
   const navHtml = NAV.map(([h, t, k]) => `<a href="${h}"${k === nav ? ' aria-current="page"' : ''}>${t}</a>`).join('');
   return `<!doctype html>
 <html lang="pt-BR" class="no-js">
@@ -90,6 +102,8 @@ function layout({ title, description, url, nav, body, cta = true, pre = false, l
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${SITE}${url}">
+${CFG.gsc ? `<meta name="google-site-verification" content="${esc(CFG.gsc)}">` : ''}${CFG.bing ? `<meta name="msvalidate.01" content="${esc(CFG.bing)}">` : ''}
+${preload ? `<link rel="preload" as="image" href="${toWebp(preload)}" fetchpriority="high">` : ''}
 <meta name="theme-color" content="#2A1F14">
 <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" href="/favicon.png"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="${ogType}"><meta property="og:locale" content="pt_BR"><meta property="og:site_name" content="Curae Santé">
@@ -99,6 +113,7 @@ function layout({ title, description, url, nav, body, cta = true, pre = false, l
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/s/curae.css?v=${VER}">
 <script type="application/ld+json">${JSON.stringify(graph)}</script>
+<script>window.CURAE_CFG=${JSON.stringify({ ga4: CFG.ga4 || '', metaPixel: CFG.metaPixel || '' })}</script>
 </head>
 <body${light ? ' class="light-top"' : ''}>
 ${pre ? '<div id="pre" aria-hidden="true"><img src="/s/img/logo-claro.png" alt=""><div class="bar"></div></div>' : ''}
@@ -116,16 +131,16 @@ ${body}
     <div><img src="/s/img/logo-claro.png" alt="Curae Santé" width="220" height="54"><p>Clínica médica no Kobrasol, São José/SC. Consulta com tempo, investigação e plano individualizado.</p>
       <p class="med">Dr. Pedro Schmitz · CRM/SC 38229<br>Dra. Júlia Schmitz · CRM/SC 34242</p></div>
     <div><h4>Páginas</h4><ul>${NAV.map(([h, t]) => `<li><a href="${h}">${t}</a></li>`).join('')}</ul></div>
-    <div><h4>Áreas</h4><ul><li><a href="/servicos/#clinica">Saúde clínica</a></li><li><a href="/metabolismo-feminino/">Metabolismo feminino</a></li><li><a href="/servicos/#pele">Pele e cabelo</a></li><li><a href="/blog/">Guias e artigos</a></li></ul></div>
+    <div><h4>Áreas</h4><ul><li><a href="/servicos/#clinica">Saúde clínica</a></li><li><a href="/metabolismo-feminino/">Metabolismo feminino</a></li><li><a href="/servicos/#pele">Pele e cabelo</a></li><li><a href="/blog/">Guias e artigos</a></li><li><a href="/servicos/retirada-de-cisto-lipoma-e-pintas/">Cistos, lipomas e pintas</a></li><li><a href="/clinica-medica-kobrasol-sao-jose/">Clínica no Kobrasol</a></li></ul></div>
     <div><h4>Contato</h4><ul><li>Av. Delamar José da Silva, 186, Sala 3<br>Kobrasol · São José/SC · 88102-100</li><li><a href="${WA_PADRAO}" target="_blank" rel="noopener">WhatsApp (48) 98806-4337</a></li><li><a href="mailto:curaesante@gmail.com">curaesante@gmail.com</a></li><li><a href="https://www.instagram.com/curaesante/" target="_blank" rel="noopener">@curaesante</a></li><li>Seg a sex · 9h às 18h</li></ul></div>
   </div>
   <div class="bot"><span>© ${new Date().getFullYear()} Curae Santé Clínica Médica</span><span>Conteúdo informativo. Não substitui a consulta médica.</span></div>
 </div></footer>
 ${cta ? `<a class="wa" href="${WA_PADRAO}" target="_blank" rel="noopener" aria-label="Falar no WhatsApp" style="color:#fff">${ICO_WA}</a>` : ''}
 <div class="grain" aria-hidden="true"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="/s/vendor/gsap.min.js" defer></script>
+<script src="/s/vendor/ScrollTrigger.min.js" defer></script>
+<script src="/s/vendor/lenis.min.js" defer></script>
 <script src="/s/curae.js?v=${VER}" defer></script>
 </body>
 </html>`;
@@ -154,6 +169,7 @@ function fill(html) {
     .replace(/\{\{WA:([^}]+)\}\}/g, (_, m) => waLink(m))
     .replace(/\{\{AUTOR:(\w+):(\d+)\}\}/g, (_, a, n) => posts.filter(p => p.aut === a).slice(0, +n).map(postCard).join('\n'))
     .replace(/\{\{NAUTOR:(\w+)\}\}/g, (_, a) => String(posts.filter(p => p.aut === a).length))
+    .replace(/\{\{POST:([\w-]+)\}\}/g, (_, sl) => { const g = guias.find(x => x.slug === sl); if (g) return guiaCard(g).replace('post guia', 'post'); const p = posts.find(x => x.slug === sl); return p ? postCard(p) : ''; })
     .replace(/\{\{ULTIMOS:(\d+)\}\}/g, (_, n) => posts.slice(0, +n).map(postCard).join('\n'))
     .replace(/\{\{FAQ:([a-z,]+)\}\}/g, (_, c) => faqHtml(FAQ.filter(q => c === 'all' || c.split(',').includes(q.cat)), c === 'all'))
     .replaceAll('{{ICO_WA}}', ICO_WA);
@@ -174,7 +190,10 @@ for (const f of readdirSync(pagesDir).filter(f => f.endsWith('.html'))) {
   if (meta.medicos) ld.push(...MEDICOS_LD);
   if (meta.medico) ld.push({ ...MEDICOS_LD[meta.medico === 'pedro' ? 0 : 1], url: `${SITE}${meta.url}`, image: `${SITE}/s/img/${meta.medico === 'pedro' ? 'dr-pedro' : 'dra-julia'}.jpg`, description: meta.description });
   if (meta.faq) ld.push(faqLd(FAQ.filter(q => meta.faq === 'all' || meta.faq.split(',').includes(q.cat))));
-  write(path.join(meta.url, 'index.html'), layout({ ...meta, body, ld }));
+  if (meta.faqItems) { ld.push(faqLd(meta.faqItems)); body = body.replace('{{FAQITEMS}}', faqHtml(meta.faqItems, false)); }
+  if (meta.ld) ld.push(...meta.ld);
+  const crumbs = meta.url === '/' ? null : [['Início', '/'], ...(meta.parent ? [meta.parent] : []), [meta.crumb || meta.title.split(/ [·|] /)[0], meta.url]];
+  write(path.join(meta.url, 'index.html'), layout({ ...meta, body, ld, crumbs }));
   urls.push(meta.url);
 }
 
@@ -192,19 +211,20 @@ ${guias.map(guiaCard).join('\n')}
 ${posts.map(postCard).join('\n')}
   </div>
 </div></section>`;
-write('blog/index.html', layout({ title: 'Blog · Guias e artigos sobre pele, cabelo e metabolismo | Curae Santé', description: 'Conteúdo educativo revisado pela equipe médica da Curae Santé sobre pele, cabelo, emagrecimento e saúde hormonal feminina.', url: '/blog/', nav: 'blog', body: blogBody }));
+write('blog/index.html', layout({ title: 'Blog: pele, cabelo e metabolismo | Curae Santé', description: 'Conteúdo educativo revisado pela equipe médica da Curae Santé sobre pele, cabelo, emagrecimento e saúde hormonal feminina.', url: '/blog/', nav: 'blog', body: blogBody, crumbs: [['Início', '/'], ['Blog', '/blog/']] }));
 urls.push('/blog/');
 
 // blog: posts
 const related = (p) => posts.filter(o => o !== p && o.cats.some(c => p.cats.includes(c))).slice(0, 3);
 for (const p of posts) {
-  const html = micromark(p.body, { extensions: [gfm()], htmlExtensions: [gfmHtml()] });
+  const html = micromark(p.body, { extensions: [gfm()], htmlExtensions: [gfmHtml()] }).replace(/<h1[^>]*>[\s\S]*?<\/h1>/, '');
+  const mod = p.atualizado || p.data;
   const autorLd = /pedro/i.test(p.autor) ? { '@id': `${SITE}/#dr-pedro` } : /j[uú]lia/i.test(p.autor) ? { '@id': `${SITE}/#dra-julia` } : { '@type': 'Organization', name: 'Curae Santé' };
   const body = `<section class="phead"><div class="wrap narrow">
   <div class="crumbs" data-in><a href="/">Início</a> · <a href="/blog/">Blog</a> · ${esc(CAT_NOME[p.cats[0]])}</div>
   <h1 style="font-size:clamp(42px,6vw,76px);max-width:none">${esc(p.title)}</h1>
   <p class="lead" data-in>${esc(p.resumo)}</p>
-  <div class="ameta" data-in><span>${esc(p.autor || 'Curae Santé')}</span><span>${dataBR(p.data)}</span><span>Leitura de ${Math.max(2, Math.round(p.body.split(/\s+/).length / 200))} min</span></div>
+  <div class="ameta" data-in><span>${esc(p.autor || 'Curae Santé')}</span><span>${dataBR(p.data)}</span>${mod !== p.data ? `<span>Atualizado em ${dataBR(mod)}</span>` : ''}<span>Leitura de ${Math.max(2, Math.round(p.body.split(/\s+/).length / 200))} min</span></div>
 </div></section>
 <article class="pad-s"><div class="wrap narrow art">
 ${p.capa ? `<figure style="margin-top:0"><img src="${p.capa}" alt="${esc(p.capaAlt || '')}" width="1200" height="750"><figcaption>Imagem ilustrativa${p.capaCred && p.capaCred.fotografo ? ` · Foto: ${esc(p.capaCred.fotografo)}/Pexels` : ' · Pexels'}</figcaption></figure>` : ''}
@@ -214,8 +234,8 @@ ${html}
 <div class="ctabox"><h3>Quer conversar sobre o seu caso?</h3><p>Na consulta, a equipe ouve sua história, examina e explica as opções com calma.</p><a class="btn gold" href="${waLink(`Olá! Li o artigo "${p.title}" no site e quero agendar uma consulta.`)}" target="_blank" rel="noopener">Falar com a clínica</a></div>
 </div></article>
 ${related(p).length ? `<section class="pad-s cr"><div class="wrap"><span class="kick">Leia também</span><h2 style="font-size:clamp(32px,4vw,48px)">Artigos relacionados</h2><div class="posts">${related(p).map(postCard).join('')}</div></div></section>` : ''}`;
-  const ld = [...MEDICOS_LD, { '@type': 'BlogPosting', headline: p.title, description: p.resumo, datePublished: p.data, dateModified: p.data, author: autorLd, publisher: { '@id': `${SITE}/#clinica` }, mainEntityOfPage: `${SITE}/blog/${p.slug}/`, keywords: (p.tags || []).join(', '), inLanguage: 'pt-BR' }];
-  write(`blog/${p.slug}/index.html`, layout({ title: `${p.title} | Curae Santé`, description: p.resumo, url: `/blog/${p.slug}/`, nav: 'blog', body, ld, ogType: 'article', ogImage: p.capa || '/og-image.jpg' }));
+  const ld = [...MEDICOS_LD, { '@type': 'BlogPosting', headline: p.title, description: p.resumo, datePublished: p.data, dateModified: mod, image: p.capa ? `${SITE}${p.capa}` : undefined, author: autorLd, publisher: { '@id': `${SITE}/#clinica` }, mainEntityOfPage: `${SITE}/blog/${p.slug}/`, keywords: (p.tags || []).join(', '), inLanguage: 'pt-BR' }];
+  write(`blog/${p.slug}/index.html`, layout({ title: seoTitle(p.title), description: p.resumo.length > 160 ? p.resumo.slice(0, 157).replace(/\s+\S*$/, '') + '…' : p.resumo, url: `/blog/${p.slug}/`, nav: 'blog', body, ld, ogType: 'article', ogImage: p.capa || '/og-image.jpg', crumbs: [['Início', '/'], ['Blog', '/blog/'], [p.title, `/blog/${p.slug}/`]] }));
   urls.push(`/blog/${p.slug}/`);
 }
 
@@ -224,7 +244,7 @@ for (const g of guias) {
   const ld = [...MEDICOS_LD, ...(g.ld || [])];
   if (g.faq) ld.push(faqLd(g.faq));
   const body = fill(g.html).replace('{{GUIA_FAQ}}', g.faq ? faqHtml(g.faq, false) : '').replace('{{OUTROS_GUIAS}}', [...guias.filter(o => o !== g).map(guiaCard), ...posts.filter(o => o.cats.some(c => g.cats.includes(c))).slice(0, 3).map(postCard)].join(''));
-  write(`blog/${g.slug}/index.html`, layout({ title: g.title, description: g.description, url: `/blog/${g.slug}/`, nav: 'blog', body, ld, cta: false, ogType: 'article', ogImage: g.og || '/og-image.jpg' }));
+  write(`blog/${g.slug}/index.html`, layout({ title: g.title, description: g.description, url: `/blog/${g.slug}/`, nav: 'blog', body, ld, cta: false, ogType: 'article', ogImage: g.og || g.capa || '/og-image.jpg', crumbs: [['Início', '/'], ['Blog', '/blog/'], [g.titulo, `/blog/${g.slug}/`]] }));
   urls.push(`/blog/${g.slug}/`);
 }
 
