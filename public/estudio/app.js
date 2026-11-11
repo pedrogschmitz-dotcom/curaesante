@@ -234,7 +234,7 @@ function vignette(ctx, top = .55, bot = .9) {
 }
 // etiqueta ANTES / DEPOIS
 function tag(ctx, D, s, x, y, alpha = 1, align = 'center') {
-  if (alpha <= 0) return; const T = D.T;
+  if (alpha <= 0) return; const T = D.T; if (isStory(D) && y > 1450) y = 1450;
   ctx.save(); ctx.globalAlpha *= alpha;
   ctx.font = font(T, 'mono', 30, 700); try { ctx.letterSpacing = '8px'; } catch (e) { }
   const w = ctx.measureText(s).width + 56;
@@ -280,15 +280,19 @@ function regCard(ctx, D, i, reg, pts, p, opts = {}) {
 }
 function chrome(ctx, D, t, T0) {
   // barra de marca no topo + rodapé ético (sempre visíveis)
-  const T = D.T;
+  const T = D.T, st = isStory(D);
   const a = clamp(t / .4);
   ctx.save(); ctx.globalAlpha = a;
-  txt(ctx, (D.marca || T.nome).toUpperCase(), 60, 96, { font: font(T, 'mono', 24, 700), color: T.ink, align: 'left', ls: 6, alpha: .9 });
-  // progresso
-  ctx.fillStyle = 'rgba(255,255,255,.22)'; ctx.fillRect(60, 120, W - 120, 3);
-  ctx.fillStyle = T.ac; ctx.fillRect(60, 120, (W - 120) * clamp(t / T0), 3);
-  txt(ctx, D.prof.nome + ' · ' + D.prof.crm, CX, H - 74, { font: font(T, 'sans', 24, 600), color: T.ink, alpha: .85 });
-  txt(ctx, 'Imagens autorizadas pelo paciente · resultados variam de pessoa para pessoa', CX, H - 40, { font: font(T, 'sans', 19, 500), color: T.sub, alpha: .8, maxW: 980 });
+  if (!st) { // nos stories o próprio Instagram cobre o topo e já tem barra de progresso
+    let x0 = 60;
+    if (D.T === THEMES.curae) { const w = logo(ctx, 'cs', 92, 52, 64, .95); if (w) x0 = 92 + w / 2 + 16; }
+    txt(ctx, (D.marca || T.nome).toUpperCase(), x0, 96, { font: font(T, 'mono', 24, 700), color: T.ink, align: 'left', ls: 6, alpha: .9 });
+    ctx.fillStyle = 'rgba(255,255,255,.22)'; ctx.fillRect(60, 130, W - 120, 3);
+    ctx.fillStyle = T.ac; ctx.fillRect(60, 130, (W - 120) * clamp(t / T0), 3);
+  }
+  const fy = st ? H - 360 : H - 74;
+  txt(ctx, D.prof.nome + ' · ' + D.prof.crm, CX, fy, { font: font(T, 'sans', 24, 600), color: T.ink, alpha: .85 });
+  txt(ctx, 'Imagens autorizadas pelo paciente · resultados variam de pessoa para pessoa', CX, fy + 34, { font: font(T, 'sans', 19, 500), color: T.sub, alpha: .8, maxW: 980 });
   ctx.restore();
 }
 function malha(ctx, D, L, n, color, alpha, dotR = 2.6) {
@@ -307,9 +311,30 @@ function malha(ctx, D, L, n, color, alpha, dotR = 2.6) {
 
 /* ---------------- cartões finais (comuns a todos os estilos) ---------------- */
 const INFO_DUR = 4.2, END_DUR = 2.8;
+const infoD = D => (D.dest && D.dest !== 'reel') ? 3.2 : INFO_DUR;
+const endD = D => (D.dest && D.dest !== 'reel') ? 2.0 : END_DUR;
+const isStory = D => D.dest === 'stories';
+/* logos oficiais */
+const LOGO = {}; const tintCache = {};
+if (window.LOGOS) for (const k in LOGOS) { const im = new Image(); im.src = LOGOS[k]; LOGO[k] = im; }
+function tinted(k, color) {
+  const im = LOGO[k]; if (!im || !im.complete || !im.naturalWidth) return null; const key = k + color; if (tintCache[key]) return tintCache[key];
+  const c = mk(im.naturalWidth, im.naturalHeight), x = c.getContext('2d'); x.drawImage(im, 0, 0); x.globalCompositeOperation = 'source-in'; x.fillStyle = color; x.fillRect(0, 0, c.width, c.height);
+  return tintCache[key] = c;
+}
+function logo(ctx, k, x, y, h, alpha = 1, color) {
+  const im = color ? tinted(k, color) : LOGO[k]; if (!im || (im.complete === false) || !(im.naturalWidth || im.width)) return 0;
+  const iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height, w = iw * h / ih;
+  ctx.save(); ctx.globalAlpha *= alpha; ctx.drawImage(im, x - w / 2, y, w, h); ctx.restore(); return w;
+}
 function infoCard(ctx, D, t) {
   const T = D.T;
   ctx.fillStyle = T.bg; ctx.fillRect(0, 0, W, H);
+  if (isStory(D)) { ctx.save(); ctx.translate(CX, H / 2); ctx.scale(.86, .86); ctx.translate(-CX, -H / 2); infoBody(ctx, D, t); ctx.restore(); return; }
+  infoBody(ctx, D, t);
+}
+function infoBody(ctx, D, t) {
+  const T = D.T;
   // miniatura lado a lado
   const p0 = E.out(seg(t, 0, .6));
   ctx.save(); ctx.globalAlpha = p0;
@@ -342,12 +367,14 @@ function endCard(ctx, D, t) {
   ctx.fillStyle = T.upper ? T.ac : T.bg2; ctx.fillRect(0, 0, W, H);
   if (!T.upper) { ctx.strokeStyle = T.ac; ctx.lineWidth = 2; ctx.strokeRect(60, 160, W - 120, H - 320); }
   const ink = T.upper ? '#111' : T.ink;
+  if (!T.upper) logo(ctx, 'cs', CX, 380, 230, E.out(seg(t, 0, .6)));
   titulo(ctx, D, D.cta1, 760, T.upper ? 130 : 120, seg(t, 0, .5), { color: T.upper ? '#FFFFFF' : ink, d3: true, dc: T.upper ? '#A9470A' : T.dark, noShadow: T.upper });
   titulo(ctx, D, D.cta2, 900, T.upper ? 130 : 120, seg(t, .15, .65), { color: T.upper ? '#1A1A1A' : T.ac, d3: true, dc: T.upper ? '#A9470A' : T.dark, noShadow: T.upper });
   const p = E.out(seg(t, .5, 1.1));
   txt(ctx, D.prof.nome, CX, 1140, { font: font(T, 'sans', 44, 700), color: ink, alpha: p });
   txt(ctx, D.prof.crm, CX, 1196, { font: font(T, 'mono', 30, 700), color: ink, alpha: p * .85, ls: 4 });
   if (D.handle) txt(ctx, D.handle, CX, 1290, { font: font(T, 'sans', 36, 600), color: T.upper ? '#fff' : T.ac, alpha: p });
+  logo(ctx, 'full', CX, 1360, 110, p * (T.upper ? .9 : .95), T.upper ? '#1A1A1A' : null);
   txt(ctx, 'Resultados variam de pessoa para pessoa.', CX, 1560, { font: font(T, 'sans', 26, 500), color: ink, alpha: p * .8 });
   txt(ctx, 'Conteúdo educativo · imagens autorizadas pelo paciente', CX, 1604, { font: font(T, 'sans', 24, 500), color: ink, alpha: p * .7 });
 }
@@ -1071,10 +1098,10 @@ function profileSeg(ctx, D, t) {
 const K = D => D.k || 1;
 const mainDur = D => ST[D.style].dur(D) * K(D);
 const profDur = D => (D.withProfile && D.PA && D.PB) ? PROF_DUR : 0;
-function totalDur(D) { return mainDur(D) + profDur(D) + INFO_DUR + END_DUR; }
+function totalDur(D) { return mainDur(D) + profDur(D) + infoD(D) + endD(D); }
 function drawFrame(ctx, D, t) {
   const st = ST[D.style];
-  const T0 = mainDur(D), Tp = T0 + profDur(D), T1 = Tp + INFO_DUR, TT = T1 + END_DUR;
+  const T0 = mainDur(D), Tp = T0 + profDur(D), T1 = Tp + infoD(D), TT = T1 + endD(D);
   ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
   if (t < T0) st.draw(ctx, D, t / K(D));
@@ -1137,7 +1164,7 @@ async function renderAudio(D, dur, sr = 48000) {
   }
   // efeitos discretos nas transições
   const nb = ctx.createBuffer(1, sr * 1, sr); const nd = nb.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
-  const cues = (ST[D.style].cues(D) || []).map(c => c * K(D)).concat([mainDur(D) - .3, mainDur(D) + profDur(D) + INFO_DUR - .25]);
+  const cues = (ST[D.style].cues(D) || []).map(c => c * K(D)).concat([mainDur(D) - .3, mainDur(D) + profDur(D) + infoD(D) - .25]);
   if (D.sfx) cues.forEach(c => {
     if (c < 0 || c > dur) return;
     const s = ctx.createBufferSource(); s.buffer = nb;
@@ -1177,23 +1204,26 @@ async function opusOk() {
   if (!window.AudioEncoder) return false;
   try { return (await AudioEncoder.isConfigSupported({ codec: 'opus', sampleRate: 48000, numberOfChannels: 2, bitrate: 128000 })).supported; } catch (e) { return false; }
 }
-async function exportWebCodecs(D, canvas, onProg, codec, acodec) {
+async function exportWebCodecs(D, canvas, onProg, codec, acodec, out) {
   const ctx = canvas.getContext('2d');
+  const OW = out ? out.w : W, OH = out ? out.h : H, BR = out ? out.br : 9e6;
+  const oc = out ? mk(OW, OH) : canvas, ox = out ? oc.getContext('2d') : null; if (ox) ox.imageSmoothingQuality = 'high';
   const dur = totalDur(D), N = Math.round(dur * FPS);
   const audio = acodec ? await renderAudio(D, dur) : null;
   const useAudio = !!audio;
   const muxer = new Mp4Muxer.Muxer({
     target: new Mp4Muxer.ArrayBufferTarget(), fastStart: 'in-memory',
-    video: { codec: 'avc', width: W, height: H, frameRate: FPS },
+    video: { codec: 'avc', width: OW, height: OH, frameRate: FPS },
     audio: useAudio ? { codec: acodec, numberOfChannels: 2, sampleRate: 48000 } : undefined,
   });
   let err = null;
   const ve = new VideoEncoder({ output: (c, m) => muxer.addVideoChunk(c, m), error: e => err = e });
-  ve.configure({ codec, width: W, height: H, bitrate: 9e6, framerate: FPS, avc: { format: 'avc' } });
+  ve.configure({ codec, width: OW, height: OH, bitrate: BR, framerate: FPS, avc: { format: 'avc' } });
   for (let i = 0; i < N; i++) {
     if (err) throw err;
     drawFrame(ctx, D, i / FPS);
-    const vf = new VideoFrame(canvas, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) });
+    if (ox) ox.drawImage(canvas, 0, 0, OW, OH);
+    const vf = new VideoFrame(oc, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) });
     ve.encode(vf, { keyFrame: i % (FPS * 2) === 0 }); vf.close();
     if (ve.encodeQueueSize > 6) await new Promise(r => { const f = () => ve.encodeQueueSize > 2 ? setTimeout(f, 4) : r(); f(); });
     if (i % 6 === 0) { onProg(i / N * (useAudio ? .92 : 1)); await new Promise(r => setTimeout(r, 0)); }
@@ -1216,11 +1246,13 @@ async function exportWebCodecs(D, canvas, onProg, codec, acodec) {
   return { blob: new Blob([muxer.target.buffer], { type: 'video/mp4' }), ext: 'mp4', audio: !!useAudio };
 }
 // Alternativa: grava em tempo real (navegadores sem WebCodecs)
-async function exportRecorder(D, canvas, onProg) {
-  const ctx = canvas.getContext('2d');
+async function exportRecorder(D, canvas, onProg, out) {
+  const ctx0 = canvas.getContext('2d');
+  const oc = out ? mk(out.w, out.h) : canvas, ox = out ? oc.getContext('2d') : null;
+  const ctx = { _draw: (t) => { drawFrame(ctx0, D, t); if (ox) ox.drawImage(canvas, 0, 0, out.w, out.h); } };
   const dur = totalDur(D);
   const audio = await renderAudio(D, dur);
-  const stream = canvas.captureStream(FPS);
+  const stream = oc.captureStream(FPS);
   let ac = null, src = null;
   if (audio) {
     ac = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 48000 });
@@ -1230,14 +1262,14 @@ async function exportRecorder(D, canvas, onProg) {
   const types = ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4', 'video/webm;codecs=vp9,opus', 'video/webm'];
   const mime = types.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
   if (!mime) throw new Error('Este navegador não grava vídeo.');
-  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 9e6 });
+  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: out ? out.br : 9e6 });
   const chunks = []; rec.ondataavailable = e => e.data.size && chunks.push(e.data);
   const done = new Promise(r => rec.onstop = r);
-  drawFrame(ctx, D, 0);
+  ctx._draw(0);
   rec.start(250); if (src) src.start();
   const t0 = performance.now();
   await new Promise(res => {
-    const step = () => { const t = (performance.now() - t0) / 1000; drawFrame(ctx, D, Math.min(t, dur)); onProg(t / dur); if (t >= dur) return res(); requestAnimationFrame(step); };
+    const step = () => { const t = (performance.now() - t0) / 1000; ctx._draw(Math.min(t, dur)); onProg(t / dur); if (t >= dur) return res(); requestAnimationFrame(step); };
     requestAnimationFrame(step);
   });
   rec.stop(); await done; if (ac) ac.close();
@@ -1245,4 +1277,21 @@ async function exportRecorder(D, canvas, onProg) {
   return { blob: new Blob(chunks, { type: mime.split(';')[0] }), ext, audio: !!audio };
 }
 
-window.Motor = { ORDEM, mainDur, PROF_DUR, VOICE_AT, regList, cardLayout, offPts, tris, W, H, CX, EYE_Y, IED, PR, FPS, THEMES, REGIOES, REG, ST, anchors, regiaoPts, eyeXform, eyesXform, composeAdj, coverXform, prerender, drawFrame, totalDur, renderAudio, pickAvc, aacOk, opusOk, exportWebCodecs, exportRecorder, apply, mk, INFO_DUR, END_DUR };
+function storyPoll(ctx, D) {
+  const T = D.T; ctx.fillStyle = T.bg; ctx.fillRect(0, 0, W, H);
+  titulo(ctx, D, T.upper ? 'NOTOU A' : 'Notou a', 330, T.upper ? 120 : 112, 1, { d3: true });
+  titulo(ctx, D, T.upper ? 'DIFERENÇA?' : 'diferença?', T.upper ? 450 : 440, T.upper ? 120 : 112, 1, { color: T.ac, d3: true });
+  const bw = 440, bh = 640, y0 = 520;
+  [[D.A, 'ANTES', CX - bw - 12], [D.B, 'DEPOIS', CX + 12]].forEach(([fr, lab, x]) => {
+    ctx.save(); rr(ctx, x, y0, bw, bh, 20); ctx.clip(); face(ctx, fr, .82, CX, EYE_Y + 140, x + bw / 2, y0 + bh / 2); ctx.restore();
+    tag(ctx, D, lab, x + bw / 2, y0 + bh - 28, 1);
+  });
+  // espaço para o adesivo de enquete do Instagram
+  ctx.save(); ctx.setLineDash([14, 12]); ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 3; rr(ctx, 170, 1210, 740, 230, 30); ctx.stroke(); ctx.restore();
+  txt(ctx, D.prof.nome + ' · ' + D.prof.crm, CX, H - 360, { font: font(T, 'sans', 24, 600), color: T.ink, alpha: .85 });
+  txt(ctx, 'Imagens autorizadas pelo paciente · resultados variam de pessoa para pessoa', CX, H - 326, { font: font(T, 'sans', 19, 500), color: T.sub, alpha: .8, maxW: 980 });
+}
+function storyInfo(ctx, D) {
+  infoCard(ctx, Object.assign({}, D, { dest: 'stories' }), 12);
+}
+window.Motor = { storyPoll, storyInfo, infoD, endD, ORDEM, mainDur, PROF_DUR, VOICE_AT, regList, cardLayout, offPts, tris, W, H, CX, EYE_Y, IED, PR, FPS, THEMES, REGIOES, REG, ST, anchors, regiaoPts, eyeXform, eyesXform, composeAdj, coverXform, prerender, drawFrame, totalDur, renderAudio, pickAvc, aacOk, opusOk, exportWebCodecs, exportRecorder, apply, mk, INFO_DUR, END_DUR };

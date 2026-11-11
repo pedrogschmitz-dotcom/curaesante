@@ -31,7 +31,7 @@ const WEEK = [
 const S = {
   img: {}, blob: {}, lm: {}, eyes: {}, adj: { dx: 0, dy: 0, ds: 0, dr: 0 },
   frames: {}, proc: 'ah', regs: new Set(PROCS.ah.regs), ml: {}, showMl: false,
-  theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
+  dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
   orig: {}, crop: {}, lmOrig: {}, eyesOrig: {}, checks: {}, caseNo: 1, prof: 0, result: null, roff: {}, mlSide: {}, perSide: false, voice: null, voiceName: '', withProfile: true,
 };
 const DEF = { p1n: 'Dr. Pedro Schmitz', p1c: 'CRM/SC 38229', p2n: '', p2c: '', marca: 'Curae Santé', handle: '@curaesante', cta1: 'Agende sua', cta2: 'avaliação' };
@@ -467,6 +467,11 @@ $('#profSel').onchange = e => { S.prof = +e.target.value; refresh(); };
 function segCtl(id, key, cb) {
   $$(`#${id} button`).forEach(b => b.onclick = () => { $$(`#${id} button`).forEach(x => x.classList.toggle('on', x === b)); S[key] = b.dataset.v; cb && cb(); refresh(key === 'theme'); });
 }
+segCtl('dest', 'dest', () => setTimeout(destUI, 0));
+function destUI() {
+  const t = { reel: 'Vídeo completo, com cartão do caso e fechamento. Ideal para o feed.', stories: 'Mais curto, com o texto longe das bordas que o Instagram cobre. Saem também 2 imagens: a da enquete e a do caso.', whats: 'Mais curto e leve (720p) para mandar ao paciente pelo WhatsApp.' }[S.dest];
+  $('#destHint').textContent = t; $('#savePoll').style.display = $('#saveInfo').style.display = S.dest === 'stories' ? 'inline-flex' : 'none';
+}
 segCtl('theme', 'theme'); segCtl('music', 'music', () => { if (playing) { stopAudio(); startAudio(Dcur); } });
 $('#swSfx').onclick = e => { S.sfx = !S.sfx; e.currentTarget.classList.toggle('on', S.sfx); };
 $('#swProf').onclick = e => { S.withProfile = !S.withProfile; e.currentTarget.classList.toggle('on', S.withProfile); refresh(); };
@@ -535,7 +540,8 @@ function buildD() {
     cta1: CFG.cta1, cta2: CFG.cta2, tess: TESS, caseNo: S.caseNo,
     roff: S.roff, voice: S.voice, withProfile: S.withProfile, k: 1,
   };
-  if (S.voice) { const need = S.voice.duration + M.VOICE_AT + .5 - M.INFO_DUR - M.END_DUR - ((S.withProfile && D.PA && D.PB) ? M.PROF_DUR : 0); D.k = Math.max(.85, Math.min(3, need / M.ST[S.style].dur(D))); }
+  D.dest = S.dest; if (S.dest !== 'reel') D.k = .82;
+  if (S.voice) { const need = S.voice.duration + M.VOICE_AT + .5 - M.infoD(D) - M.endD(D) - ((S.withProfile && D.PA && D.PB) ? M.PROF_DUR : 0); D.k = Math.max(.85, Math.min(3, need / M.ST[S.style].dur(D))); }
   return D;
 }
 const listaPt = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1];
@@ -599,7 +605,7 @@ async function saveFile(name, blob) {
   try { await DL.save({ filename: name, data: blob }); return true; }
   catch (e) { if (e && e.code === 'declined') return false; toast('Não consegui salvar: ' + (e && e.message || e), 4200); return false; }
 }
-const slug = () => (PROCS[S.proc].curto + '-' + M.ST[S.style].nome).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const slug = () => (PROCS[S.proc].curto + '-' + M.ST[S.style].nome + '-' + S.dest).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
 $('#gen').onclick = async () => {
   const D = buildD(); if (!D) return toast('Suba as duas fotos de frente.');
   if (!S.checks.consent || !S.checks.real) { toast('Marque o termo de imagem e “fotos sem filtro” no checklist.', 3500); $('.check[data-c="consent"]').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
@@ -614,11 +620,12 @@ $('#gen').onclick = async () => {
     const wantAudio = D.music !== 'nenhuma' || !!D.voice;
     const recMp4 = window.MediaRecorder && ['video/mp4;codecs=avc1.640028,mp4a.40.2', 'video/mp4;codecs=avc1,mp4a', 'video/mp4'].some(t => MediaRecorder.isTypeSupported(t));
     let r;
-    if (codec && (!wantAudio || await M.aacOk())) { $('#genInfo').textContent = 'Montando quadro a quadro (MP4)…'; r = await M.exportWebCodecs(D, cv, prog, codec, wantAudio ? 'aac' : null); }
-    else if (recMp4) { $('#genInfo').textContent = 'Gravando em tempo real (MP4 com trilha)…'; r = await M.exportRecorder(D, cv, prog); }
-    else if (codec && await M.opusOk()) { $('#genInfo').textContent = 'Montando quadro a quadro (MP4)…'; r = await M.exportWebCodecs(D, cv, prog, codec, 'opus'); }
-    else if (codec) { $('#genInfo').textContent = 'Montando quadro a quadro (MP4, sem trilha neste navegador)…'; r = await M.exportWebCodecs(D, cv, prog, codec, null); }
-    else { $('#genInfo').textContent = 'Gravando em tempo real…'; r = await M.exportRecorder(D, cv, prog); }
+    const out = S.dest === 'whats' ? { w: 720, h: 1280, br: 2.5e6 } : null;
+    if (codec && (!wantAudio || await M.aacOk())) { $('#genInfo').textContent = 'Montando quadro a quadro (MP4)…'; r = await M.exportWebCodecs(D, cv, prog, codec, wantAudio ? 'aac' : null, out); }
+    else if (recMp4) { $('#genInfo').textContent = 'Gravando em tempo real (MP4 com trilha)…'; r = await M.exportRecorder(D, cv, prog, out); }
+    else if (codec && await M.opusOk()) { $('#genInfo').textContent = 'Montando quadro a quadro (MP4)…'; r = await M.exportWebCodecs(D, cv, prog, codec, 'opus', out); }
+    else if (codec) { $('#genInfo').textContent = 'Montando quadro a quadro (MP4, sem trilha neste navegador)…'; r = await M.exportWebCodecs(D, cv, prog, codec, null, out); }
+    else { $('#genInfo').textContent = 'Gravando em tempo real…'; r = await M.exportRecorder(D, cv, prog, out); }
     S.result = r;
     const v = $('#resVideo'); v.src = URL.createObjectURL(r.blob); v.style.display = 'block'; pv.style.display = 'none';
     $('#saveVid').style.display = 'inline-flex';
@@ -633,6 +640,9 @@ $('#saveCover').onclick = async () => {
   M.drawFrame(x, Object.assign({}, D, { style: 'lado' }), Math.min(M.ST.lado.dur(D) - .5, 4.5));
   const b = await toBlob(c, 'image/png'); const ok = await saveFile(`capa-${slug()}.png`, b); if (ok) toast('Capa salva.');
 };
+async function savePng(fn, name) { const D = buildD(); if (!D) return toast('Suba as fotos primeiro.'); const c = M.mk(W, H); fn(c.getContext('2d'), D); const b = await toBlob(c, 'image/png'); if (await saveFile(name + '-' + slug() + '.png', b)) toast('Imagem salva. No Instagram, cole o adesivo no espaço tracejado.', 3500); }
+$('#savePoll').onclick = () => savePng(M.storyPoll, 'story-enquete');
+$('#saveInfo').onclick = () => savePng(M.storyInfo, 'story-caso');
 pv.addEventListener('click', () => { });
 $('#resVideo').addEventListener('emptied', () => { });
 
@@ -688,6 +698,65 @@ Salve para lembrar e mande para quem está pensando em fazer.
   $('#cap').textContent = cap; $('#pin').textContent = pin; $('#faq').textContent = faq;
 }
 $$('[data-copy]').forEach(b => b.onclick = async () => { try { await navigator.clipboard.writeText($('#' + b.dataset.copy).textContent); toast('Copiado.'); } catch (e) { toast('Selecione o texto e copie manualmente.'); } });
+
+/* ---------------- legenda com IA (só dentro do Claude) ---------------- */
+let SAMPLE = null, MCP = null;
+(async () => {
+  try { if (window.claude && claude.use) { SAMPLE = await claude.use('sample'); if (SAMPLE) $('#aiBox').style.display = 'block'; MCP = await claude.use('mcp'); } } catch (e) { }
+})();
+$('#aiGen').onclick = async () => {
+  if (!SAMPLE) return; const btn = $('#aiGen'); btn.disabled = true; btn.textContent = 'Escrevendo…'; $('#aiOut').innerHTML = '';
+  const p = PROCS[S.proc]; const regs = orderedRegs().map(id => M.REG[id].nome.toLowerCase()); const prof = profs()[Math.min(S.prof, profs().length - 1)];
+  const dados = { procedimento: p.nome, regioes: regs, ml: S.showMl ? Object.fromEntries(orderedRegs().filter(id => S.ml[id]).map(id => [M.REG[id].nome, S.perSide && M.REG[id].bi && S.mlSide[id] ? `D ${S.mlSide[id].d} / E ${S.mlSide[id].e}` : S.ml[id]])) : null, indicacao: $('#indic').value, evolucao: $('#interval').value + ', ' + $('#sess').value, possiveis_efeitos: $('#compl').value, angulo: ANGLES[S.angle], destino: { reel: 'reel do feed', stories: 'stories', whats: 'mensagem de WhatsApp para o paciente' }[S.dest], profissional: prof.nome + ' · ' + prof.crm };
+  const prompt = `Você escreve legendas de Instagram para o ${prof.nome}, médico (nunca chame de dermatologista, nunca cite RQE nem título de especialista; use só nome e CRM).
+Tom dele: direto, educativo, sem bajulação, frases curtas, português do Brasil, sem emojis em excesso (no máximo 2), sem exclamações seguidas.
+Regras obrigatórias (CFM, Res. 2.336/2023): sem promessa de resultado, sem preço, sem comparação com colegas, sem superlativos ("o melhor", "perfeito", "garantido"). A legenda TEM que trazer: indicação, evolução (tempo/sessões), possíveis efeitos e complicações, a frase "resultados variam de pessoa para pessoa", que as imagens foram autorizadas pelo paciente e, no fim, nome e CRM. Feche com uma chamada para salvar ou mandar para alguém (sem pedir para agendar com urgência).
+Dados do caso: ${JSON.stringify(dados)}
+Escreva 3 versões diferentes de abertura e ritmo (uma mais curta, uma mais explicativa, uma em formato de pergunta e resposta). Se o destino for stories ou WhatsApp, cada versão com no máximo 450 caracteres. Responda só com um JSON: {"versoes": ["...", "...", "..."]}`;
+  try {
+    const r = await SAMPLE.json(prompt, { modelTier: 'default' });
+    const vs = (r && r.versoes) || [];
+    vs.forEach((v, i) => { const box = document.createElement('div'); box.innerHTML = `<div class="copybox"></div><button class="btn small ghost">Copiar versão ${i + 1}</button>`; box.firstChild.textContent = v; box.lastChild.onclick = async () => { try { await navigator.clipboard.writeText(v); toast('Copiado.'); } catch (e) { toast('Selecione e copie manualmente.'); } }; $('#aiOut').append(box); });
+    if (!vs.length) $('#aiOut').textContent = 'Não veio resposta. Tente de novo.';
+  } catch (e) { $('#aiOut').textContent = e && e.code === 'rate_limited' ? 'Muitos pedidos seguidos: espere um pouco.' : 'Não consegui gerar agora (' + (e && (e.message || e.code) || e) + ').'; }
+  btn.disabled = false; btn.textContent = '✦ Escrever de novo';
+};
+
+/* ---------------- enviar caso para o Google Drive ---------------- */
+const b64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(blob); });
+const findId = o => { if (!o || typeof o !== 'object') return null; if (typeof o.id === 'string') return o.id; for (const k in o) { const v = findId(o[k]); if (v) return v; } return null; };
+function caseFiles() {
+  const nm = { fa: 'frente-antes', fd: 'frente-depois', pa: 'perfil-antes', pd: 'perfil-depois' };
+  const f = Object.keys(S.blob).filter(k => S.blob[k]).map(k => ({ name: nm[k] + '.jpg', blob: S.blob[k], type: 'image/jpeg' }));
+  const info = { data: new Date().toISOString(), procedimento: PROCS[S.proc].nome, regioes: orderedRegs().map(id => M.REG[id].nome), ml: S.showMl ? S.ml : null, ml_por_lado: S.perSide ? S.mlSide : null, indicacao: $('#indic').value, evolucao: $('#interval').value + ' · ' + $('#sess').value, possiveis_efeitos: $('#compl').value, termo_assinado: !!S.checks.consent, sem_filtro: !!S.checks.real };
+  f.push({ name: 'caso.json', blob: new Blob([JSON.stringify(info, null, 2)], { type: 'application/json' }), type: 'application/json' });
+  f.push({ name: 'legenda.txt', blob: new Blob([$('#cap').textContent], { type: 'text/plain' }), type: 'text/plain' });
+  if (S.result) f.push({ name: 'video-' + slug() + '.' + S.result.ext, blob: S.result.blob, type: 'video/' + S.result.ext });
+  return f;
+}
+$('#toDrive').onclick = async () => {
+  if (!S.img.fa || !S.img.fd) return toast('Suba as fotos de frente primeiro.');
+  const files = caseFiles(); const info = $('#driveInfo');
+  const pasta = new Date().toISOString().slice(0, 10) + ' · ' + PROCS[S.proc].curto + ' · caso ' + String(S.caseNo).padStart(2, '0');
+  if (MCP) {
+    try {
+      info.textContent = 'Criando a pasta no Drive…';
+      const gd = await MCP.server('Google Drive');
+      let root = null; try { root = localStorage.getItem('estudio-drive-root'); } catch (e) { }
+      if (!root) { root = findId(await gd.create_file({ title: 'Estúdio Curae · Casos', contentMimeType: 'application/vnd.google-apps.folder' })); try { localStorage.setItem('estudio-drive-root', root); } catch (e) { } }
+      const dir = findId(await gd.create_file({ title: pasta, contentMimeType: 'application/vnd.google-apps.folder', parentId: root }));
+      for (let i = 0; i < files.length; i++) { const f = files[i]; info.textContent = `Enviando ${i + 1} de ${files.length}: ${f.name}…`;
+        await gd.create_file({ title: f.name, parentId: dir, contentMimeType: f.type, base64Content: await b64(f.blob), disableConversionToGoogleType: true }); }
+      info.textContent = `Pronto: pasta “${pasta}” dentro de “Estúdio Curae · Casos” no seu Drive.`; return;
+    } catch (e) { console.warn(e); info.textContent = 'O Drive não aceitou daqui (' + (e && (e.code || e.message) || e) + '). Tentando pelo compartilhamento…'; }
+  }
+  // no site (ou se o conector falhar): menu de compartilhar → app do Google Drive
+  try {
+    const fl = files.map(f => new File([f.blob], f.name, { type: f.type }));
+    if (navigator.canShare && navigator.canShare({ files: fl })) { await navigator.share({ files: fl, title: pasta }); info.textContent = 'Escolha “Drive” no menu para salvar. Dica: crie a pasta “Estúdio Curae · Casos” no Drive.'; }
+    else info.textContent = 'Este navegador não deixa enviar vários arquivos. No iPhone, use o Safari.';
+  } catch (e) { if (!(e && e.name === 'AbortError')) info.textContent = 'Não consegui abrir o compartilhamento.'; }
+};
 
 /* ---------------- semana ---------------- */
 WEEK.forEach(([d, style, ang, tit, desc]) => {
@@ -761,7 +830,7 @@ function go(v) { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-'
 $$('nav.tabs button').forEach(b => b.onclick = () => go(b.dataset.v));
 
 /* ---------------- início ---------------- */
-applyProc('ah'); renderProfs(); renderGal(); addCamBtns();
+applyProc('ah'); renderProfs(); renderGal(); addCamBtns(); destUI();
 $$('#theme button').forEach(b => b.classList.toggle('on', b.dataset.v === S.theme));
 const fontsReady = Promise.all(['500 40px "Cormorant Garamond"', 'italic 500 40px "Cormorant Garamond"', '600 40px "Red Hat Display"', '700 40px "Red Hat Display"', '40px Anton', '800 40px Inter', '600 40px Inter', '700 40px "Space Mono"'].map(f => document.fonts.load(f).catch(() => { })));
 fontsReady.then(() => { refresh(); drawAlign(); });

@@ -178,6 +178,9 @@ nav.tabs svg{width:22px;height:22px}
 
   <div class="step" id="s5">
     <div class="hd"><span class="num">5</span><div><h2>Prévia e vídeo</h2><div class="hint" id="durInfo">—</div></div></div>
+    <label class="f" style="margin-top:0">Para onde vai</label>
+    <div class="seg" id="dest" style="margin-bottom:14px"><button data-v="reel" class="on">Reel</button><button data-v="stories">Stories</button><button data-v="whats">WhatsApp</button></div>
+    <div class="hint" id="destHint" style="margin:-6px 0 12px"></div>
     <div class="player">
       <canvas id="cvPrev" width="1080" height="1920"></canvas>
       <video id="resVideo" controls playsinline></video>
@@ -192,9 +195,12 @@ nav.tabs svg{width:22px;height:22px}
     <button class="btn full" id="gen">Gerar vídeo</button>
     <div class="bar" style="margin-top:12px;display:none" id="genBar"><div></div></div>
     <div class="hint" id="genInfo" style="margin-top:8px"></div>
-    <div class="row" style="margin-top:12px"><button class="btn ghost small" id="saveVid" style="display:none">Salvar vídeo</button><button class="btn ghost small" id="saveCover">Salvar capa (PNG)</button></div>
+    <div class="row" style="margin-top:12px"><button class="btn ghost small" id="saveVid" style="display:none">Salvar vídeo</button><button class="btn ghost small" id="saveCover">Salvar capa (PNG)</button><button class="btn ghost small" id="savePoll" style="display:none">Story da enquete (PNG)</button><button class="btn ghost small" id="saveInfo" style="display:none">Story do caso (PNG)</button></div>
+    <div class="row" style="margin-top:10px"><button class="btn ghost small" id="toDrive">Enviar caso para o Google Drive</button></div>
+    <div class="hint" id="driveInfo" style="margin-top:6px"></div>
 
     <label class="f">Legenda</label>
+    <div id="aiBox" style="display:none;margin-bottom:10px"><button class="btn small" id="aiGen">✦ Escrever com IA no meu tom (3 versões)</button><div id="aiOut"></div></div>
     <div class="seg" id="angle" style="flex-wrap:wrap"></div>
     <div class="copybox" id="cap"></div><button class="btn small ghost" data-copy="cap">Copiar legenda</button>
     <label class="f">Comentário fixado</label>
@@ -268,6 +274,7 @@ nav.tabs svg{width:22px;height:22px}
 <div class="toast" id="toast"></div>
 
 <script src="mp/mp4-muxer.js"></script>
+<script src="logos.js"></script>
 <script src="canon.js"></script>
 <script src="app.js"></script>
 <script src="ui.js"></script>
