@@ -41,7 +41,7 @@ const WEEK = [
 const S = {
   img: {}, blob: {}, lm: {}, eyes: {}, adj: { dx: 0, dy: 0, ds: 0, dr: 0 },
   frames: {}, proc: 'ah', regs: new Set(PROCS.ah.regs), ml: {}, showMl: false,
-  mode: 'est', cirSel: null, clips: [], sens: true, narr: null, capWords: [], capOn: true, cardT: {}, regOrder: [], dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
+  mode: 'est', bgBlack: true, bgDone: {}, cirSel: null, clips: [], sens: true, narr: null, capWords: [], capOn: true, cardT: {}, regOrder: [], dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
   orig: {}, crop: {}, lmOrig: {}, eyesOrig: {}, checks: {}, caseNo: 1, prof: 0, result: null, roff: {}, mlSide: {}, perSide: false, voice: null, voiceName: '', withProfile: true,
 };
 const DEF = { p1n: 'Dr. Pedro Schmitz', p1c: 'CRM/SC 38229', p2n: '', p2c: '', marca: 'Curae Santé', handle: '@curaesante', cta1: 'Agende sua', cta2: 'avaliação' };
@@ -64,7 +64,41 @@ const saveCfg = () => { try { localStorage.setItem('estudio-cfg', JSON.stringify
 const toast = (m, ms = 2400) => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), ms); };
 
 /* ---------------- MediaPipe (local, sem internet externa) ---------------- */
-let LM = null, mpP = null;
+let LM = null, mpP = null, MPMOD = null, MPFS = null, SEG = null, segP = null;
+/* ---------------- tirar o fundo (segmentação de pessoa: cabelo, pele, roupa) ---------------- */
+function ensureSeg() {
+  if (segP) return segP;
+  segP = (async () => {
+    await ensureMP(); if (!MPMOD) return null;
+    try {
+      const r = await fetch(new URL('mp/seg_model.wasm', location.href).href); const len = +r.headers.get('content-length') || 0;
+      let buf; if (r.body && len) { const rd = r.body.getReader(); const parts = []; let got = 0; for (;;) { const { done, value } = await rd.read(); if (done) break; parts.push(value); got += value.length; $('#mpState').textContent = `fundo: baixando ${Math.round(got / len * 100)}%`; } buf = new Uint8Array(got); let o = 0; parts.forEach(p => { buf.set(p, o); o += p.length; }); }
+      else buf = new Uint8Array(await r.arrayBuffer());
+      SEG = await MPMOD.ImageSegmenter.createFromOptions(MPFS, { baseOptions: { modelAssetBuffer: buf, delegate: 'CPU' }, runningMode: 'IMAGE', outputCategoryMask: false, outputConfidenceMasks: true });
+      $('#mpState').textContent = LM ? 'rosto: 478 pontos ✓' : 'rosto: modo manual';
+    } catch (e) { console.warn('segmentação indisponível', e); SEG = null; }
+    return SEG;
+  })();
+  return segP;
+}
+async function removeBg(cv) {
+  await ensureSeg(); if (!SEG) return null;
+  const sc = Math.min(1, 1024 / Math.max(cv.width, cv.height));
+  const small = M.mk(Math.round(cv.width * sc), Math.round(cv.height * sc)); small.getContext('2d').drawImage(cv, 0, 0, small.width, small.height);
+  let res; try { res = SEG.segment(small); } catch (e) { console.warn(e); return null; }
+  const m = res.confidenceMasks && res.confidenceMasks[0]; if (!m) return null;
+  const mw = m.width, mh = m.height, bg = m.getAsFloat32Array();
+  const mc = M.mk(mw, mh), mx = mc.getContext('2d'), id = mx.createImageData(mw, mh);
+  for (let i = 0; i < mw * mh; i++) { let a = 1 - bg[i]; a = Math.min(1, Math.max(0, (a - .35) / .3)); id.data[i * 4 + 3] = Math.round(a * 255); }
+  mx.putImageData(id, 0, 0); try { res.close(); } catch (e) { }
+  // amplia a máscara em etapas (borda suave) e recorta a pessoa
+  const m2 = M.mk(Math.min(cv.width, mw * 4), Math.min(cv.height, mh * 4)); const m2x = m2.getContext('2d'); m2x.imageSmoothingQuality = 'high'; m2x.drawImage(mc, 0, 0, m2.width, m2.height);
+  const out = M.mk(cv.width, cv.height), ox = out.getContext('2d');
+  const person = M.mk(cv.width, cv.height), px = person.getContext('2d');
+  px.drawImage(cv, 0, 0); px.globalCompositeOperation = 'destination-in'; px.imageSmoothingQuality = 'high'; px.drawImage(m2, 0, 0, cv.width, cv.height);
+  ox.fillStyle = '#000'; ox.fillRect(0, 0, out.width, out.height); ox.drawImage(person, 0, 0);
+  return out;
+}
 function ensureMP() {
   if (mpP) return mpP;
   $('#mpState').textContent = 'rosto: carregando…';
@@ -82,6 +116,7 @@ function ensureMP() {
       $('#mpState').textContent = 'rosto: preparando…';
       const mod = await import(new URL('mp/vision_bundle.js', location.href).href);
       const fs = await mod.FilesetResolver.forVisionTasks(new URL('mp/wasm', location.href).href);
+      MPMOD = mod; MPFS = fs;
       LM = await mod.FaceLandmarker.createFromOptions(fs, { baseOptions: { modelAssetBuffer: model, delegate: 'CPU' }, runningMode: 'IMAGE', numFaces: 1 });
       $('#mpState').textContent = 'rosto: 478 pontos ✓';
     } catch (e) {
@@ -159,7 +194,9 @@ function cropCanvas(cv, r) { const c = M.mk(Math.round(r.w), Math.round(r.h)); c
 const shiftPts = (P, r) => P && P.map(p => Object.assign({}, p, { x: p.x - r.x, y: p.y - r.y }));
 async function applyCrop(k, r) {
   const orig = S.orig[k]; S.crop[k] = r || null;
-  const c = r ? cropCanvas(orig, r) : orig;
+  let c = r ? cropCanvas(orig, r) : orig;
+  S.bgDone[k] = false;
+  if (S.bgBlack && S.mode !== 'cir') { const st = $(`.slot[data-k="${k}"] .st`); if (st) st.textContent = 'tirando o fundo…'; const nb = await removeBg(c); if (nb) { c = nb; S.bgDone[k] = true; } }
   S.img[k] = c; S.blob[k] = await toBlob(toCanvas(c, 1600));
   S.lm[k] = S.lmOrig[k] ? (r ? shiftPts(S.lmOrig[k], r) : S.lmOrig[k]) : null;
   S.eyes[k] = S.eyesOrig[k] ? (r ? shiftPts(S.eyesOrig[k], r) : S.eyesOrig[k]) : null;
@@ -173,7 +210,7 @@ function slotStatus(k) {
   let b = slot.querySelector('.cropb'); if (!b) { b = document.createElement('button'); b.className = 'cropb'; b.textContent = '✂'; b.title = 'Recortar'; slot.append(b); b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openCrop(k); }); }
   base0(k);
   const base = S.mode === 'cir' ? '✓ foto pronta' : S.lm[k] ? '✓ rosto encontrado' : S.eyes[k] ? '✓ olhos marcados à mão' : (k[0] === 'f' ? 'rosto não achado: toque em “marcar olhos”' : 'perfil: encaixe pela foto');
-  st.textContent = base + (S.crop[k] && S.crop[k].auto ? ' · ✂ marca cortada' : S.crop[k] ? ' · ✂ recortada' : '');
+  st.textContent = base + (S.crop[k] && S.crop[k].auto ? ' · ✂ marca cortada' : S.crop[k] ? ' · ✂ recortada' : '') + (S.bgDone[k] ? ' · fundo preto' : '');
   st.classList.toggle('warn', !S.lm[k] && !S.eyes[k]);
 }
 async function setPhoto(k, src, opts = {}) {
@@ -298,6 +335,7 @@ function buildFrames(only) {
       const eyesF = !f.L && S.eyes[k] ? S.eyes[k].map(p => M.apply(f.M, p)) : null;
       const tOpts = { tarja: S.tarja && S.mode !== 'cir', L: f.L || (k[0] === 'f' ? CANON : null), eyes: eyesF };
       if (k[0] === 'p' && !f.L && !eyesF) tOpts.L = null;
+      tOpts.black = !!S.bgDone[k];
       S.frames[k] = { cv: M.prerender(S.img[k], f.M, tOpts), L: Lf };
     }
     drawAlign(); lightCheck(); drawReg(); $('#profTog').style.display = S.frames.pa && S.frames.pd ? 'flex' : 'none'; refresh(true);
@@ -471,6 +509,7 @@ const orderedRegs = () => S.mode === 'com' ? S.regOrder.filter(id => S.regs.has(
 $('#swMl').onclick = e => { S.showMl = !S.showMl; e.currentTarget.classList.toggle('on', S.showMl); renderMl(); refresh(); };
 ['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2', 'tecnica', 'cuidados', 'local', 'tam'].forEach(id => $('#' + id).addEventListener('input', () => refresh()));
 ['hook1', 'hook2'].forEach(id => $('#' + id).addEventListener('input', e => e.target.dataset.touched = 1));
+$('#swBg').onclick = async e => { S.bgBlack = !S.bgBlack; e.currentTarget.classList.toggle('on', S.bgBlack); for (const k of ['fa', 'fd', 'pa', 'pd']) if (S.orig[k]) await applyCrop(k, S.crop[k]); };
 $('#swSens').onclick = e => { S.sens = !S.sens; e.currentTarget.classList.toggle('on', S.sens); refresh(); };
 function profs() { const l = [{ nome: CFG.p1n, crm: CFG.p1c }]; if (CFG.p2n) l.push({ nome: CFG.p2n, crm: CFG.p2c }); return l; }
 function renderProfs() { const s = $('#profSel'); s.innerHTML = ''; profs().forEach((p, i) => s.add(new Option(p.nome + ' · ' + p.crm, i))); s.value = Math.min(S.prof, profs().length - 1); }

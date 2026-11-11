@@ -140,14 +140,14 @@ function prerender(img, M, opts = {}) {
   sx.drawImage(img, (54 - img.width * s) / 2, (96 - img.height * s) / 2, img.width * s, img.height * s);
   const md = mk(216, 384); const mdx = md.getContext("2d"); mdx.imageSmoothingQuality = "high"; mdx.drawImage(sm, 0, 0, 216, 384);
   x.imageSmoothingQuality = 'high';
-  x.drawImage(md, 0, 0, W, H);
-  x.fillStyle = 'rgba(10,8,6,.45)'; x.fillRect(0, 0, W, H);
+  if (opts.black) { x.fillStyle = '#000'; x.fillRect(0, 0, W, H); }
+  else { x.drawImage(md, 0, 0, W, H); x.fillStyle = 'rgba(10,8,6,.45)'; x.fillRect(0, 0, W, H); }
   // foto alinhada
   x.save(); x.setTransform(M[0] * PR, M[1] * PR, M[2] * PR, M[3] * PR, M[4] * PR, M[5] * PR);
   x.drawImage(img, 0, 0); x.restore();
   // borda suave da foto
   x.save(); x.setTransform(M[0] * PR, M[1] * PR, M[2] * PR, M[3] * PR, M[4] * PR, M[5] * PR);
-  x.strokeStyle = 'rgba(0,0,0,.25)'; x.lineWidth = 6 / Math.hypot(M[0], M[1]); x.strokeRect(0, 0, img.width, img.height); x.restore();
+  if (!opts.black) { x.strokeStyle = 'rgba(0,0,0,.25)'; x.lineWidth = 6 / Math.hypot(M[0], M[1]); x.strokeRect(0, 0, img.width, img.height); } x.restore();
   // tarja nos olhos (anonimização)
   if (opts.tarja && (opts.L || opts.eyes)) {
     let eL, eR, fw = 0;
