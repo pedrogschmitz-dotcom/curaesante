@@ -80,6 +80,9 @@ nav.tabs button{background:none;border:0;color:var(--sub);font:700 11px "Red Hat
 nav.tabs button.on{color:var(--dour)}
 nav.tabs svg{width:22px;height:22px}
 .view{display:none}.view.on{display:block}
+body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
+.clip{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;background:#1A130D;border:1px solid var(--line);border-radius:14px;padding:8px;margin-top:8px}
+.clip video{width:72px;height:96px;object-fit:cover;border-radius:10px;background:#000}
 .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--off);color:#2A1F14;padding:12px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
 .modal.on ~ .toast{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
@@ -113,13 +116,20 @@ nav.tabs svg{width:22px;height:22px}
 
 <!-- ================= CRIAR ================= -->
 <section class="view on" id="v-criar">
+  <div class="seg" id="mode" style="margin:4px 0 4px"><button data-v="est" class="on">Estético (rosto)</button><button data-v="cir">Cirúrgico</button></div>
   <div class="step" id="s1">
     <div class="hd"><span class="num">1</span><div><h2>Fotos</h2><div class="hint">Mesma luz e mesmo enquadramento. As fotos ficam só neste aparelho.</div></div></div>
     <div class="grid2">
       <label class="slot" data-k="fa"><span class="req">OBRIGATÓRIA</span><span class="lab">FRENTE</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
       <label class="slot" data-k="fd"><span class="req">OBRIGATÓRIA</span><span class="lab">FRENTE</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
       <label class="slot" data-k="pa"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
-      <label class="slot" data-k="pd"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
+      <label class="slot est" data-k="pd"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
+    </div>
+    <div class="cir" style="margin-top:14px">
+      <label class="f" style="margin-top:0">Vídeos curtos do procedimento (até 3)</label>
+      <div class="hint">Cada trecho entra com até 4 s. O áudio é removido.</div>
+      <div id="clips"></div>
+      <label class="btn small ghost" style="margin-top:10px;cursor:pointer">+ Adicionar vídeo<input type="file" id="clipIn" accept="video/*" style="display:none"></label>
     </div>
   </div>
 
@@ -128,7 +138,7 @@ nav.tabs svg{width:22px;height:22px}
     <div class="player"><canvas id="cvAlign" width="540" height="960"></canvas></div>
     <label class="f">Mistura antes ↔ depois</label>
     <input type="range" id="mix" min="0" max="100" value="50">
-    <div class="row" style="margin:10px 0"><button class="btn small ghost" id="blink">Piscar</button><button class="btn small ghost" id="reAuto">Reencaixar automático</button><button class="btn small ghost" id="manEyes">Marcar olhos à mão</button></div>
+    <div class="row" style="margin:10px 0"><button class="btn small ghost" id="blink">Piscar</button><button class="btn small ghost est" id="reAuto">Reencaixar automático</button><button class="btn small ghost est" id="manEyes">Marcar olhos à mão</button></div>
     <div class="note" style="margin-bottom:8px">Ajuste fino da foto do <b>depois</b> (só posição, nunca cor ou retoque):</div>
     <div class="note" id="lightWarn" style="display:none;margin-bottom:8px;border-color:#E8A05A;color:#FFD39A"></div>
     <div class="adj"><span>Horizontal</span><input type="range" id="adx" min="-150" max="150" value="0"><span id="adxv">0</span></div>
@@ -141,6 +151,13 @@ nav.tabs svg{width:22px;height:22px}
     <div class="hd"><span class="num">3</span><div><h2>O caso</h2><div class="hint">Marque só as regiões tratadas. Até 6 deixa o vídeo mais ágil.</div></div></div>
     <label class="f">Procedimento</label>
     <select id="proc"></select>
+    <div class="cir">
+      <label class="f">Local</label><input type="text" id="local" placeholder="Ex.: dorso, couro cabeludo, lóbulo esquerdo">
+      <label class="f">Tamanho da peça (opcional)</label><input type="text" id="tam" placeholder="Ex.: 3 x 2 cm">
+      <label class="f">Técnica</label><textarea id="tecnica"></textarea>
+      <label class="f">Cuidados depois</label><textarea id="cuidados"></textarea>
+    </div>
+    <div class="est">
     <label class="f">Regiões tratadas</label>
     <div class="chips" id="regs"></div>
     <label class="f">Posição das regiões</label>
@@ -149,6 +166,7 @@ nav.tabs svg{width:22px;height:22px}
     <div class="row" style="margin-top:8px"><button class="btn small ghost" id="regReset">Voltar posições automáticas</button></div>
     <div class="tog" style="margin-top:12px"><div><b>Mostrar ml no vídeo</b><div class="hint">Quanto foi usado em cada região e o total.</div></div><div class="sw" id="swMl"></div></div>
     <div id="mlBox" style="display:none"></div>
+    </div>
     <label class="f">Indicação (para quem é)</label><textarea id="indic"></textarea>
     <label class="f">Evolução</label>
     <div class="grid2"><select id="interval"></select><select id="sess"></select></div>
@@ -168,12 +186,13 @@ nav.tabs svg{width:22px;height:22px}
     <label class="f">Trilha (original, sem direitos de terceiros)</label>
     <div class="seg" id="music"><button data-v="suave" class="on">Suave</button><button data-v="elegante">Elegante</button><button data-v="nenhuma">Sem trilha</button></div>
     <div class="tog"><div><b>Efeitos de transição discretos</b></div><div class="sw on" id="swSfx"></div></div>
-    <div class="tog" id="profTog" style="display:none"><div><b>Incluir fotos de perfil no fim</b><div class="hint">Lado a lado, antes do cartão do caso.</div></div><div class="sw on" id="swProf"></div></div>
+    <div class="tog cir"><div><b>Suavizar imagens fortes</b><div class="hint">Aviso no começo e cor reduzida nas cenas com sangue.</div></div><div class="sw on" id="swSens"></div></div>
+    <div class="tog est" id="profTog" style="display:none"><div><b>Incluir fotos de perfil no fim</b><div class="hint">Lado a lado, antes do cartão do caso.</div></div><div class="sw on" id="swProf"></div></div>
     <label class="f">Sua narração (opcional)</label>
     <div class="hint" style="margin-bottom:8px">Grave no celular (Gravador ou vídeo de selfie) e suba aqui. A trilha abaixa por baixo da sua voz, e o vídeo estica ou encurta para caber na fala.</div>
     <div class="row"><label class="btn small ghost" style="cursor:pointer">Subir áudio ou vídeo<input type="file" id="voiceIn" accept="audio/*,video/*" style="display:none"></label><button class="btn small ghost" id="voiceDel" style="display:none">Tirar narração</button></div>
     <div class="hint" id="voiceInfo" style="margin-top:8px"></div>
-    <div class="tog"><div><b>Tarja nos olhos</b><div class="hint">Para quando o paciente não autorizou ser identificado.</div></div><div class="sw" id="swTarja"></div></div>
+    <div class="tog est"><div><b>Tarja nos olhos</b><div class="hint">Para quando o paciente não autorizou ser identificado.</div></div><div class="sw" id="swTarja"></div></div>
   </div>
 
   <div class="step" id="s5">

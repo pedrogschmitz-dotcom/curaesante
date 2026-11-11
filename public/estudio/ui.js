@@ -14,6 +14,14 @@ const PROCS = {
   lab: { nome: 'Preenchimento labial', curto: 'Preenchimento labial', indic: 'Lábios com pouco volume, contorno apagado ou assimetria.', compl: 'Inchaço e roxos por alguns dias; herpes labial pode ser reativado. Complicação vascular é rara e exige avaliação imediata.', interval: 'Imediatamente após', regs: ['labios'] },
   comb: { nome: 'Protocolo combinado', curto: 'Protocolo combinado', indic: 'Envelhecimento com várias causas ao mesmo tempo: volume, flacidez e qualidade da pele.', compl: 'Inchaço, roxos e sensibilidade transitórios. Cada técnica tem riscos próprios, explicados na consulta.', interval: '60 dias após', regs: ['malar', 'bigode', 'mandibula', 'mento'] },
 };
+const CIRS = {
+  lipoma: { nome: 'Exérese de lipoma', curto: 'Lipoma', indic: 'Nódulo macio sob a pele, de crescimento lento, que incomoda pela aparência, pelo tamanho ou por dor.', tecnica: 'Retirada com anestesia local, por uma incisão sobre o nódulo. A peça vai para análise (anatomopatológico).', cuidados: 'Curativo nas primeiras 24 a 48 horas e evitar esforço na região por cerca de 1 semana. Pontos retirados entre 7 e 14 dias.', compl: 'Hematoma, acúmulo de líquido (seroma), infecção, cicatriz alargada ou queloide e, raramente, volta do lipoma.' },
+  cisto: { nome: 'Exérese de cisto epidermoide', curto: 'Cisto epidermoide', indic: 'Bolsa sob a pele, cheia de queratina (o popular cisto sebáceo), que pode inflamar e voltar.', tecnica: 'Com anestesia local: corte pequeno, o conteúdo sai e depois a cápsula é retirada inteira, para reduzir a chance de voltar.', cuidados: 'Curativo nas primeiras 24 a 48 horas e evitar esforço na região por alguns dias. Pontos retirados entre 7 e 14 dias.', compl: 'Infecção, hematoma, cicatriz visível e volta do cisto se ficar parte da cápsula.' },
+  lobulo: { nome: 'Lobuloplastia', curto: 'Lobuloplastia', indic: 'Lóbulo da orelha rasgado ou com furo alargado pelo uso de brincos.', tecnica: 'Correção com anestesia local: as bordas do lóbulo são refeitas e suturadas.', cuidados: 'Não usar brinco no local até a liberação, em geral de 6 a 8 semanas. Pontos retirados entre 7 e 10 dias.', compl: 'Cicatriz visível, pequeno entalhe na borda, infecção e, raramente, queloide.' },
+  nevo: { nome: 'Exérese de lesão de pele', curto: 'Retirada de lesão', indic: 'Pinta ou lesão com alteração, incômodo ou indicação de análise.', tecnica: 'Retirada com margem, sob anestesia local, e envio para exame anatomopatológico.', cuidados: 'Curativo nas primeiras 24 a 48 horas. Pontos retirados entre 7 e 14 dias, conforme o local.', compl: 'Sangramento, infecção e cicatriz. O resultado da análise define o seguimento.' },
+};
+const DIAS_CIR = ['7 dias depois', '14 dias depois', '30 dias depois', '60 dias depois', '90 dias depois', '6 meses depois', '1 ano depois'];
+const curP = () => (S.mode === 'cir' ? CIRS[S.proc] || CIRS.lipoma : PROCS[S.proc] || PROCS.ah);
 const INTERVALS = ['Imediatamente após', '7 dias após', '15 dias após', '30 dias após', '60 dias após', '90 dias após', '6 meses após'];
 const SESS = ['1 sessão', '2 sessões', '3 sessões', '4 sessões', 'Sessão única + retoque'];
 const ANGLES = { resultado: 'Resultado', regioes: 'Regiões', planejamento: 'Planejamento', indicacao: 'Para quem é', enquete: 'Enquete', pos: 'O que esperar depois', natural: 'Naturalidade' };
@@ -31,7 +39,7 @@ const WEEK = [
 const S = {
   img: {}, blob: {}, lm: {}, eyes: {}, adj: { dx: 0, dy: 0, ds: 0, dr: 0 },
   frames: {}, proc: 'ah', regs: new Set(PROCS.ah.regs), ml: {}, showMl: false,
-  dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
+  mode: 'est', clips: [], sens: true, dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
   orig: {}, crop: {}, lmOrig: {}, eyesOrig: {}, checks: {}, caseNo: 1, prof: 0, result: null, roff: {}, mlSide: {}, perSide: false, voice: null, voiceName: '', withProfile: true,
 };
 const DEF = { p1n: 'Dr. Pedro Schmitz', p1c: 'CRM/SC 38229', p2n: '', p2c: '', marca: 'Curae Santé', handle: '@curaesante', cta1: 'Agende sua', cta2: 'avaliação' };
@@ -162,7 +170,7 @@ function slotStatus(k) {
   const slot = $(`.slot[data-k="${k}"]`); let st = slot.querySelector('.st'); if (!st) { st = document.createElement('div'); st.className = 'st'; slot.append(st); }
   let b = slot.querySelector('.cropb'); if (!b) { b = document.createElement('button'); b.className = 'cropb'; b.textContent = '✂'; b.title = 'Recortar'; slot.append(b); b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openCrop(k); }); }
   base0(k);
-  const base = S.lm[k] ? '✓ rosto encontrado' : S.eyes[k] ? '✓ olhos marcados à mão' : (k[0] === 'f' ? 'rosto não achado: toque em “marcar olhos”' : 'perfil: encaixe pela foto');
+  const base = S.mode === 'cir' ? '✓ foto pronta' : S.lm[k] ? '✓ rosto encontrado' : S.eyes[k] ? '✓ olhos marcados à mão' : (k[0] === 'f' ? 'rosto não achado: toque em “marcar olhos”' : 'perfil: encaixe pela foto');
   st.textContent = base + (S.crop[k] && S.crop[k].auto ? ' · ✂ marca cortada' : S.crop[k] ? ' · ✂ recortada' : '');
   st.classList.toggle('warn', !S.lm[k] && !S.eyes[k]);
 }
@@ -175,7 +183,7 @@ async function setPhoto(k, src, opts = {}) {
   if (opts.lm !== undefined || opts.eyes) { S.lmOrig[k] = opts.lm || null; S.eyesOrig[k] = opts.eyes || null; await applyCrop(k, null); return; }
   im.src = URL.createObjectURL(await toBlob(toCanvas(c, 1200)));
   st.textContent = 'procurando o rosto…'; st.classList.remove('warn');
-  S.lmOrig[k] = await detect(c); S.eyesOrig[k] = null;
+  S.lmOrig[k] = S.mode === 'cir' ? null : await detect(c); S.eyesOrig[k] = null;
   let r = null; try { r = findWatermark(c, S.lmOrig[k]); } catch (e) { console.warn(e); }
   const bl = findWatermark.blocked || [];
   if (r) { r.auto = true; toast('Achei marca d’água ' + r.lados.join(' e ') + ': cortei. Toque em ✂ para ajustar.' + (bl.length ? ' Há outra ' + bl.join(' e ') + ' encostada no rosto: essa não dá para cortar.' : ''), 4500); }
@@ -269,8 +277,8 @@ $$('.slot').forEach(sl => {
 function frameOf(k, adj) {
   const img = S.img[k]; if (!img) return null;
   let Mx, L;
-  if (S.lm[k]) { Mx = M.eyeXform(S.lm[k], adj); const sc = Math.hypot(Mx[0], Mx[1]); L = S.lm[k].map(p => { const q = M.apply(Mx, p); q.z = (p.z || 0) * sc; return q; }); }
-  else if (S.eyes[k]) { Mx = M.eyesXform(S.eyes[k][0], S.eyes[k][1], adj); const T = M.composeAdj([1, 0, 0, 1, 0, 0], adj); const sc = Math.hypot(T[0], T[1]); L = CANON.map(p => { const q = M.apply(T, p); q.z = (p.z || 0) * sc; return q; }); }
+  if (S.lm[k] && S.mode !== 'cir') { Mx = M.eyeXform(S.lm[k], adj); const sc = Math.hypot(Mx[0], Mx[1]); L = S.lm[k].map(p => { const q = M.apply(Mx, p); q.z = (p.z || 0) * sc; return q; }); }
+  else if (S.eyes[k] && S.mode !== 'cir') { Mx = M.eyesXform(S.eyes[k][0], S.eyes[k][1], adj); const T = M.composeAdj([1, 0, 0, 1, 0, 0], adj); const sc = Math.hypot(T[0], T[1]); L = CANON.map(p => { const q = M.apply(T, p); q.z = (p.z || 0) * sc; return q; }); }
   else { Mx = M.coverXform(img, adj); L = null; }
   return { M: Mx, L };
 }
@@ -283,10 +291,10 @@ function buildFrames(only) {
       if (!S.img[k]) { S.frames[k] = null; continue; }
       const adj = k === 'fd' ? S.adj : null;
       const f = frameOf(k, adj);
-      const Lf = f.L || (k[0] === 'f' ? CANON : null);
+      const Lf = S.mode === 'cir' ? null : (f.L || (k[0] === 'f' ? CANON : null));
       // tarja em todas as fotos: pela malha, ou pelos olhos marcados à mão
       const eyesF = !f.L && S.eyes[k] ? S.eyes[k].map(p => M.apply(f.M, p)) : null;
-      const tOpts = { tarja: S.tarja, L: f.L || (k[0] === 'f' ? CANON : null), eyes: eyesF };
+      const tOpts = { tarja: S.tarja && S.mode !== 'cir', L: f.L || (k[0] === 'f' ? CANON : null), eyes: eyesF };
       if (k[0] === 'p' && !f.L && !eyesF) tOpts.L = null;
       S.frames[k] = { cv: M.prerender(S.img[k], f.M, tOpts), L: Lf };
     }
@@ -404,6 +412,7 @@ Object.entries(PROCS).forEach(([k, p]) => procSel.add(new Option(p.nome, k)));
 INTERVALS.forEach(v => $('#interval').add(new Option('Depois: ' + v.toLowerCase(), v)));
 SESS.forEach(v => $('#sess').add(new Option(v, v)));
 function applyProc(k, keepRegs) {
+  if (S.mode === 'cir') { const c = CIRS[k]; S.proc = k; $('#indic').value = c.indic; $('#compl').value = c.compl; $('#tecnica').value = c.tecnica; $('#cuidados').value = c.cuidados; $('#hook1').value = c.curto; $('#hook2').value = 'Antes e depois'; S.regs = new Set(); renderRegs(); return; }
   const p = PROCS[k]; S.proc = k;
   $('#indic').value = p.indic; $('#compl').value = p.compl; $('#interval').value = p.interval;
   if (!keepRegs) S.regs = new Set(p.regs);
@@ -458,14 +467,57 @@ function renderMl() {
 }
 const orderedRegs = () => M.REGIOES.map(r => r.id).filter(id => S.regs.has(id));
 $('#swMl').onclick = e => { S.showMl = !S.showMl; e.currentTarget.classList.toggle('on', S.showMl); renderMl(); refresh(); };
-['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2'].forEach(id => $('#' + id).addEventListener('input', () => refresh()));
+['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2', 'tecnica', 'cuidados', 'local', 'tam'].forEach(id => $('#' + id).addEventListener('input', () => refresh()));
+$('#swSens').onclick = e => { S.sens = !S.sens; e.currentTarget.classList.toggle('on', S.sens); refresh(); };
 function profs() { const l = [{ nome: CFG.p1n, crm: CFG.p1c }]; if (CFG.p2n) l.push({ nome: CFG.p2n, crm: CFG.p2c }); return l; }
 function renderProfs() { const s = $('#profSel'); s.innerHTML = ''; profs().forEach((p, i) => s.add(new Option(p.nome + ' · ' + p.crm, i))); s.value = Math.min(S.prof, profs().length - 1); }
 $('#profSel').onchange = e => { S.prof = +e.target.value; refresh(); };
 
+/* ---------------- vídeos do procedimento ---------------- */
+const CLIP_LAB = ['Incisão', 'Retirada', 'Sutura'];
+$('#clipIn').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (S.clips.length >= 3) return toast('Até 3 vídeos.');
+  const el = document.createElement('video'); el.muted = true; el.playsInline = true; el.preload = 'auto'; el.setAttribute('playsinline', ''); el.src = URL.createObjectURL(f);
+  try { await new Promise((res, rej) => { el.onloadeddata = res; el.onerror = rej; el.load(); setTimeout(res, 8000); }); } catch (err) { return toast('Não consegui abrir esse vídeo.'); }
+  const c = { el, start: 0, dur: Math.min(4, el.duration || 4), total: el.duration || 4, label: CLIP_LAB[S.clips.length] || 'Procedimento' };
+  S.clips.push(c); renderClips(); refresh(true);
+});
+function renderClips() {
+  const box = $('#clips'); box.innerHTML = '';
+  S.clips.forEach((c, i) => {
+    const row = document.createElement('div'); row.className = 'clip';
+    const v = c.el; v.style.cssText = 'width:72px;height:96px;object-fit:cover;border-radius:10px;background:#000';
+    const mid = document.createElement('div');
+    mid.innerHTML = `<input type="text" value="${c.label}" style="padding:8px;font-size:14px"><div class="adj" style="grid-template-columns:50px 1fr 40px;margin-top:6px"><span>Início</span><input type="range" min="0" max="${Math.max(0, c.total - .5).toFixed(1)}" step=".1" value="${c.start}"><span>${c.start.toFixed(1)}s</span></div>`;
+    const [lab, rng] = mid.querySelectorAll('input');
+    lab.oninput = () => { c.label = lab.value; refresh(); };
+    rng.oninput = () => { c.start = +rng.value; c.dur = Math.min(4, c.total - c.start); mid.querySelector('.adj span:last-child').textContent = c.start.toFixed(1) + 's'; v.currentTime = c.start; refresh(); };
+    const del = document.createElement('button'); del.className = 'btn small ghost'; del.textContent = '✕'; del.onclick = () => { S.clips.splice(i, 1); renderClips(); refresh(true); };
+    row.append(v, mid, del); box.append(row); try { v.currentTime = c.start + .05; } catch (e) { }
+  });
+}
+
 /* ---------------- estilo ---------------- */
 function segCtl(id, key, cb) {
   $$(`#${id} button`).forEach(b => b.onclick = () => { $$(`#${id} button`).forEach(x => x.classList.toggle('on', x === b)); S[key] = b.dataset.v; cb && cb(); refresh(key === 'theme'); });
+}
+segCtl('mode', 'mode', () => setTimeout(applyMode, 0));
+function applyMode() {
+  const cir = S.mode === 'cir'; document.body.classList.toggle('cir', cir);
+  const L = cir ? { fa: ['ANTES', 'Antes'], fd: ['CICATRIZ', 'Depois'], pa: ['PEÇA RETIRADA', 'Peça'], pd: ['PERFIL OU 3/4', 'Depois'] } : { fa: ['FRENTE', 'Antes'], fd: ['FRENTE', 'Depois'], pa: ['PERFIL OU 3/4', 'Antes'], pd: ['PERFIL OU 3/4', 'Depois'] };
+  Object.entries(L).forEach(([k, [a, b]]) => { const sl = $(`.slot[data-k="${k}"]`); sl.querySelector('.lab').textContent = a; sl.querySelector('.big').textContent = b; });
+  $('#s2 h2').textContent = cir ? 'Encaixe das fotos' : 'Encaixe pelo rosto';
+  $('#s2 .hint').textContent = cir ? 'Ajuste o depois sobre o antes (mesma posição e tamanho). Confira deslizando a mistura.' : 'Alinho os dois rostos pelos olhos. Confira deslizando a mistura.';
+  $('#s3 .hd .hint').textContent = cir ? 'Escolha a cirurgia: indicação, técnica, cuidados e complicações já vêm escritos.' : 'Marque só as regiões tratadas. Até 6 deixa o vídeo mais ágil.';
+  procSel.innerHTML = ''; Object.entries(cir ? CIRS : PROCS).forEach(([k, p]) => procSel.add(new Option(p.nome, k)));
+  $('#interval').innerHTML = ''; (cir ? DIAS_CIR : INTERVALS).forEach(v => $('#interval').add(new Option(cir ? 'Cicatriz: ' + v : 'Depois: ' + v.toLowerCase(), v)));
+  $('#sess').style.display = cir ? 'none' : '';
+  applyProc(cir ? 'lipoma' : 'ah');
+  S.style = cir ? 'cirurgia' : 'cortina'; renderStyles();
+  if (cir) { $('#interval').value = '30 dias depois'; }
+  // fotos já carregadas: refaz sem/ com detecção de rosto
+  buildFrames(); refresh(true);
 }
 segCtl('dest', 'dest', () => setTimeout(destUI, 0));
 function destUI() {
@@ -494,12 +546,18 @@ $('#swTarja').onclick = e => {
   if (S.tarja && falta.length) { toast('Na foto de perfil não achei os olhos: toque nos olhos para pôr a tarja.', 3500); eyeQueue = falta.slice(); openEye(eyeQueue.shift()); }
 };
 const styleBox = $('#styles');
-M.ORDEM.forEach(k => { const st = M.ST[k];
+function renderStyles() {
+  styleBox.innerHTML = '';
+  (S.mode === 'cir' ? ['cirurgia', 'cortina', 'lado', 'diagonal'] : M.ORDEM).forEach(k => mkStyle(k));
+  setTimeout(renderThumbs, 0);
+}
+function mkStyle(k) { const st = M.ST[k];
   const d = document.createElement('div'); d.className = 'sty' + (k === S.style ? ' on' : ''); d.dataset.k = k;
   d.innerHTML = `<canvas width="216" height="384"></canvas><div class="nm">${st.nome}</div><div class="ds">${st.desc}</div>`;
   d.onclick = () => { S.style = k; $$('.sty').forEach(x => x.classList.toggle('on', x === d)); stopAudio(); playing = false; tNow = 0; refresh(); document.getElementById('s5').scrollIntoView({ behavior: 'smooth', block: 'start' }); if (Dcur) setTimeout(() => { if (!playing) $('#play').click(); }, 450); };
   styleBox.append(d);
-});
+}
+renderStyles();
 let thumbH = 0; const big = M.mk(W, H), bigX = big.getContext('2d');
 function renderThumbs() {
   clearTimeout(thumbH);
@@ -530,16 +588,22 @@ function buildD() {
     regs, ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl && tot > 0,
     indic: $('#indic').value.trim(), compl: $('#compl').value.trim(),
     indicCurta: $('#indic').value.split(/[.,:]/)[0],
-    procTxt: PROCS[S.proc].nome + (nomes.length ? ' em ' + listaPt(nomes) : '') + (S.showMl && tot > 0 ? '. Total: ' + String(Math.round(tot * 10) / 10).replace('.', ',') + ' ml' : '') + '.',
-    procCurto: PROCS[S.proc].curto,
+    procTxt: curP().nome + (nomes.length ? ' em ' + listaPt(nomes) : '') + (S.showMl && tot > 0 ? '. Total: ' + String(Math.round(tot * 10) / 10).replace('.', ',') + ' ml' : '') + '.',
+    procCurto: curP().curto,
     evol: 'Foto do depois: ' + iv.toLowerCase() + ' · ' + sess + '.',
-    hook1: $('#hook1').value || 'Antes e depois', hook2: $('#hook2').value || PROCS[S.proc].curto,
+    hook1: $('#hook1').value || 'Antes e depois', hook2: $('#hook2').value || curP().curto,
     style: S.style, music: S.music, sfx: S.sfx,
     prof: p, marca: S.theme === 'curae' ? (CFG.marca || 'Curae Santé') : 'Dr. Pedro Schmitz',
     handle: S.theme === 'curae' ? CFG.handle : '@drpedroschmitz',
     cta1: CFG.cta1, cta2: CFG.cta2, tess: TESS, caseNo: S.caseNo,
-    roff: S.roff, voice: S.voice, withProfile: S.withProfile, k: 1,
+    roff: S.roff, voice: S.voice, withProfile: S.withProfile && S.mode !== 'cir', k: 1,
   };
+  if (S.mode === 'cir') {
+    const c = CIRS[S.proc] || CIRS.lipoma;
+    Object.assign(D, { mode: 'cir', regs: [], showMl: false, LA: null, LB: null, PB: null, clips: S.clips, sens: S.sens,
+      tecnica: $('#tecnica').value.trim(), cuidados: $('#cuidados').value.trim(), local: $('#local').value.trim(), tam: $('#tam').value.trim(),
+      dias: $('#interval').value, evol: 'Foto da cicatriz: ' + $('#interval').value + '.', procCurto: c.curto, procTxt: c.nome + '.', hook1: $('#hook1').value || c.curto, hook2: $('#hook2').value || 'Antes e depois' });
+  }
   D.dest = S.dest; if (S.dest !== 'reel') D.k = .82;
   if (S.voice) { const need = S.voice.duration + M.VOICE_AT + .5 - M.infoD(D) - M.endD(D) - ((S.withProfile && D.PA && D.PB) ? M.PROF_DUR : 0); D.k = Math.max(.85, Math.min(3, need / M.ST[S.style].dur(D))); }
   return D;
@@ -583,10 +647,10 @@ function loop() {
   if (!playing || !Dcur) return;
   const dur = M.totalDur(Dcur); tNow = (performance.now() - pt0) / 1000;
   if (tNow >= dur) { tNow = dur; playing = false; stopAudio(); $('#play').textContent = '▶ Tocar'; }
-  M.drawFrame(pvx, Dcur, tNow); $('#scrub').value = Math.round(tNow / dur * 1000);
+  M.syncClips(Dcur, tNow, playing); M.drawFrame(pvx, Dcur, tNow); $('#scrub').value = Math.round(tNow / dur * 1000);
   if (playing) requestAnimationFrame(loop);
 }
-$('#scrub').addEventListener('input', e => { if (!Dcur) return; playing = false; stopAudio(); $('#play').textContent = '▶ Tocar'; tNow = e.target.value / 1000 * M.totalDur(Dcur); M.drawFrame(pvx, Dcur, tNow); });
+$('#scrub').addEventListener('input', e => { if (!Dcur) return; playing = false; stopAudio(); $('#play').textContent = '▶ Tocar'; tNow = e.target.value / 1000 * M.totalDur(Dcur); M.prepFrame(Dcur, tNow).then(() => M.drawFrame(pvx, Dcur, tNow)); });
 
 /* ---------------- checklist + geração ---------------- */
 $$('.check').forEach(c => c.onclick = () => { S.checks[c.dataset.c] = !S.checks[c.dataset.c]; c.classList.toggle('on', S.checks[c.dataset.c]); });
@@ -605,7 +669,7 @@ async function saveFile(name, blob) {
   try { await DL.save({ filename: name, data: blob }); return true; }
   catch (e) { if (e && e.code === 'declined') return false; toast('Não consegui salvar: ' + (e && e.message || e), 4200); return false; }
 }
-const slug = () => (PROCS[S.proc].curto + '-' + M.ST[S.style].nome + '-' + S.dest).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const slug = () => (curP().curto + '-' + M.ST[S.style].nome + '-' + S.dest).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
 $('#gen').onclick = async () => {
   const D = buildD(); if (!D) return toast('Suba as duas fotos de frente.');
   if (!S.checks.consent || !S.checks.real) { toast('Marque o termo de imagem e “fotos sem filtro” no checklist.', 3500); $('.check[data-c="consent"]').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
@@ -650,8 +714,9 @@ $('#resVideo').addEventListener('emptied', () => { });
 const angBox = $('#angle');
 Object.entries(ANGLES).forEach(([k, v]) => { const b = document.createElement('button'); b.textContent = v; b.dataset.v = k; if (k === S.angle) b.className = 'on'; b.onclick = () => { S.angle = k; $$('#angle button').forEach(x => x.classList.toggle('on', x === b)); captions(); }; angBox.append(b); });
 function captions() {
+  if (S.mode === 'cir') return captionsCir();
   const D = Dcur || buildD() || {};
-  const p = PROCS[S.proc]; const regs = orderedRegs().map(id => M.REG[id].nome.toLowerCase());
+  const p = curP(); const regs = orderedRegs().map(id => M.REG[id].nome.toLowerCase());
   const prof = profs()[Math.min(S.prof, profs().length - 1)];
   const iv = $('#interval').value.toLowerCase(), sess = $('#sess').value.toLowerCase();
   const indic = $('#indic').value.trim(), compl = $('#compl').value.trim();
@@ -697,6 +762,35 @@ Salve para lembrar e mande para quem está pensando em fazer.
 • “Vou ficar igual a ela?” → Não existe resultado igual: cada rosto responde de um jeito. O caso mostra o que é possível, não uma promessa.`;
   $('#cap').textContent = cap; $('#pin').textContent = pin; $('#faq').textContent = faq;
 }
+function captionsCir() {
+  const c = CIRS[S.proc] || CIRS.lipoma; const prof = profs()[Math.min(S.prof, profs().length - 1)];
+  const local = $('#local').value.trim(), tam = $('#tam').value.trim(), dias = $('#interval').value;
+  const open = { resultado: `${c.curto}${local ? ' no ' + local : ''}: do antes à cicatriz com ${dias.replace(' depois', '')}.`, regioes: `Passo a passo de uma ${c.nome.toLowerCase()}, do jeito que é feita no consultório.`, planejamento: `Antes do corte, vem o planejamento: tamanho, posição da cicatriz e anestesia.`, indicacao: `Quando vale a pena tirar? Este caso de ${c.curto.toLowerCase()} ajuda a entender.`, enquete: `Você sabia que isso pode ser tirado com anestesia local, no consultório?`, pos: `Depois da retirada: o que é normal e o que pede retorno.`, natural: `A cicatriz amadurece com o tempo: ela muda bastante nos primeiros meses.` }[S.angle];
+  const cap = `${open}
+
+Indicação: ${$('#indic').value.trim()}
+Técnica: ${$('#tecnica').value.trim()}${tam ? ' Tamanho da peça: ' + tam + '.' : ''}
+Cuidados: ${$('#cuidados').value.trim()}
+Evolução: foto da cicatriz ${dias}.
+Possíveis complicações: ${$('#compl').value.trim()}
+
+A cicatrização varia de pessoa para pessoa. A indicação é feita em consulta, depois de examinar a lesão.
+
+Imagens publicadas com autorização do paciente. Conteúdo educativo.
+${prof.nome} · ${prof.crm}
+
+Salve para lembrar e mande para quem tem um caroço assim.
+
+#cirurgiaambulatorial #${c.curto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z]/g, '')} #saojosesc #florianopolis #kobrasol`;
+  $('#cap').textContent = cap;
+  $('#pin').textContent = `Você tem algum caroço que incomoda há tempo? Conta aqui embaixo e marca quem precisa ver isso.`;
+  $('#faq').textContent = `• “Dói?” → É feito com anestesia local; a pessoa sente a picada da anestesia e depois pressão.
+• “Fica cicatriz?” → Sim, toda retirada deixa cicatriz. O planejamento busca a menor e mais discreta possível, e ela melhora nos primeiros meses.
+• “Precisa de exame depois?” → A peça vai para análise (anatomopatológico) e o resultado define o seguimento.
+• “Quanto tempo de repouso?” → Em geral, volta às atividades leves no mesmo dia ou no seguinte; esforço na região, só depois da liberação.
+• “Pode voltar?” → Pode, principalmente se ficar parte da lesão ou da cápsula. Por isso a técnica importa.
+• “Quanto custa?” → Depende do tamanho e do local, avaliados na consulta. Me chama no direct que a equipe agenda.`;
+}
 $$('[data-copy]').forEach(b => b.onclick = async () => { try { await navigator.clipboard.writeText($('#' + b.dataset.copy).textContent); toast('Copiado.'); } catch (e) { toast('Selecione o texto e copie manualmente.'); } });
 
 /* ---------------- legenda com IA (só dentro do Claude) ---------------- */
@@ -706,7 +800,7 @@ let SAMPLE = null, MCP = null;
 })();
 $('#aiGen').onclick = async () => {
   if (!SAMPLE) return; const btn = $('#aiGen'); btn.disabled = true; btn.textContent = 'Escrevendo…'; $('#aiOut').innerHTML = '';
-  const p = PROCS[S.proc]; const regs = orderedRegs().map(id => M.REG[id].nome.toLowerCase()); const prof = profs()[Math.min(S.prof, profs().length - 1)];
+  const p = curP(); const regs = orderedRegs().map(id => M.REG[id].nome.toLowerCase()); const prof = profs()[Math.min(S.prof, profs().length - 1)];
   const dados = { procedimento: p.nome, regioes: regs, ml: S.showMl ? Object.fromEntries(orderedRegs().filter(id => S.ml[id]).map(id => [M.REG[id].nome, S.perSide && M.REG[id].bi && S.mlSide[id] ? `D ${S.mlSide[id].d} / E ${S.mlSide[id].e}` : S.ml[id]])) : null, indicacao: $('#indic').value, evolucao: $('#interval').value + ', ' + $('#sess').value, possiveis_efeitos: $('#compl').value, angulo: ANGLES[S.angle], destino: { reel: 'reel do feed', stories: 'stories', whats: 'mensagem de WhatsApp para o paciente' }[S.dest], profissional: prof.nome + ' · ' + prof.crm };
   const prompt = `Você escreve legendas de Instagram para o ${prof.nome}, médico (nunca chame de dermatologista, nunca cite RQE nem título de especialista; use só nome e CRM).
 Tom dele: direto, educativo, sem bajulação, frases curtas, português do Brasil, sem emojis em excesso (no máximo 2), sem exclamações seguidas.
@@ -728,7 +822,7 @@ const findId = o => { if (!o || typeof o !== 'object') return null; if (typeof o
 function caseFiles() {
   const nm = { fa: 'frente-antes', fd: 'frente-depois', pa: 'perfil-antes', pd: 'perfil-depois' };
   const f = Object.keys(S.blob).filter(k => S.blob[k]).map(k => ({ name: nm[k] + '.jpg', blob: S.blob[k], type: 'image/jpeg' }));
-  const info = { data: new Date().toISOString(), procedimento: PROCS[S.proc].nome, regioes: orderedRegs().map(id => M.REG[id].nome), ml: S.showMl ? S.ml : null, ml_por_lado: S.perSide ? S.mlSide : null, indicacao: $('#indic').value, evolucao: $('#interval').value + ' · ' + $('#sess').value, possiveis_efeitos: $('#compl').value, termo_assinado: !!S.checks.consent, sem_filtro: !!S.checks.real };
+  const info = { data: new Date().toISOString(), procedimento: curP().nome, regioes: orderedRegs().map(id => M.REG[id].nome), ml: S.showMl ? S.ml : null, ml_por_lado: S.perSide ? S.mlSide : null, indicacao: $('#indic').value, evolucao: $('#interval').value + ' · ' + $('#sess').value, possiveis_efeitos: $('#compl').value, termo_assinado: !!S.checks.consent, sem_filtro: !!S.checks.real };
   f.push({ name: 'caso.json', blob: new Blob([JSON.stringify(info, null, 2)], { type: 'application/json' }), type: 'application/json' });
   f.push({ name: 'legenda.txt', blob: new Blob([$('#cap').textContent], { type: 'text/plain' }), type: 'text/plain' });
   if (S.result) f.push({ name: 'video-' + slug() + '.' + S.result.ext, blob: S.result.blob, type: 'video/' + S.result.ext });
@@ -737,7 +831,7 @@ function caseFiles() {
 $('#toDrive').onclick = async () => {
   if (!S.img.fa || !S.img.fd) return toast('Suba as fotos de frente primeiro.');
   const files = caseFiles(); const info = $('#driveInfo');
-  const pasta = new Date().toISOString().slice(0, 10) + ' · ' + PROCS[S.proc].curto + ' · caso ' + String(S.caseNo).padStart(2, '0');
+  const pasta = new Date().toISOString().slice(0, 10) + ' · ' + curP().curto + ' · caso ' + String(S.caseNo).padStart(2, '0');
   if (MCP) {
     try {
       info.textContent = 'Criando a pasta no Drive…';
@@ -785,7 +879,7 @@ $('#saveCase').onclick = async () => {
     id: S.caseId || ('c' + Date.now()), date: new Date().toISOString(), thumb: th.toDataURL('image/jpeg', .8),
     photos: Object.fromEntries(Object.keys(S.blob).map(k => [k, S.blob[k]])),
     lm: Object.fromEntries(Object.keys(S.img).map(k => [k, round(S.lm[k])])), eyes: S.eyes, adj: S.adj,
-    proc: S.proc, regs: [...S.regs], ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl, roff: S.roff,
+    mode: S.mode, proc: S.proc, regs: [...S.regs], ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl, roff: S.roff,
     f: Object.fromEntries(['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2'].map(k => [k, $('#' + k).value])),
   };
   try { await dbPut(v); S.caseId = v.id; toast('Caso guardado neste aparelho.'); renderGal(); } catch (e) { toast('Este navegador não deixou guardar. Mantenha as fotos no seu arquivo.', 4000); }
@@ -795,7 +889,7 @@ async function renderGal() {
   const g = $('#gal'); g.innerHTML = ''; $('#galEmpty').style.display = all.length ? 'none' : 'block';
   all.sort((a, b) => b.date.localeCompare(a.date)).forEach((c, i) => {
     const it = document.createElement('div'); it.className = 'it';
-    it.innerHTML = `<img src="${c.thumb}"><button class="del" aria-label="Apagar">✕</button><span>${PROCS[c.proc] ? PROCS[c.proc].curto : ''} · ${new Date(c.date).toLocaleDateString('pt-BR')}</span>`;
+    it.innerHTML = `<img src="${c.thumb}"><button class="del" aria-label="Apagar">✕</button><span>${((c.mode === 'cir' ? CIRS : PROCS)[c.proc] || {}).curto || ''} · ${new Date(c.date).toLocaleDateString('pt-BR')}</span>`;
     it.onclick = () => loadCase(c);
     it.querySelector('.del').onclick = async e => { e.stopPropagation();
       if (!it.classList.contains('arm')) { it.classList.add('arm'); toast('Toque no ✕ de novo para apagar este caso.'); setTimeout(() => it.classList.remove('arm'), 3000); return; }
@@ -806,6 +900,7 @@ async function renderGal() {
 }
 async function loadCase(c) {
   go('criar'); toast('Abrindo o caso…');
+  if ((c.mode || 'est') !== S.mode) { S.mode = c.mode || 'est'; $$('#mode button').forEach(b => b.classList.toggle('on', b.dataset.v === S.mode)); applyMode(); }
   S.caseId = c.id; S.proc = c.proc; procSel.value = c.proc; applyProc(c.proc, true);
   S.regs = new Set(c.regs); S.ml = c.ml || {}; S.mlSide = c.mlSide || {}; S.perSide = !!c.perSide; S.roff = c.roff || {}; S.showMl = !!c.showMl; $('#swMl').classList.toggle('on', S.showMl);
   Object.entries(c.f || {}).forEach(([k, v]) => { if ($('#' + k)) $('#' + k).value = v; });

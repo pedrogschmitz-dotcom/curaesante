@@ -347,7 +347,12 @@ function infoBody(ctx, D, t) {
   });
   ctx.restore();
   titulo(ctx, D, 'Sobre este caso', 940, T.upper ? 84 : 92, seg(t, .3, .9), { d3: true });
-  const rows = [
+  const rows = D.mode === 'cir' ? [
+    ['INDICAÇÃO', D.indic],
+    ['TÉCNICA', D.tecnica],
+    ['CUIDADOS', D.cuidados + ' ' + D.evol],
+    ['POSSÍVEIS COMPLICAÇÕES', D.compl],
+  ] : [
     ['INDICAÇÃO', D.indic],
     ['PROCEDIMENTO', D.procTxt],
     ['EVOLUÇÃO', D.evol],
@@ -1080,6 +1085,93 @@ ST.relevo = {
 // ordem de exibição
 const ORDEM = ['cortina', 'morph', 'relevo', 'hightech', 'camera25d', 'zoomreg', 'scanner', 'lupa', 'diagonal'];
 
+/* ================= modo cirúrgico ================= */
+function desat(ctx, amt) { // tira cor de cenas fortes (funciona no Safari: modo de mistura)
+  if (amt <= 0) return; ctx.save(); ctx.globalCompositeOperation = 'saturation'; ctx.globalAlpha = amt; ctx.fillStyle = '#808080'; ctx.fillRect(0, 0, W, H); ctx.restore();
+  ctx.save(); ctx.globalAlpha = amt * .18; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H); ctx.restore();
+}
+function cover(ctx, src, sw, sh, z = 1, fx = .5, fy = .5) {
+  if (!src || !sw) return; const s0 = Math.max(W / sw, H / sh) * z; const w = sw * s0, h = sh * s0;
+  ctx.drawImage(src, (W - w) * fx, (H - h) * fy, w, h);
+}
+function cirSegs(D) {
+  const segs = []; let t = 0; const has = (D.clips && D.clips.length) || D.PA;
+  if (D.sens && has) { segs.push({ type: 'aviso', t0: t, t1: t + 1.4 }); t += 1.4; }
+  segs.push({ type: 'antes', t0: t, t1: t + 2.6 }); t += 2.6;
+  (D.clips || []).forEach((c, i) => { const d = c.dur; segs.push({ type: 'clip', clip: c, i, t0: t, t1: t + d }); t += d; });
+  if (D.PA) { segs.push({ type: 'peca', t0: t, t1: t + 2.8 }); t += 2.8; }
+  segs.push({ type: 'depois', t0: t, t1: t + 2.8 }); t += 2.8;
+  segs.push({ type: 'split', t0: t, t1: t + 2.8 }); t += 2.8;
+  return segs;
+}
+ST.cirurgia = {
+  nome: 'Cirurgia em etapas', desc: 'Antes, procedimento, peça, cicatriz',
+  dur: D => cirSegs(D).reduce((a, s2) => Math.max(a, s2.t1), 0),
+  cues: D => cirSegs(D).map(s2 => s2.t0).filter(x => x > 0),
+  draw(ctx, D, t) {
+    const T = D.T, segs = cirSegs(D);
+    const sg = segs.find(s2 => t >= s2.t0 && t < s2.t1) || segs[segs.length - 1];
+    const lt = t - sg.t0, d = sg.t1 - sg.t0, ein = E.out(seg(lt, 0, .35));
+    ctx.fillStyle = T.bg; ctx.fillRect(0, 0, W, H);
+    const z = 1.02 + .06 * seg(lt, 0, d);
+    if (sg.type === 'aviso') {
+      ctx.fillStyle = '#111'; ctx.fillRect(0, 0, W, H);
+      txt(ctx, 'AVISO', CX, 820, { font: font(T, 'mono', 34, 700), color: T.ac, ls: 12, alpha: ein });
+      titulo(ctx, D, T.upper ? 'IMAGENS DE' : 'Imagens de', 960, T.upper ? 96 : 90, seg(lt, .1, .5));
+      titulo(ctx, D, T.upper ? 'PROCEDIMENTO' : 'procedimento médico', T.upper ? 1070 : 1060, T.upper ? 96 : 90, seg(lt, .2, .6), { color: T.ac });
+      txt(ctx, 'conteúdo educativo', CX, 1170, { font: font(T, 'sans', 30, 500), color: T.sub, alpha: seg(lt, .4, .8) });
+      return;
+    }
+    if (sg.type === 'antes') {
+      face(ctx, D.A, z, CX, H / 2, CX, H / 2); vignette(ctx);
+      hook(ctx, D, lt, 0, d + 2);
+      if (D.local) kicker(ctx, D, D.local, 1300, seg(lt, .5, .9));
+      tag(ctx, D, 'ANTES', CX, 1560, seg(lt, .3, .7));
+    } else if (sg.type === 'clip') {
+      const c = sg.clip; const el = c.el;
+      if (el && el.videoWidth) cover(ctx, el, el.videoWidth, el.videoHeight, 1.02 + .04 * seg(lt, 0, d));
+      if (D.sens) desat(ctx, .65);
+      vignette(ctx, .5, .85);
+      kicker(ctx, D, 'Etapa ' + (sg.i + 1), 330, seg(lt, .1, .4));
+      titulo(ctx, D, c.label || 'Procedimento', 470, T.upper ? 100 : 96, seg(lt, .15, .55), { d3: true });
+    } else if (sg.type === 'peca') {
+      face(ctx, D.PA, z, CX, H / 2, CX, H / 2); if (D.sens) desat(ctx, .55); vignette(ctx);
+      kicker(ctx, D, 'Peça retirada', 330, seg(lt, .1, .4));
+      if (D.tam) titulo(ctx, D, D.tam, 470, T.upper ? 110 : 104, seg(lt, .2, .6), { color: T.ac, d3: true });
+      txt(ctx, 'enviada para análise (anatomopatológico)', CX, 1520, { font: font(T, 'sans', 32, 600), color: T.ink, alpha: seg(lt, .6, 1), shadow: 'rgba(0,0,0,.7)' });
+    } else if (sg.type === 'depois') {
+      face(ctx, D.B, z, CX, H / 2, CX, H / 2); vignette(ctx);
+      kicker(ctx, D, 'Cicatriz', 330, seg(lt, .1, .4));
+      titulo(ctx, D, D.dias || 'Depois', 470, T.upper ? 110 : 104, seg(lt, .2, .6), { color: T.ac, d3: true });
+      tag(ctx, D, 'DEPOIS', CX, 1560, seg(lt, .4, .8));
+    } else {
+      const xs = lerp(W, CX, E.io(seg(lt, 0, .7)));
+      face(ctx, D.B, 1.02, CX, H / 2, CX, H / 2);
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, xs, H); ctx.clip(); face(ctx, D.A, 1.02, CX, H / 2, CX, H / 2); ctx.restore();
+      vignette(ctx); ctx.fillStyle = T.ac; ctx.fillRect(xs - 2, 0, 4, H);
+      tag(ctx, D, 'ANTES', 60, 1560, seg(lt, .7, 1), 'left'); tag(ctx, D, 'DEPOIS', W - 60, 1560, seg(lt, .7, 1), 'right');
+    }
+    if (lt < .18 && sg.t0 > 0) { ctx.fillStyle = `rgba(255,255,255,${(1 - lt / .18) * .35})`; ctx.fillRect(0, 0, W, H); }
+  },
+};
+async function prepFrame(D, t) {
+  if (D.style !== 'cirurgia' || !D.clips || !D.clips.length) return;
+  if (t >= mainDur(D)) return; const tt = t / K(D);
+  const sg = cirSegs(D).find(s2 => s2.type === 'clip' && tt >= s2.t0 && tt < s2.t1); if (!sg) return;
+  const el = sg.clip.el, want = sg.clip.start + (tt - sg.t0);
+  if (Math.abs(el.currentTime - want) < .012) return;
+  await new Promise(res => { let done = false; const f = () => { if (done) return; done = true; el.removeEventListener('seeked', f); res(); }; el.addEventListener('seeked', f); el.currentTime = want; setTimeout(f, 600); });
+}
+function syncClips(D, t, playing) {
+  if (!D || D.style !== 'cirurgia' || !D.clips) return; const tt = t / K(D);
+  const segs = cirSegs(D);
+  D.clips.forEach(c => { const sg = segs.find(s2 => s2.clip === c); const inSeg = sg && tt >= sg.t0 && tt < sg.t1;
+    if (!inSeg) { if (!c.el.paused) c.el.pause(); return; }
+    const want = c.start + (tt - sg.t0);
+    if (Math.abs(c.el.currentTime - want) > .25) c.el.currentTime = want;
+    if (playing && c.el.paused) c.el.play().catch(() => { }); if (!playing && !c.el.paused) c.el.pause(); });
+}
+
 /* perfil no final (opcional) */
 const PROF_DUR = 3.0;
 function profileSeg(ctx, D, t) {
@@ -1221,6 +1313,7 @@ async function exportWebCodecs(D, canvas, onProg, codec, acodec, out) {
   ve.configure({ codec, width: OW, height: OH, bitrate: BR, framerate: FPS, avc: { format: 'avc' } });
   for (let i = 0; i < N; i++) {
     if (err) throw err;
+    await prepFrame(D, i / FPS);
     drawFrame(ctx, D, i / FPS);
     if (ox) ox.drawImage(canvas, 0, 0, OW, OH);
     const vf = new VideoFrame(oc, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) });
@@ -1269,7 +1362,7 @@ async function exportRecorder(D, canvas, onProg, out) {
   rec.start(250); if (src) src.start();
   const t0 = performance.now();
   await new Promise(res => {
-    const step = () => { const t = (performance.now() - t0) / 1000; ctx._draw(Math.min(t, dur)); onProg(t / dur); if (t >= dur) return res(); requestAnimationFrame(step); };
+    const step = () => { const t = (performance.now() - t0) / 1000; syncClips(D, t, true); ctx._draw(Math.min(t, dur)); onProg(t / dur); if (t >= dur) return res(); requestAnimationFrame(step); };
     requestAnimationFrame(step);
   });
   rec.stop(); await done; if (ac) ac.close();
@@ -1294,4 +1387,4 @@ function storyPoll(ctx, D) {
 function storyInfo(ctx, D) {
   infoCard(ctx, Object.assign({}, D, { dest: 'stories' }), 12);
 }
-window.Motor = { storyPoll, storyInfo, infoD, endD, ORDEM, mainDur, PROF_DUR, VOICE_AT, regList, cardLayout, offPts, tris, W, H, CX, EYE_Y, IED, PR, FPS, THEMES, REGIOES, REG, ST, anchors, regiaoPts, eyeXform, eyesXform, composeAdj, coverXform, prerender, drawFrame, totalDur, renderAudio, pickAvc, aacOk, opusOk, exportWebCodecs, exportRecorder, apply, mk, INFO_DUR, END_DUR };
+window.Motor = { prepFrame, syncClips, cirSegs, storyPoll, storyInfo, infoD, endD, ORDEM, mainDur, PROF_DUR, VOICE_AT, regList, cardLayout, offPts, tris, W, H, CX, EYE_Y, IED, PR, FPS, THEMES, REGIOES, REG, ST, anchors, regiaoPts, eyeXform, eyesXform, composeAdj, coverXform, prerender, drawFrame, totalDur, renderAudio, pickAvc, aacOk, opusOk, exportWebCodecs, exportRecorder, apply, mk, INFO_DUR, END_DUR };
