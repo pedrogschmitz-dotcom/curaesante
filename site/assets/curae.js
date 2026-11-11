@@ -2,6 +2,10 @@
 (function () {
   const doc = document.documentElement;
   doc.classList.remove('no-js');
+  // sempre abrir a página no topo (exceto quando o link aponta para uma seção)
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const toTop = () => { if (location.hash) return; window.scrollTo(0, 0); if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true, force: true }); };
+  toTop(); window.addEventListener('pageshow', () => { toTop(); requestAnimationFrame(toTop); setTimeout(toTop, 60); setTimeout(toTop, 300); });
   const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (RM) doc.classList.add('rm');
 
@@ -23,6 +27,9 @@
       target.querySelectorAll('[data-cat]').forEach(el => { el.hidden = f !== 'all' && !el.dataset.cat.split(' ').includes(f); });
       if (window.ScrollTrigger) ScrollTrigger.refresh();
     }));
+    const want = new URLSearchParams(location.search).get('f');
+    const pre = want && group.querySelector(`button[data-f="${want}"]`);
+    if (pre) pre.click();
   });
 
   const pre = document.getElementById('pre');
@@ -35,8 +42,9 @@
 
   // rolagem suave
   if (window.Lenis) {
-    const lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
+    const lenis = new Lenis({ lerp: 0.09, smoothWheel: true }); window.__lenis = lenis;
     lenis.on('scroll', ScrollTrigger.update);
+    if (!location.hash) lenis.scrollTo(0, { immediate: true });
     gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
     document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
       const t = document.querySelector(a.getAttribute('href'));
@@ -77,7 +85,7 @@
   }
 
   // entrada: hero (início) ou cabeçalho de página
-  const h1 = document.querySelector('.hero h1, .phead h1');
+  const h1 = document.querySelector('.hero h1, .phead h1, .prof-hero h1');
   const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
   let t0 = .1;
   let seen = false; try { seen = sessionStorage.getItem('cs_pre') === '1'; sessionStorage.setItem('cs_pre', '1'); } catch (e) {}
@@ -89,15 +97,21 @@
     t0 = 1.35;
   } else if (pre) pre.remove();
   if (h1) {
-    const chars = h1.closest('.hero') ? splitChars(h1) : splitWords(h1);
+    const big = h1.closest('.hero, .prof-hero');
+    const chars = big ? splitChars(h1) : splitWords(h1);
     const fades = h1.parentElement.querySelectorAll('[data-in]');
     gsap.set(chars, { yPercent: 110 });
     gsap.set(fades, { opacity: 0, y: 24 });
     if (document.querySelector('.hero .bg')) tl.fromTo('.hero .bg', { scale: 1.2 }, { scale: 1, duration: 2.2, ease: 'power3.out' }, t0 - .1);
-    tl.to(chars, { yPercent: 0, duration: 1.05, stagger: h1.closest('.hero') ? .035 : .06 }, t0 + .15)
+    tl.to(chars, { yPercent: 0, duration: 1.05, stagger: big ? .035 : .06 }, t0 + .15)
       .to(fades, { opacity: 1, y: 0, duration: .9, stagger: .1 }, t0 + .55);
   }
 
+  if (document.querySelector('.prof-hero')) {
+    tl.fromTo('.prof-hero .ph-big', { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 1.5, ease: 'power4.inOut' }, t0 - .2)
+      .fromTo('.prof-hero .ph-big img', { scale: 1.25 }, { scale: 1, duration: 2.2, ease: 'power3.out' }, t0 - .2);
+    gsap.to('.prof-hero .ph-big img', { yPercent: 8, ease: 'none', scrollTrigger: { trigger: '.prof-hero', start: 'top top', end: 'bottom top', scrub: true } });
+  }
   // hero: parallax e luz
   if (document.querySelector('.hero')) {
     gsap.to('.hero .bg', { yPercent: 14, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
@@ -162,5 +176,5 @@
     b.addEventListener('mouseleave', () => gsap.to(b, { x: 0, y: 0, duration: .6, ease: 'elastic.out(1,.4)' }));
   });
 
-  window.addEventListener('load', () => ScrollTrigger.refresh());
+  window.addEventListener('load', () => { toTop(); ScrollTrigger.refresh(); toTop(); });
 })();

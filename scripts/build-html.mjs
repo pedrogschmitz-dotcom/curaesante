@@ -50,7 +50,9 @@ const posts = readdirSync(path.join(ROOT, 'content/blog')).filter(f => f.endsWit
   .map(f => parseFM(readFileSync(path.join(ROOT, 'content/blog', f), 'utf8')))
   .filter(p => p && p.published === true && p.slug)
   .sort((a, b) => new Date(b.data) - new Date(a.data));
-posts.forEach(p => { p.cats = catsOf(p); });
+const FOTOS = existsSync(path.join(ROOT, 'site/blog-fotos.json')) ? JSON.parse(readFileSync(path.join(ROOT, 'site/blog-fotos.json'), 'utf8')) : {};
+posts.forEach(p => { if (existsSync(path.join(ROOT, 'site/img/blog', p.slug + '.jpg'))) { p.capa = `/s/img/blog/${p.slug}.jpg`; p.capaAlt = (FOTOS[p.slug] || {}).alt || ''; p.capaCred = FOTOS[p.slug] || null; } });
+posts.forEach(p => { p.cats = catsOf(p); if (/j[uú]lia/i.test(p.autor || '')) { p.autor = 'Dra. Júlia Schmitz'; p.aut = 'julia'; } else if (/pedro/i.test(p.autor || '')) { p.autor = 'Dr. Pedro Schmitz'; p.aut = 'pedro'; } });
 
 // guias (páginas educativas ricas, com fotos) em site/guias/<slug>.html
 const guias = existsSync(path.join(ROOT, 'site/guias')) ? readdirSync(path.join(ROOT, 'site/guias')).filter(f => f.endsWith('.html')).map(f => {
@@ -132,10 +134,10 @@ ${cta ? `<a class="wa" href="${WA_PADRAO}" target="_blank" rel="noopener" aria-l
 // ---------- componentes ----------
 function cover(p, cls = '') {
   const c = hash(p.slug) % 4;
-  return `<div class="cover c${c}${cls}">${p.capa ? `<img src="${p.capa}" alt="" loading="lazy">` : `<span class="ini">${esc(p.title[0])}</span>`}<span class="tg">${esc(p.guia ? 'Guia' : CAT_NOME[p.cats[0]])}</span></div>`;
+  return `<div class="cover c${c}${cls}">${p.capa ? `<img src="${p.capa}" alt="${esc(p.capaAlt || '')}" loading="lazy" width="1200" height="750">` : `<span class="ini">${esc(p.title[0])}</span>`}<span class="tg">${esc(p.guia ? 'Guia' : CAT_NOME[p.cats[0]])}</span></div>`;
 }
 function postCard(p) {
-  return `<a class="post" href="/blog/${p.slug}/" data-cat="${p.cats.join(' ')}">${cover(p)}<div class="tx"><h3>${esc(p.title)}</h3><p>${esc(p.resumo)}</p><span class="meta">${esc(p.autor || 'Curae Santé')} · ${dataBR(p.data)}</span></div></a>`;
+  return `<a class="post" href="/blog/${p.slug}/" data-cat="${p.cats.join(' ')}${p.aut ? ' a-' + p.aut : ''}">${cover(p)}<div class="tx"><h3>${esc(p.title)}</h3><p>${esc(p.resumo)}</p><span class="meta">${esc(p.autor || 'Curae Santé')} · ${dataBR(p.data)}</span></div></a>`;
 }
 function guiaCard(g) {
   return `<a class="post guia" href="/blog/${g.slug}/" data-cat="${g.cats.join(' ')}">${cover({ ...g, guia: true, title: g.titulo })}<div class="tx"><span class="kick">Guia por queixa</span><h3 style="font-size:32px">${esc(g.titulo)}</h3><p>${esc(g.resumo)}</p><span class="meta">Revisado por ${esc(g.revisor)} · ${dataBR(g.data)}</span></div></a>`;
@@ -150,6 +152,8 @@ function fill(html) {
   return html
     .replaceAll('{{WA}}', WA_PADRAO)
     .replace(/\{\{WA:([^}]+)\}\}/g, (_, m) => waLink(m))
+    .replace(/\{\{AUTOR:(\w+):(\d+)\}\}/g, (_, a, n) => posts.filter(p => p.aut === a).slice(0, +n).map(postCard).join('\n'))
+    .replace(/\{\{NAUTOR:(\w+)\}\}/g, (_, a) => String(posts.filter(p => p.aut === a).length))
     .replace(/\{\{ULTIMOS:(\d+)\}\}/g, (_, n) => posts.slice(0, +n).map(postCard).join('\n'))
     .replace(/\{\{FAQ:([a-z,]+)\}\}/g, (_, c) => faqHtml(FAQ.filter(q => c === 'all' || c.split(',').includes(q.cat)), c === 'all'))
     .replaceAll('{{ICO_WA}}', ICO_WA);
@@ -168,6 +172,7 @@ for (const f of readdirSync(pagesDir).filter(f => f.endsWith('.html'))) {
   let body = fill(raw.replace(/<!--meta[\s\S]*?-->/, ''));
   const ld = [];
   if (meta.medicos) ld.push(...MEDICOS_LD);
+  if (meta.medico) ld.push({ ...MEDICOS_LD[meta.medico === 'pedro' ? 0 : 1], url: `${SITE}${meta.url}`, image: `${SITE}/s/img/${meta.medico === 'pedro' ? 'dr-pedro' : 'dra-julia'}.jpg`, description: meta.description });
   if (meta.faq) ld.push(faqLd(FAQ.filter(q => meta.faq === 'all' || meta.faq.split(',').includes(q.cat))));
   write(path.join(meta.url, 'index.html'), layout({ ...meta, body, ld }));
   urls.push(meta.url);
@@ -181,7 +186,7 @@ const blogBody = `<section class="phead"><div class="wrap">
   <p class="lead" data-in>Textos curtos e revisados pela equipe médica sobre pele, cabelo, metabolismo e saúde da mulher. Informação para entender, não para se automedicar.</p>
 </div></section>
 <section class="pad-s"><div class="wrap">
-  <div class="chips filters" data-filter-group="#lista"><button aria-pressed="true" data-f="all">Todos</button>${Object.entries(CAT_NOME).map(([k, v]) => `<button aria-pressed="false" data-f="${k}">${v}</button>`).join('')}</div>
+  <div class="chips filters" data-filter-group="#lista"><button aria-pressed="true" data-f="all">Todos</button>${Object.entries(CAT_NOME).map(([k, v]) => `<button aria-pressed="false" data-f="${k}">${v}</button>`).join('')}<button aria-pressed="false" data-f="a-pedro">Dr. Pedro</button><button aria-pressed="false" data-f="a-julia">Dra. Júlia</button></div>
   <div class="posts" id="lista">
 ${guias.map(guiaCard).join('\n')}
 ${posts.map(postCard).join('\n')}
@@ -202,6 +207,7 @@ for (const p of posts) {
   <div class="ameta" data-in><span>${esc(p.autor || 'Curae Santé')}</span><span>${dataBR(p.data)}</span><span>Leitura de ${Math.max(2, Math.round(p.body.split(/\s+/).length / 200))} min</span></div>
 </div></section>
 <article class="pad-s"><div class="wrap narrow art">
+${p.capa ? `<figure style="margin-top:0"><img src="${p.capa}" alt="${esc(p.capaAlt || '')}" width="1200" height="750"><figcaption>Imagem ilustrativa${p.capaCred && p.capaCred.fotografo ? ` · Foto: ${esc(p.capaCred.fotografo)}/Pexels` : ' · Pexels'}</figcaption></figure>` : ''}
 ${html}
 <div class="tags">${(p.tags || []).map(t => `<span>${esc(t)}</span>`).join('')}</div>
 <p class="note" style="margin-top:30px">Conteúdo informativo. Não substitui a consulta. A indicação de qualquer tratamento depende de avaliação médica individual.</p>
@@ -209,7 +215,7 @@ ${html}
 </div></article>
 ${related(p).length ? `<section class="pad-s cr"><div class="wrap"><span class="kick">Leia também</span><h2 style="font-size:clamp(32px,4vw,48px)">Artigos relacionados</h2><div class="posts">${related(p).map(postCard).join('')}</div></div></section>` : ''}`;
   const ld = [...MEDICOS_LD, { '@type': 'BlogPosting', headline: p.title, description: p.resumo, datePublished: p.data, dateModified: p.data, author: autorLd, publisher: { '@id': `${SITE}/#clinica` }, mainEntityOfPage: `${SITE}/blog/${p.slug}/`, keywords: (p.tags || []).join(', '), inLanguage: 'pt-BR' }];
-  write(`blog/${p.slug}/index.html`, layout({ title: `${p.title} | Curae Santé`, description: p.resumo, url: `/blog/${p.slug}/`, nav: 'blog', body, ld, ogType: 'article' }));
+  write(`blog/${p.slug}/index.html`, layout({ title: `${p.title} | Curae Santé`, description: p.resumo, url: `/blog/${p.slug}/`, nav: 'blog', body, ld, ogType: 'article', ogImage: p.capa || '/og-image.jpg' }));
   urls.push(`/blog/${p.slug}/`);
 }
 
