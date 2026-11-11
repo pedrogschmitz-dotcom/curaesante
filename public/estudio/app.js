@@ -186,13 +186,13 @@ function txt(ctx, s, x, y, o = {}) {
   ctx.font = o.font; ctx.fillStyle = o.color || '#fff'; ctx.textAlign = o.align || 'center'; ctx.textBaseline = o.base || 'alphabetic';
   if (o.ls) try { ctx.letterSpacing = o.ls + 'px'; } catch (e) { }
   ctx.globalAlpha *= (o.alpha == null ? 1 : o.alpha);
+  if (o.maxW) { const w = ctx.measureText(s).width; if (w > o.maxW) { const k = o.maxW / w; ctx.translate(x, y); ctx.scale(k, k); ctx.translate(-x, -y); } }
   if (o.shadow) { ctx.shadowColor = o.shadow; ctx.shadowBlur = o.blur || 24; ctx.shadowOffsetY = o.sy || 6; }
   if (o.depth) { // efeito 3D em camadas
     const c0 = ctx.fillStyle; ctx.fillStyle = o.depthColor;
     for (let i = o.depth; i > 0; i--) ctx.fillText(s, x + i, y + i);
     ctx.fillStyle = c0; ctx.shadowColor = 'transparent';
   }
-  if (o.maxW) { const w = ctx.measureText(s).width; if (w > o.maxW) { ctx.translate(x, y); ctx.scale(o.maxW / w, o.maxW / w); ctx.fillText(s, 0, 0); ctx.restore(); return; } }
   ctx.fillText(s, x, y);
   ctx.restore();
 }
@@ -1172,6 +1172,115 @@ function syncClips(D, t, playing) {
     if (playing && c.el.paused) c.el.play().catch(() => { }); if (!playing && !c.el.paused) c.el.pause(); });
 }
 
+/* ================= caso comentado (vídeo do médico narrando) ================= */
+const NARR_R = 150, NARR_C = () => pt(W - 60 - NARR_R, 300 + NARR_R);
+function narrFrame(ctx, D, x, y, w, h, round) {
+  const el = D.narr && D.narr.el; if (!el || !el.videoWidth) return;
+  const vw = el.videoWidth, vh = el.videoHeight, s0 = Math.max(w / vw, h / vh);
+  ctx.save();
+  if (round) { ctx.beginPath(); ctx.arc(x + w / 2, y + h / 2, w / 2, 0, 7); ctx.clip(); }
+  ctx.drawImage(el, x + (w - vw * s0) / 2, y + (h - vh * s0) / 2, vw * s0, vh * s0);
+  ctx.restore();
+}
+function capChunks(words) {
+  const out = []; let cur = [];
+  (words || []).forEach(w => { cur.push(w); const dur = cur[cur.length - 1].e - cur[0].s; if (cur.length >= 4 || dur > 1.6 || /[.!?,;:]$/.test(w.w)) { out.push(cur); cur = []; } });
+  if (cur.length) out.push(cur); return out;
+}
+function drawCaption(ctx, D, t) {
+  if (!D.capOn || !D.capWords || !D.capWords.length) return; const T = D.T;
+  const tv = t - VOICE_AT; const ch = (D._chunks || (D._chunks = capChunks(D.capWords))).find(c => tv >= c[0].s - .05 && tv <= c[c.length - 1].e + .25); if (!ch) return;
+  const y = isStory(D) ? 1380 : 1600, fs = T.upper ? 58 : 52;
+  ctx.save(); ctx.font = font(T, T.upper ? 'disp' : 'sans', fs, T.upper ? null : 800);
+  const parts = ch.map(w => (T.upper ? w.w.toUpperCase() : w.w)); const sp = ctx.measureText(' ').width;
+  const ws = parts.map(p => ctx.measureText(p).width); const tw = ws.reduce((a, b) => a + b, 0) + sp * (parts.length - 1);
+  const sc = Math.min(1, 960 / tw); ctx.translate(CX, y); ctx.scale(sc, sc);
+  ctx.fillStyle = 'rgba(12,9,6,.72)'; rr(ctx, -tw / 2 - 26, -fs - 10, tw + 52, fs + 34, 18); ctx.fill();
+  let x = -tw / 2; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+  ch.forEach((w, i) => { const on = tv >= w.s && tv <= w.e + .08; ctx.fillStyle = on ? T.ac : T.ink; ctx.fillText(parts[i], x, 0); x += ws[i] + sp; });
+  ctx.restore();
+}
+function cardAt(D, t) { const tv = t - VOICE_AT; let c = null; (D.cards || []).forEach(k => { if (k.text && tv >= k.t) c = k; }); return c; }
+function leftBlock(ctx, D, kick, body, y0, p, big) {
+  const T = D.T; if (p <= 0) return;
+  kicker(ctx, D, kick, y0, p, { x: 60, align: 'left' });
+  ctx.save(); ctx.globalAlpha *= E.out(p);
+  if (big) para(ctx, (T.upper ? body.toUpperCase() : '“' + body + '”'), 60, y0 + (T.upper ? 110 : 100), 470, T.upper ? 84 : 78, { font: font(T, 'disp', T.upper ? 76 : 72), color: T.ink, align: 'left', shadow: 'rgba(0,0,0,.7)' });
+  else { ctx.fillStyle = 'rgba(12,9,6,.66)'; ctx.save(); ctx.font = font(T, 'sans', 34, 600); const L = wrap(ctx, body, 450); ctx.restore(); rr(ctx, 44, y0 + 30, 490, L.length * 46 + 40, 18); ctx.fill();
+    para(ctx, body, 70, y0 + 82, 450, 46, { font: font(T, 'sans', 34, 600), color: T.ink, align: 'left' }); }
+  ctx.restore();
+}
+ST.comentado = {
+  nome: 'Caso comentado', desc: 'Você narra; cartões e regiões seguem a fala',
+  dur: D => Math.max(8, (D.narr ? D.narr.dur : 20) + VOICE_AT + .2),
+  cues: D => (D.cards || []).filter(c => c.text).map(c => c.t + VOICE_AT),
+  draw(ctx, D, t) {
+    const T = D.T, dur = this.dur(D);
+    const first = (D.cards || []).filter(c => c.text).map(c => c.t)[0];
+    const tOpen = Math.min(3.4, first != null ? Math.max(1.6, first + VOICE_AT) : 3.4);
+    const tDep = D.tDepois != null ? D.tDepois + VOICE_AT : Math.max(tOpen + 3, dur - 4.2);
+    if (t < tOpen) { // abertura: você em tela cheia
+      ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+      if (D.narr && D.narr.el && D.narr.el.videoWidth) narrFrame(ctx, D, 0, 0, W, H, false); else face(ctx, D.A, 1, CX, H / 2, CX, H / 2);
+      vignette(ctx, .55, .7);
+      hook(ctx, D, t, 0, tOpen + 1);
+      // encolhe para o círculo
+      return;
+    }
+    const lt = t - tOpen; const sh = E.io(seg(lt, 0, .5));
+    // fundo: o caso
+    const isB = t >= tDep, z = 1.02 + .04 * seg(t, tOpen, dur);
+    face(ctx, D.A, z, CX, EYE_Y + 150, CX, EYE_Y + 150);
+    if (t > tDep - .1) face(ctx, D.B, z, CX, EYE_Y + 150, CX, EYE_Y + 150, E.io(seg(t, tDep, tDep + .9)));
+    vignette(ctx, .6, .9);
+    const card = cardAt(D, t); const ck = card ? card.key : null; const cp = card ? seg(t - VOICE_AT, card.t, card.t + .4) : 0;
+    // malha durante avaliação e estratégia
+    if (D.LA && (ck === 'avaliacao' || ck === 'estrategia') && !isB) malha(ctx, D, D.LA, 478, T.ac, .5 * seg(t - VOICE_AT, card.t, card.t + .8), 1.8);
+    if (!isB && card) {
+      if (ck === 'desejo') leftBlock(ctx, D, 'O que a paciente queria', card.text, 330, cp, true);
+      if (ck === 'avaliacao') leftBlock(ctx, D, 'O que eu vi', card.text, 330, cp);
+      if (ck === 'produto') leftBlock(ctx, D, 'Produto e por quê', card.text, 330, cp);
+      if (ck === 'estrategia') {
+        leftBlock(ctx, D, 'Estratégia', card.text, 330, cp);
+        const R = regList(D); const tEnd = tDep - VOICE_AT; const span = Math.max(1, tEnd - card.t); const per = span / Math.max(1, R.length);
+        R.forEach((r, i) => { const p = seg(t - VOICE_AT, card.t + .5 + i * per, card.t + .9 + i * per); if (p <= 0) return;
+          r.ptsA.forEach(q => { ctx.save(); ctx.globalAlpha = E.out(p); ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 7); ctx.strokeStyle = T.ac; ctx.lineWidth = 4; ctx.setLineDash([10, 8]); ctx.stroke(); ctx.setLineDash([]);
+            ctx.beginPath(); ctx.arc(q.x, q.y, 26, 0, 7); ctx.fillStyle = T.ac; ctx.fill(); txt(ctx, String(i + 1), q.x, q.y + 11, { font: font(T, 'mono', 30, 700), color: '#111' });
+            const sd = D.showMl && D.perSide && r.reg.bi && D.mlSide && D.mlSide[r.reg.id]; const v = sd ? (q.lado === 'L' ? sd.d : sd.e) : (D.showMl && !r.reg.bi && q.lado === 'C' ? D.ml[r.reg.id] : 0);
+            if (v) txt(ctx, fmtMl(v) + ' ml', q.x, q.y - q.r - 14, { font: font(T, 'mono', 24, 700), color: T.ink, shadow: 'rgba(0,0,0,.8)' });
+            ctx.restore(); });
+        });
+        // lista da ordem
+        const lst = R.map((r, i) => (i + 1) + '. ' + r.reg.nome + (D.showMl && D.ml[r.reg.id] ? ' · ' + mlLabel(D, r.reg.id) : ''));
+        ctx.save(); ctx.globalAlpha = seg(t - VOICE_AT, card.t + .5, card.t + 1); lst.forEach((s2, i) => txt(ctx, s2, 60, 1240 + i * 40, { font: font(T, 'mono', 26, 700), color: T.ink, align: 'left', shadow: 'rgba(0,0,0,.8)', alpha: seg(t - VOICE_AT, card.t + .5 + i * per, card.t + .9 + i * per) })); ctx.restore();
+      }
+    }
+    if (isB) { tag(ctx, D, 'DEPOIS', 60, 1460, seg(t, tDep + .4, tDep + .8), 'left'); regChips(ctx, D, 1360, seg(t, tDep + 1, tDep + 1.6)); }
+    else tag(ctx, D, 'ANTES', 60, 1460, seg(lt, .4, .8), 'left');
+    // você no círculo
+    const c0 = NARR_C(); const r0 = lerp(W, NARR_R, sh);
+    const cx = lerp(CX, c0.x, sh), cy = lerp(H / 2, c0.y, sh);
+    if (D.narr && D.narr.el && D.narr.el.videoWidth) {
+      if (sh < 1) { ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r0 * (sh < 1 ? 1.1 : 1), 0, 7); ctx.clip(); narrFrame(ctx, D, cx - r0 * 1.2, cy - r0 * 1.2, r0 * 2.4, r0 * 2.4, false); ctx.restore(); }
+      else narrFrame(ctx, D, cx - NARR_R, cy - NARR_R, NARR_R * 2, NARR_R * 2, true);
+      ctx.beginPath(); ctx.arc(cx, cy, Math.min(r0, 2000), 0, 7); ctx.strokeStyle = T.ac; ctx.lineWidth = 6; ctx.stroke();
+    }
+    drawCaption(ctx, D, t);
+  },
+};
+async function prepNarr(D, t) {
+  if (D.style !== 'comentado' || !D.narr || !D.narr.el) return;
+  const el = D.narr.el, want = clamp(t - VOICE_AT, 0, Math.max(0, D.narr.dur - .05));
+  if (Math.abs(el.currentTime - want) < .012) return;
+  await new Promise(res => { let done = false; const f = () => { if (done) return; done = true; el.removeEventListener('seeked', f); res(); }; el.addEventListener('seeked', f); el.currentTime = want; setTimeout(f, 600); });
+}
+function syncNarr(D, t, playing) {
+  if (!D || D.style !== 'comentado' || !D.narr || !D.narr.el) return; const el = D.narr.el;
+  const want = t - VOICE_AT; if (want < 0 || want > D.narr.dur) { if (!el.paused) el.pause(); if (want < 0 && Math.abs(el.currentTime) > .05) el.currentTime = 0; return; }
+  if (Math.abs(el.currentTime - want) > .25) el.currentTime = want;
+  if (playing && el.paused) el.play().catch(() => { }); if (!playing && !el.paused) el.pause();
+}
+
 /* perfil no final (opcional) */
 const PROF_DUR = 3.0;
 function profileSeg(ctx, D, t) {
@@ -1313,7 +1422,7 @@ async function exportWebCodecs(D, canvas, onProg, codec, acodec, out) {
   ve.configure({ codec, width: OW, height: OH, bitrate: BR, framerate: FPS, avc: { format: 'avc' } });
   for (let i = 0; i < N; i++) {
     if (err) throw err;
-    await prepFrame(D, i / FPS);
+    await prepFrame(D, i / FPS); await prepNarr(D, i / FPS);
     drawFrame(ctx, D, i / FPS);
     if (ox) ox.drawImage(canvas, 0, 0, OW, OH);
     const vf = new VideoFrame(oc, { timestamp: Math.round(i * 1e6 / FPS), duration: Math.round(1e6 / FPS) });
@@ -1362,7 +1471,7 @@ async function exportRecorder(D, canvas, onProg, out) {
   rec.start(250); if (src) src.start();
   const t0 = performance.now();
   await new Promise(res => {
-    const step = () => { const t = (performance.now() - t0) / 1000; syncClips(D, t, true); ctx._draw(Math.min(t, dur)); onProg(t / dur); if (t >= dur) return res(); requestAnimationFrame(step); };
+    const step = () => { const t = (performance.now() - t0) / 1000; syncClips(D, t, true); syncNarr(D, t, true); ctx._draw(Math.min(t, dur)); onProg(t / dur); if (t >= dur) return res(); requestAnimationFrame(step); };
     requestAnimationFrame(step);
   });
   rec.stop(); await done; if (ac) ac.close();
@@ -1387,4 +1496,4 @@ function storyPoll(ctx, D) {
 function storyInfo(ctx, D) {
   infoCard(ctx, Object.assign({}, D, { dest: 'stories' }), 12);
 }
-window.Motor = { prepFrame, syncClips, cirSegs, storyPoll, storyInfo, infoD, endD, ORDEM, mainDur, PROF_DUR, VOICE_AT, regList, cardLayout, offPts, tris, W, H, CX, EYE_Y, IED, PR, FPS, THEMES, REGIOES, REG, ST, anchors, regiaoPts, eyeXform, eyesXform, composeAdj, coverXform, prerender, drawFrame, totalDur, renderAudio, pickAvc, aacOk, opusOk, exportWebCodecs, exportRecorder, apply, mk, INFO_DUR, END_DUR };
+window.Motor = { prepNarr, syncNarr, prepFrame, syncClips, cirSegs, storyPoll, storyInfo, infoD, endD, ORDEM, mainDur, PROF_DUR, VOICE_AT, regList, cardLayout, offPts, tris, W, H, CX, EYE_Y, IED, PR, FPS, THEMES, REGIOES, REG, ST, anchors, regiaoPts, eyeXform, eyesXform, composeAdj, coverXform, prerender, drawFrame, totalDur, renderAudio, pickAvc, aacOk, opusOk, exportWebCodecs, exportRecorder, apply, mk, INFO_DUR, END_DUR };

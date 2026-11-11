@@ -39,7 +39,7 @@ const WEEK = [
 const S = {
   img: {}, blob: {}, lm: {}, eyes: {}, adj: { dx: 0, dy: 0, ds: 0, dr: 0 },
   frames: {}, proc: 'ah', regs: new Set(PROCS.ah.regs), ml: {}, showMl: false,
-  mode: 'est', clips: [], sens: true, dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
+  mode: 'est', clips: [], sens: true, narr: null, capWords: [], capOn: true, cardT: {}, regOrder: [], dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
   orig: {}, crop: {}, lmOrig: {}, eyesOrig: {}, checks: {}, caseNo: 1, prof: 0, result: null, roff: {}, mlSide: {}, perSide: false, voice: null, voiceName: '', withProfile: true,
 };
 const DEF = { p1n: 'Dr. Pedro Schmitz', p1c: 'CRM/SC 38229', p2n: '', p2c: '', marca: 'Curae Santé', handle: '@curaesante', cta1: 'Agende sua', cta2: 'avaliação' };
@@ -423,8 +423,8 @@ procSel.onchange = () => { applyProc(procSel.value); refresh(); };
 function renderRegs() {
   const box = $('#regs'); box.innerHTML = '';
   M.REGIOES.forEach(r => {
-    const c = document.createElement('span'); c.className = 'chip' + (S.regs.has(r.id) ? ' on' : ''); c.textContent = r.nome;
-    c.onclick = () => { S.regs.has(r.id) ? S.regs.delete(r.id) : S.regs.add(r.id); if (S.regs.size > 6) toast('Mais de 6 regiões deixam o vídeo longo.'); renderRegs(); drawReg(); refresh(); };
+    const c = document.createElement('span'); c.className = 'chip' + (S.regs.has(r.id) ? ' on' : ''); const oi = S.mode === 'com' ? orderedRegs().indexOf(r.id) : -1; c.textContent = (oi >= 0 ? (oi + 1) + '. ' : '') + r.nome;
+    c.onclick = () => { if (S.regs.has(r.id)) { S.regs.delete(r.id); S.regOrder = S.regOrder.filter(x => x !== r.id); } else { S.regs.add(r.id); S.regOrder.push(r.id); } if (S.regs.size > 6) toast('Mais de 6 regiões deixam o vídeo longo.'); renderRegs(); drawReg(); refresh(); };
     box.append(c);
   });
   renderMl();
@@ -465,9 +465,10 @@ function renderMl() {
   });
   const t = document.createElement('div'); t.className = 'mlrow'; t.innerHTML = `<b>Total</b><b>${String(Math.round(tot * 10) / 10).replace('.', ',')} ml</b>`; box.append(t);
 }
-const orderedRegs = () => M.REGIOES.map(r => r.id).filter(id => S.regs.has(id));
+const orderedRegs = () => S.mode === 'com' ? S.regOrder.filter(id => S.regs.has(id)).concat(M.REGIOES.map(r => r.id).filter(id => S.regs.has(id) && !S.regOrder.includes(id))) : M.REGIOES.map(r => r.id).filter(id => S.regs.has(id));
 $('#swMl').onclick = e => { S.showMl = !S.showMl; e.currentTarget.classList.toggle('on', S.showMl); renderMl(); refresh(); };
 ['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2', 'tecnica', 'cuidados', 'local', 'tam'].forEach(id => $('#' + id).addEventListener('input', () => refresh()));
+['hook1', 'hook2'].forEach(id => $('#' + id).addEventListener('input', e => e.target.dataset.touched = 1));
 $('#swSens').onclick = e => { S.sens = !S.sens; e.currentTarget.classList.toggle('on', S.sens); refresh(); };
 function profs() { const l = [{ nome: CFG.p1n, crm: CFG.p1c }]; if (CFG.p2n) l.push({ nome: CFG.p2n, crm: CFG.p2c }); return l; }
 function renderProfs() { const s = $('#profSel'); s.innerHTML = ''; profs().forEach((p, i) => s.add(new Option(p.nome + ' · ' + p.crm, i))); s.value = Math.min(S.prof, profs().length - 1); }
@@ -498,13 +499,80 @@ function renderClips() {
   });
 }
 
+/* ---------------- caso comentado ---------------- */
+const BRANDS = ['juvederm', 'juvéderm', 'restylane', 'belotero', 'rennova', 'sculptra', 'radiesse', 'ellanse', 'ellansé', 'profhilo', 'botox', 'dysport', 'xeomin', 'prosigne', 'botulift', 'teosyal', 'stylage', 'perfectha', 'hyalmax', 'elleva', 'biogelis', 'saypha', 'volite', 'skinvive', 'nabota', 'letybo', 'voluma', 'volbella', 'volift', 'volux', 'harmonyca', 'diamond', 'princess', 'neauvia', 'yvoire', 'aliaxin', 'hialu', 'hyabell'];
+const BRANDS_RE = new RegExp('\\b(' + BRANDS.filter(b => b !== 'hialu').join('|') + ')\\b', 'gi');
+$('#c_produto').addEventListener('input', e => { const m = e.target.value.match(BRANDS_RE); const w = $('#brandWarn'); if (m) { w.style.display = 'block'; w.textContent = `“${m[0]}” parece marca. O CFM não permite citar marca: ela é retirada do vídeo. Descreva pelo tipo (ex.: ácido hialurônico de alta reticulação).`; } else w.style.display = 'none'; });
+['desejo', 'avaliacao', 'produto', 'estrategia'].forEach(k => $('#c_' + k).addEventListener('input', () => refresh()));
+['desejo', 'avaliacao', 'produto', 'estrategia', 'depois'].forEach(k => $('#t_' + k).addEventListener('input', e => { S.cardT[k] = +e.target.value; e.target.nextElementSibling.textContent = (+e.target.value).toFixed(1) + 's'; refresh(); }));
+$('#swCap').onclick = e => { S.capOn = !S.capOn; e.currentTarget.classList.toggle('on', S.capOn); refresh(); };
+$('#capText').addEventListener('change', e => { // corrige a legenda mantendo os tempos
+  const toks = e.target.value.trim().split(/\s+/).filter(Boolean); const old = S.capWords; if (!old.length || !toks.length) return;
+  const t0 = old[0].s, t1 = old[old.length - 1].e;
+  S.capWords = toks.map((w, i) => { const j = Math.min(old.length - 1, Math.floor(i * old.length / toks.length)); const j2 = Math.min(old.length - 1, Math.floor((i + 1) * old.length / toks.length) - 1); return { w, s: old[j].s, e: Math.max(old[j].s + .05, old[Math.max(j, j2)].e) }; });
+  refresh(); toast('Legenda corrigida.');
+});
+const norm = s2 => s2.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z ]/g, '');
+const STEMS = { desejo: ['queria', 'queixa', 'incomod', 'gostaria', 'pediu', 'desej', 'reclam', 'veio'], avaliacao: ['avali', 'percebi', 'notei', 'observ', 'analis', 'vi que', 'perda', 'flacid', 'sulco'], produto: ['produto', 'acido', 'hialur', 'bioestimul', 'toxina', 'escolhi', 'usei', 'utilizei'], estrategia: ['estrateg', 'aplic', 'comecei', 'primeiro', 'plano', 'injet', 'sustent'] };
+function autoTimes() {
+  const dur = S.narr ? S.narr.dur : 20, W2 = S.capWords.map(w => ({ n: norm(w.w), s: w.s })); const out = {}; let after = 0;
+  ['desejo', 'avaliacao', 'produto', 'estrategia'].forEach((k, i) => {
+    let f = null;
+    for (let j = 0; j < W2.length && f == null; j++) { if (W2[j].s < after) continue; const two = W2[j].n + ' ' + (W2[j + 1] ? W2[j + 1].n : ''); if (STEMS[k].some(st => W2[j].n.startsWith(st) || two.startsWith(st))) f = W2[j].s; }
+    out[k] = f != null ? f : Math.max(after, dur * (.05 + i * .2)); after = out[k] + 1;
+  });
+  out.depois = Math.max(after + 3, dur - 4);
+  S.cardT = out;
+  ['desejo', 'avaliacao', 'produto', 'estrategia', 'depois'].forEach(k => { const el = $('#t_' + k); el.max = dur.toFixed(1); el.value = out[k]; el.nextElementSibling.textContent = out[k].toFixed(1) + 's'; });
+}
+let ASR = null;
+async function transcribe(buf) {
+  const info = $('#narrInfo'), bar = $('#asrBar'), fill = bar.firstElementChild; bar.style.display = 'block';
+  try {
+    if (!ASR) {
+      info.textContent = 'Baixando o transcritor (≈ 77 MB, só na primeira vez)…';
+      const T = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.5/+esm');
+      T.env.allowLocalModels = false;
+      const prog = {};
+      ASR = await T.pipeline('automatic-speech-recognition', 'onnx-community/whisper-base_timestamped', { dtype: { encoder_model: 'q8', decoder_model_merged: 'q8' }, device: 'wasm',
+        progress_callback: d => { if (d.status === 'progress' && d.total) { prog[d.file] = [d.loaded, d.total]; const a = Object.values(prog).reduce((x, y) => [x[0] + y[0], x[1] + y[1]], [0, 0]); fill.style.width = Math.round(a[0] / a[1] * 100) + '%'; info.textContent = `Baixando o transcritor: ${Math.round(a[0] / 1048576)} de ${Math.round(a[1] / 1048576)} MB…`; } } });
+    }
+    info.textContent = 'Transcrevendo sua fala (pode levar 1 a 2 minutos)…'; fill.style.width = '100%';
+    const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext; const oc = new OAC(1, Math.ceil(buf.duration * 16000), 16000);
+    const src = oc.createBufferSource(); src.buffer = buf; src.connect(oc.destination); src.start(); const r16 = await oc.startRendering();
+    const out = await ASR(r16.getChannelData(0), { language: 'portuguese', task: 'transcribe', return_timestamps: 'word', chunk_length_s: 30, stride_length_s: 5 });
+    S.capWords = (out.chunks || []).map(c => ({ w: c.text.trim(), s: c.timestamp[0] || 0, e: c.timestamp[1] != null ? c.timestamp[1] : (c.timestamp[0] || 0) + .3 })).filter(w => w.w);
+    $('#capText').value = S.capWords.map(w => w.w).join(' ');
+    autoTimes(); info.textContent = `Pronto: ${S.capWords.length} palavras. Os cartões já foram colocados no tempo da fala; confira abaixo.`;
+  } catch (e) {
+    console.warn(e); S.capWords = []; autoTimes();
+    info.textContent = 'Não consegui transcrever aqui' + (location.hostname.includes('curaesante') ? '' : ' (dentro do Claude o transcritor é bloqueado; use o estúdio pelo site)') + '. Os cartões foram distribuídos no tempo; ajuste à mão.';
+  }
+  bar.style.display = 'none'; refresh(true);
+}
+$('#narrIn').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  const el = document.createElement('video'); el.muted = true; el.playsInline = true; el.setAttribute('playsinline', ''); el.preload = 'auto'; el.src = URL.createObjectURL(f);
+  $('#narrInfo').textContent = 'Abrindo o vídeo…';
+  try { await new Promise((res, rej) => { el.onloadeddata = res; el.onerror = rej; el.load(); setTimeout(res, 10000); }); } catch (err) { return $('#narrInfo').textContent = 'Não consegui abrir esse vídeo.'; }
+  let buf = null;
+  try { const ab = await f.arrayBuffer(); const ac = new (window.AudioContext || window.webkitAudioContext)(); buf = await new Promise((res, rej) => { const p = ac.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); }); try { ac.close(); } catch (x) { } }
+  catch (err) { $('#narrInfo').textContent = 'Não consegui ler o áudio do vídeo.'; }
+  S.narr = { el, dur: el.duration || (buf && buf.duration) || 20 }; if (buf) { S.voice = buf; S.voiceName = f.name; audioCache = null; }
+  el.style.cssText = 'width:120px;height:160px;object-fit:cover;border-radius:12px;background:#000'; $('#narrBox').innerHTML = ''; $('#narrBox').append(el); $('#narrDel').style.display = 'inline-flex';
+  if (S.mode !== 'com') { S.mode = 'com'; $$('#mode button').forEach(b => b.classList.toggle('on', b.dataset.v === 'com')); applyMode(); }
+  autoTimes(); refresh(true);
+  if (buf) transcribe(buf);
+});
+$('#narrDel').onclick = () => { S.narr = null; S.voice = null; S.capWords = []; $('#narrBox').innerHTML = ''; $('#narrDel').style.display = 'none'; $('#narrInfo').textContent = ''; $('#capText').value = ''; refresh(true); };
+
 /* ---------------- estilo ---------------- */
 function segCtl(id, key, cb) {
   $$(`#${id} button`).forEach(b => b.onclick = () => { $$(`#${id} button`).forEach(x => x.classList.toggle('on', x === b)); S[key] = b.dataset.v; cb && cb(); refresh(key === 'theme'); });
 }
 segCtl('mode', 'mode', () => setTimeout(applyMode, 0));
 function applyMode() {
-  const cir = S.mode === 'cir'; document.body.classList.toggle('cir', cir);
+  const cir = S.mode === 'cir'; document.body.classList.toggle('cir', cir); document.body.classList.toggle('com', S.mode === 'com');
   const L = cir ? { fa: ['ANTES', 'Antes'], fd: ['CICATRIZ', 'Depois'], pa: ['PEÇA RETIRADA', 'Peça'], pd: ['PERFIL OU 3/4', 'Depois'] } : { fa: ['FRENTE', 'Antes'], fd: ['FRENTE', 'Depois'], pa: ['PERFIL OU 3/4', 'Antes'], pd: ['PERFIL OU 3/4', 'Depois'] };
   Object.entries(L).forEach(([k, [a, b]]) => { const sl = $(`.slot[data-k="${k}"]`); sl.querySelector('.lab').textContent = a; sl.querySelector('.big').textContent = b; });
   $('#s2 h2').textContent = cir ? 'Encaixe das fotos' : 'Encaixe pelo rosto';
@@ -514,7 +582,7 @@ function applyMode() {
   $('#interval').innerHTML = ''; (cir ? DIAS_CIR : INTERVALS).forEach(v => $('#interval').add(new Option(cir ? 'Cicatriz: ' + v : 'Depois: ' + v.toLowerCase(), v)));
   $('#sess').style.display = cir ? 'none' : '';
   applyProc(cir ? 'lipoma' : 'ah');
-  S.style = cir ? 'cirurgia' : 'cortina'; renderStyles();
+  S.style = cir ? 'cirurgia' : S.mode === 'com' ? 'comentado' : 'cortina'; renderStyles();
   if (cir) { $('#interval').value = '30 dias depois'; }
   // fotos já carregadas: refaz sem/ com detecção de rosto
   buildFrames(); refresh(true);
@@ -548,7 +616,7 @@ $('#swTarja').onclick = e => {
 const styleBox = $('#styles');
 function renderStyles() {
   styleBox.innerHTML = '';
-  (S.mode === 'cir' ? ['cirurgia', 'cortina', 'lado', 'diagonal'] : M.ORDEM).forEach(k => mkStyle(k));
+  (S.mode === 'cir' ? ['cirurgia', 'cortina', 'lado', 'diagonal'] : S.mode === 'com' ? ['comentado'] : M.ORDEM).forEach(k => mkStyle(k));
   setTimeout(renderThumbs, 0);
 }
 function mkStyle(k) { const st = M.ST[k];
@@ -598,14 +666,20 @@ function buildD() {
     cta1: CFG.cta1, cta2: CFG.cta2, tess: TESS, caseNo: S.caseNo,
     roff: S.roff, voice: S.voice, withProfile: S.withProfile && S.mode !== 'cir', k: 1,
   };
+  if (S.mode === 'com') {
+    D.k = 1; D.style = 'comentado'; D.mode = 'com'; D.narr = S.narr; D.capWords = S.capWords; D.capOn = S.capOn;
+    D.cards = ['desejo', 'avaliacao', 'produto', 'estrategia'].map(k => ({ key: k, text: $('#c_' + k).value.trim().replace(BRANDS_RE, '').replace(/\(\s*\)/g, '').replace(/\s{2,}/g, ' ').replace(/\s+([,.;])/g, '$1').trim(), t: S.cardT[k] != null ? S.cardT[k] : 0 })).sort((a, b) => a.t - b.t);
+    D.tDepois = S.cardT.depois;
+    if ($('#c_desejo').value.trim() && !$('#hook1').dataset.touched) { D.hook1 = '“' + $('#c_desejo').value.trim().split(/\s+/).slice(0, 6).join(' ') + '”'; D.hook2 = 'Caso comentado'; }
+  }
   if (S.mode === 'cir') {
     const c = CIRS[S.proc] || CIRS.lipoma;
     Object.assign(D, { mode: 'cir', regs: [], showMl: false, LA: null, LB: null, PB: null, clips: S.clips, sens: S.sens,
       tecnica: $('#tecnica').value.trim(), cuidados: $('#cuidados').value.trim(), local: $('#local').value.trim(), tam: $('#tam').value.trim(),
       dias: $('#interval').value, evol: 'Foto da cicatriz: ' + $('#interval').value + '.', procCurto: c.curto, procTxt: c.nome + '.', hook1: $('#hook1').value || c.curto, hook2: $('#hook2').value || 'Antes e depois' });
   }
-  D.dest = S.dest; if (S.dest !== 'reel') D.k = .82;
-  if (S.voice) { const need = S.voice.duration + M.VOICE_AT + .5 - M.infoD(D) - M.endD(D) - ((S.withProfile && D.PA && D.PB) ? M.PROF_DUR : 0); D.k = Math.max(.85, Math.min(3, need / M.ST[S.style].dur(D))); }
+  D.dest = S.dest; if (S.dest !== 'reel' && S.mode !== 'com') D.k = .82;
+  if (S.voice && S.mode !== 'com') { const need = S.voice.duration + M.VOICE_AT + .5 - M.infoD(D) - M.endD(D) - ((S.withProfile && D.PA && D.PB) ? M.PROF_DUR : 0); D.k = Math.max(.85, Math.min(3, need / M.ST[S.style].dur(D))); }
   return D;
 }
 const listaPt = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1];
@@ -647,10 +721,10 @@ function loop() {
   if (!playing || !Dcur) return;
   const dur = M.totalDur(Dcur); tNow = (performance.now() - pt0) / 1000;
   if (tNow >= dur) { tNow = dur; playing = false; stopAudio(); $('#play').textContent = '▶ Tocar'; }
-  M.syncClips(Dcur, tNow, playing); M.drawFrame(pvx, Dcur, tNow); $('#scrub').value = Math.round(tNow / dur * 1000);
+  M.syncClips(Dcur, tNow, playing); M.syncNarr(Dcur, tNow, playing); M.drawFrame(pvx, Dcur, tNow); $('#scrub').value = Math.round(tNow / dur * 1000);
   if (playing) requestAnimationFrame(loop);
 }
-$('#scrub').addEventListener('input', e => { if (!Dcur) return; playing = false; stopAudio(); $('#play').textContent = '▶ Tocar'; tNow = e.target.value / 1000 * M.totalDur(Dcur); M.prepFrame(Dcur, tNow).then(() => M.drawFrame(pvx, Dcur, tNow)); });
+$('#scrub').addEventListener('input', e => { if (!Dcur) return; playing = false; stopAudio(); $('#play').textContent = '▶ Tocar'; tNow = e.target.value / 1000 * M.totalDur(Dcur); M.prepFrame(Dcur, tNow).then(() => M.prepNarr(Dcur, tNow)).then(() => M.drawFrame(pvx, Dcur, tNow)); });
 
 /* ---------------- checklist + geração ---------------- */
 $$('.check').forEach(c => c.onclick = () => { S.checks[c.dataset.c] = !S.checks[c.dataset.c]; c.classList.toggle('on', S.checks[c.dataset.c]); });

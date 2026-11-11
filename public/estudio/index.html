@@ -80,7 +80,7 @@ nav.tabs button{background:none;border:0;color:var(--sub);font:700 11px "Red Hat
 nav.tabs button.on{color:var(--dour)}
 nav.tabs svg{width:22px;height:22px}
 .view{display:none}.view.on{display:block}
-body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
+body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}body:not(.com) .com{display:none!important}
 .clip{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;background:#1A130D;border:1px solid var(--line);border-radius:14px;padding:8px;margin-top:8px}
 .clip video{width:72px;height:96px;object-fit:cover;border-radius:10px;background:#000}
 .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--off);color:#2A1F14;padding:12px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
@@ -116,7 +116,7 @@ body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
 
 <!-- ================= CRIAR ================= -->
 <section class="view on" id="v-criar">
-  <div class="seg" id="mode" style="margin:4px 0 4px"><button data-v="est" class="on">Estético (rosto)</button><button data-v="cir">Cirúrgico</button></div>
+  <div class="seg" id="mode" style="margin:4px 0 4px"><button data-v="est" class="on">Estético (rosto)</button><button data-v="cir">Cirúrgico</button><button data-v="com">Caso comentado</button></div>
   <div class="step" id="s1">
     <div class="hd"><span class="num">1</span><div><h2>Fotos</h2><div class="hint">Mesma luz e mesmo enquadramento. As fotos ficam só neste aparelho.</div></div></div>
     <div class="grid2">
@@ -124,6 +124,14 @@ body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
       <label class="slot" data-k="fd"><span class="req">OBRIGATÓRIA</span><span class="lab">FRENTE</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
       <label class="slot" data-k="pa"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
       <label class="slot est" data-k="pd"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
+    </div>
+    <div class="com" style="margin-top:14px">
+      <label class="f" style="margin-top:0">Seu vídeo narrando o caso</label>
+      <div class="hint">Grave de 30 a 60 s, de frente, em lugar silencioso. Fale nesta ordem: o que a paciente queria, o que você viu, o produto e por quê, e a estratégia de aplicação.</div>
+      <div class="row" style="margin-top:8px"><label class="btn small" style="cursor:pointer">Subir vídeo<input type="file" id="narrIn" accept="video/*" style="display:none"></label><button class="btn small ghost" id="narrDel" style="display:none">Tirar</button></div>
+      <div id="narrBox" style="margin-top:8px"></div>
+      <div class="hint" id="narrInfo" style="margin-top:6px"></div>
+      <div class="bar" style="margin-top:8px;display:none" id="asrBar"><div></div></div>
     </div>
     <div class="cir" style="margin-top:14px">
       <label class="f" style="margin-top:0">Vídeos curtos do procedimento (até 3)</label>
@@ -151,6 +159,16 @@ body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
     <div class="hd"><span class="num">3</span><div><h2>O caso</h2><div class="hint">Marque só as regiões tratadas. Até 6 deixa o vídeo mais ágil.</div></div></div>
     <label class="f">Procedimento</label>
     <select id="proc"></select>
+    <div class="com">
+      <div class="note" style="margin-top:12px">Os cartões aparecem no vídeo quando você fala de cada assunto (achado pela transcrição). Ajuste o momento no controle abaixo de cada um.</div>
+      <label class="f">O que a paciente queria (nas palavras dela)</label><textarea id="c_desejo" placeholder="Ex.: parecer menos cansada"></textarea><div class="adj"><span>Aparece</span><input type="range" id="t_desejo" min="0" max="60" step=".1"><span></span></div>
+      <label class="f">O que eu vi na avaliação</label><textarea id="c_avaliacao" placeholder="Ex.: perda de sustentação do terço médio e sulco marcado"></textarea><div class="adj"><span>Aparece</span><input type="range" id="t_avaliacao" min="0" max="60" step=".1"><span></span></div>
+      <label class="f">Produto e por quê (tipo, nunca a marca)</label><textarea id="c_produto" placeholder="Ex.: ácido hialurônico mais firme, para dar sustentação"></textarea><div class="hint" id="brandWarn" style="color:#FFB4A8;display:none"></div><div class="adj"><span>Aparece</span><input type="range" id="t_produto" min="0" max="60" step=".1"><span></span></div>
+      <label class="f">Estratégia de aplicação</label><textarea id="c_estrategia" placeholder="Ex.: comecei pelo malar para sustentar, depois mandíbula e mento"></textarea><div class="hint">A ordem das regiões no vídeo segue a ordem em que você tocou nelas na lista de regiões.</div><div class="adj"><span>Aparece</span><input type="range" id="t_estrategia" min="0" max="60" step=".1"><span></span></div>
+      <label class="f">O depois aparece em</label><div class="adj"><span>Depois</span><input type="range" id="t_depois" min="0" max="60" step=".1"><span></span></div>
+      <div class="tog"><div><b>Legenda da sua fala</b><div class="hint">Palavra por palavra. Corrija o texto abaixo se a transcrição errar.</div></div><div class="sw on" id="swCap"></div></div>
+      <textarea id="capText" style="min-height:110px" placeholder="A transcrição aparece aqui"></textarea>
+    </div>
     <div class="cir">
       <label class="f">Local</label><input type="text" id="local" placeholder="Ex.: dorso, couro cabeludo, lóbulo esquerdo">
       <label class="f">Tamanho da peça (opcional)</label><input type="text" id="tam" placeholder="Ex.: 3 x 2 cm">
