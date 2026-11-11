@@ -20,6 +20,8 @@ const CIRS = {
   lobulo: { nome: 'Lobuloplastia', curto: 'Lobuloplastia', indic: 'Lóbulo da orelha rasgado ou com furo alargado pelo uso de brincos.', tecnica: 'Correção com anestesia local: as bordas do lóbulo são refeitas e suturadas.', cuidados: 'Não usar brinco no local até a liberação, em geral de 6 a 8 semanas. Pontos retirados entre 7 e 10 dias.', compl: 'Cicatriz visível, pequeno entalhe na borda, infecção e, raramente, queloide.' },
   nevo: { nome: 'Exérese de lesão de pele', curto: 'Retirada de lesão', indic: 'Pinta ou lesão com alteração, incômodo ou indicação de análise.', tecnica: 'Retirada com margem, sob anestesia local, e envio para exame anatomopatológico.', cuidados: 'Curativo nas primeiras 24 a 48 horas. Pontos retirados entre 7 e 14 dias, conforme o local.', compl: 'Sangramento, infecção e cicatriz. O resultado da análise define o seguimento.' },
 };
+const LOCAIS = ['Couro cabeludo', 'Testa', 'Face', 'Pescoço', 'Ombro', 'Costas', 'Tórax', 'Abdome', 'Braço', 'Antebraço', 'Mão', 'Coxa', 'Perna', 'Pé', 'Outro'];
+const LOCAIS_LOB = ['Lóbulo direito', 'Lóbulo esquerdo', 'Os dois lóbulos'];
 const DIAS_CIR = ['7 dias depois', '14 dias depois', '30 dias depois', '60 dias depois', '90 dias depois', '6 meses depois', '1 ano depois'];
 const curP = () => (S.mode === 'cir' ? CIRS[S.proc] || CIRS.lipoma : PROCS[S.proc] || PROCS.ah);
 const INTERVALS = ['Imediatamente após', '7 dias após', '15 dias após', '30 dias após', '60 dias após', '90 dias após', '6 meses após'];
@@ -39,7 +41,7 @@ const WEEK = [
 const S = {
   img: {}, blob: {}, lm: {}, eyes: {}, adj: { dx: 0, dy: 0, ds: 0, dr: 0 },
   frames: {}, proc: 'ah', regs: new Set(PROCS.ah.regs), ml: {}, showMl: false,
-  mode: 'est', clips: [], sens: true, narr: null, capWords: [], capOn: true, cardT: {}, regOrder: [], dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
+  mode: 'est', cirSel: null, clips: [], sens: true, narr: null, capWords: [], capOn: true, cardT: {}, regOrder: [], dest: 'reel', theme: 'drpedro', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
   orig: {}, crop: {}, lmOrig: {}, eyesOrig: {}, checks: {}, caseNo: 1, prof: 0, result: null, roff: {}, mlSide: {}, perSide: false, voice: null, voiceName: '', withProfile: true,
 };
 const DEF = { p1n: 'Dr. Pedro Schmitz', p1c: 'CRM/SC 38229', p2n: '', p2c: '', marca: 'Curae Santé', handle: '@curaesante', cta1: 'Agende sua', cta2: 'avaliação' };
@@ -412,7 +414,7 @@ Object.entries(PROCS).forEach(([k, p]) => procSel.add(new Option(p.nome, k)));
 INTERVALS.forEach(v => $('#interval').add(new Option('Depois: ' + v.toLowerCase(), v)));
 SESS.forEach(v => $('#sess').add(new Option(v, v)));
 function applyProc(k, keepRegs) {
-  if (S.mode === 'cir') { const c = CIRS[k]; S.proc = k; $('#indic').value = c.indic; $('#compl').value = c.compl; $('#tecnica').value = c.tecnica; $('#cuidados').value = c.cuidados; $('#hook1').value = c.curto; $('#hook2').value = 'Antes e depois'; S.regs = new Set(); renderRegs(); return; }
+  if (S.mode === 'cir') { const c = CIRS[k]; S.proc = k; renderLocais(k); $('#indic').value = c.indic; $('#compl').value = c.compl; $('#tecnica').value = c.tecnica; $('#cuidados').value = c.cuidados; $('#hook1').value = c.curto; $('#hook2').value = 'Antes e depois'; S.regs = new Set(); renderRegs(); return; }
   const p = PROCS[k]; S.proc = k;
   $('#indic').value = p.indic; $('#compl').value = p.compl; $('#interval').value = p.interval;
   if (!keepRegs) S.regs = new Set(p.regs);
@@ -473,6 +475,32 @@ $('#swSens').onclick = e => { S.sens = !S.sens; e.currentTarget.classList.toggle
 function profs() { const l = [{ nome: CFG.p1n, crm: CFG.p1c }]; if (CFG.p2n) l.push({ nome: CFG.p2n, crm: CFG.p2c }); return l; }
 function renderProfs() { const s = $('#profSel'); s.innerHTML = ''; profs().forEach((p, i) => s.add(new Option(p.nome + ' · ' + p.crm, i))); s.value = Math.min(S.prof, profs().length - 1); }
 $('#profSel').onchange = e => { S.prof = +e.target.value; refresh(); };
+
+/* ---------------- escolha da cirurgia (sem texto livre) ---------------- */
+function renderTiles() {
+  const box = $('#cirTiles'); box.innerHTML = '';
+  Object.entries(CIRS).forEach(([k, c]) => {
+    const d = document.createElement('div'); d.className = 'tile' + (S.cirSel === k ? ' on' : '');
+    d.innerHTML = `<b>${c.curto}</b><span>${({ lipoma: 'Nódulo de gordura sob a pele', cisto: '“Cisto sebáceo”: bolsa de queratina com cápsula', lobulo: 'Lóbulo da orelha rasgado ou alargado', nevo: 'Pinta ou lesão, com exame da peça' })[k]}</span>`;
+    d.onclick = () => { S.cirSel = k; document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); setTimeout(() => $('#s1').scrollIntoView({ behavior: 'smooth', block: 'start' }), 80); };
+    box.append(d);
+  });
+}
+function renderLocais(k) {
+  const sel = $('#localSel'); const cur = sel.value; sel.innerHTML = '';
+  sel.add(new Option('Escolha o local…', ''));
+  (k === 'lobulo' ? LOCAIS_LOB : LOCAIS).forEach(l => sel.add(new Option(l, l)));
+  if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
+  $('#local').style.display = sel.value === 'Outro' ? 'block' : 'none';
+}
+$('#localSel').addEventListener('change', e => { $('#local').style.display = e.target.value === 'Outro' ? 'block' : 'none'; refresh(); });
+const fmtCm = v => String(v).replace('.', ',');
+['tamA', 'tamB'].forEach(id => $('#' + id).addEventListener('input', () => {
+  const a = parseFloat($('#tamA').value.replace(',', '.')), b = parseFloat($('#tamB').value.replace(',', '.'));
+  $('#tam').value = a > 0 ? (b > 0 ? `${fmtCm(a)} x ${fmtCm(b)} cm` : `${fmtCm(a)} cm`) : ''; refresh();
+}));
+const noLocal = l => l === 'os dois lóbulos' ? 'nos dois lóbulos' : l === 'costas' ? 'nas costas' : /^(testa|face|perna|mão|coxa)/.test(l) ? 'na ' + l : /^(pé|pescoço|ombro|tórax|abdome|braço|antebraço|couro|lóbulo)/.test(l) ? 'no ' + l : 'em ' + l;
+const localTxt = () => { const v = $('#localSel').value; return v === 'Outro' ? $('#local').value.trim() : v; };
 
 /* ---------------- vídeos do procedimento ---------------- */
 const CLIP_LAB = ['Incisão', 'Retirada', 'Sutura'];
@@ -581,7 +609,7 @@ function applyMode() {
   procSel.innerHTML = ''; Object.entries(cir ? CIRS : PROCS).forEach(([k, p]) => procSel.add(new Option(p.nome, k)));
   $('#interval').innerHTML = ''; (cir ? DIAS_CIR : INTERVALS).forEach(v => $('#interval').add(new Option(cir ? 'Cicatriz: ' + v : 'Depois: ' + v.toLowerCase(), v)));
   $('#sess').style.display = cir ? 'none' : '';
-  applyProc(cir ? 'lipoma' : 'ah');
+  if (cir) { renderTiles(); if (S.cirSel) applyProc(S.cirSel); else document.body.classList.add('nocir'); } else { document.body.classList.remove('nocir'); applyProc('ah'); }
   S.style = cir ? 'cirurgia' : S.mode === 'com' ? 'comentado' : 'cortina'; renderStyles();
   if (cir) { $('#interval').value = '30 dias depois'; }
   // fotos já carregadas: refaz sem/ com detecção de rosto
@@ -645,6 +673,7 @@ function renderThumbs() {
 /* ---------------- D: tudo que o motor precisa ---------------- */
 function buildD() {
   const fa = S.frames.fa, fd = S.frames.fd; if (!fa || !fd) return null;
+  if (S.mode === 'cir' && !S.cirSel) return null;
   const T = M.THEMES[S.theme];
   const regs = orderedRegs();
   const nomes = regs.map(id => M.REG[id].nome.toLowerCase());
@@ -675,7 +704,7 @@ function buildD() {
   if (S.mode === 'cir') {
     const c = CIRS[S.proc] || CIRS.lipoma;
     Object.assign(D, { mode: 'cir', regs: [], showMl: false, LA: null, LB: null, PB: null, clips: S.clips, sens: S.sens,
-      tecnica: $('#tecnica').value.trim(), cuidados: $('#cuidados').value.trim(), local: $('#local').value.trim(), tam: $('#tam').value.trim(),
+      tecnica: $('#tecnica').value.trim(), cuidados: $('#cuidados').value.trim(), local: localTxt(), tam: $('#tam').value.trim(),
       dias: $('#interval').value, evol: 'Foto da cicatriz: ' + $('#interval').value + '.', procCurto: c.curto, procTxt: c.nome + '.', hook1: $('#hook1').value || c.curto, hook2: $('#hook2').value || 'Antes e depois' });
   }
   D.dest = S.dest; if (S.dest !== 'reel' && S.mode !== 'com') D.k = .82;
@@ -706,7 +735,7 @@ function showLive() {
 function refresh(thumbs) {
   showLive();
   Dcur = buildD();
-  if (!Dcur) { pvx.fillStyle = '#0d0a07'; pvx.fillRect(0, 0, W, H); pvx.fillStyle = '#B9A995'; pvx.font = '600 44px "Red Hat Display"'; pvx.textAlign = 'center'; pvx.fillText('Suba as fotos de frente', W / 2, H / 2); $('#durInfo').textContent = '—'; captions(); return; }
+  if (!Dcur) { pvx.fillStyle = '#0d0a07'; pvx.fillRect(0, 0, W, H); pvx.fillStyle = '#B9A995'; pvx.font = '600 44px "Red Hat Display"'; pvx.textAlign = 'center'; pvx.fillText(S.mode === 'cir' && !S.cirSel ? 'Escolha a cirurgia' : 'Suba as fotos de frente', W / 2, H / 2); $('#durInfo').textContent = '—'; captions(); return; }
   const dur = M.totalDur(Dcur);
   $('#durInfo').textContent = `${M.ST[S.style].nome} · ${dur.toFixed(1).replace('.', ',')} s · 1080×1920`;
   if (!playing) M.drawFrame(pvx, Dcur, Math.min(tNow, dur));
@@ -838,8 +867,8 @@ Salve para lembrar e mande para quem está pensando em fazer.
 }
 function captionsCir() {
   const c = CIRS[S.proc] || CIRS.lipoma; const prof = profs()[Math.min(S.prof, profs().length - 1)];
-  const local = $('#local').value.trim(), tam = $('#tam').value.trim(), dias = $('#interval').value;
-  const open = { resultado: `${c.curto}${local ? ' no ' + local : ''}: do antes à cicatriz com ${dias.replace(' depois', '')}.`, regioes: `Passo a passo de uma ${c.nome.toLowerCase()}, do jeito que é feita no consultório.`, planejamento: `Antes do corte, vem o planejamento: tamanho, posição da cicatriz e anestesia.`, indicacao: `Quando vale a pena tirar? Este caso de ${c.curto.toLowerCase()} ajuda a entender.`, enquete: `Você sabia que isso pode ser tirado com anestesia local, no consultório?`, pos: `Depois da retirada: o que é normal e o que pede retorno.`, natural: `A cicatriz amadurece com o tempo: ela muda bastante nos primeiros meses.` }[S.angle];
+  const local = localTxt().toLowerCase(), tam = $('#tam').value.trim(), dias = $('#interval').value;
+  const open = { resultado: `${c.curto}${local ? ' ' + noLocal(local) : ''}: do antes à cicatriz com ${dias.replace(' depois', '')}.`, regioes: `Passo a passo de uma ${c.nome.toLowerCase()}, do jeito que é feita no consultório.`, planejamento: `Antes do corte, vem o planejamento: tamanho, posição da cicatriz e anestesia.`, indicacao: `Quando vale a pena tirar? Este caso de ${c.curto.toLowerCase()} ajuda a entender.`, enquete: `Você sabia que isso pode ser tirado com anestesia local, no consultório?`, pos: `Depois da retirada: o que é normal e o que pede retorno.`, natural: `A cicatriz amadurece com o tempo: ela muda bastante nos primeiros meses.` }[S.angle];
   const cap = `${open}
 
 Indicação: ${$('#indic').value.trim()}

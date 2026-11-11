@@ -81,6 +81,11 @@ nav.tabs button.on{color:var(--dour)}
 nav.tabs svg{width:22px;height:22px}
 .view{display:none}.view.on{display:block}
 body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}body:not(.com) .com{display:none!important}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{border:1.5px solid var(--line);border-radius:16px;padding:16px 14px;background:#1A130D;cursor:pointer;text-align:left}
+.tile b{display:block;font-size:17px;margin-bottom:4px}.tile span{font-size:13px;color:var(--sub);line-height:1.35}
+.tile.on{border-color:var(--dour);background:rgba(188,167,142,.14)}
+body.cir.nocir #s1,body.cir.nocir #s2,body.cir.nocir #s3,body.cir.nocir #s4,body.cir.nocir #s5{opacity:.35;pointer-events:none}
 .clip{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;background:#1A130D;border:1px solid var(--line);border-radius:14px;padding:8px;margin-top:8px}
 .clip video{width:72px;height:96px;object-fit:cover;border-radius:10px;background:#000}
 .toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--off);color:#2A1F14;padding:12px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
@@ -117,6 +122,10 @@ body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
 <!-- ================= CRIAR ================= -->
 <section class="view on" id="v-criar">
   <div class="seg" id="mode" style="margin:4px 0 4px"><button data-v="est" class="on">Estético (rosto)</button><button data-v="cir">Cirúrgico</button><button data-v="com">Caso comentado</button></div>
+  <div class="step cir" id="s0">
+    <div class="hd"><span class="num">●</span><div><h2>Qual cirurgia?</h2><div class="hint">Escolha primeiro. Os textos do vídeo e da legenda vêm daqui, sem digitar.</div></div></div>
+    <div class="tiles" id="cirTiles"></div>
+  </div>
   <div class="step" id="s1">
     <div class="hd"><span class="num">1</span><div><h2>Fotos</h2><div class="hint">Mesma luz e mesmo enquadramento. As fotos ficam só neste aparelho.</div></div></div>
     <div class="grid2">
@@ -157,8 +166,8 @@ body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
 
   <div class="step" id="s3">
     <div class="hd"><span class="num">3</span><div><h2>O caso</h2><div class="hint">Marque só as regiões tratadas. Até 6 deixa o vídeo mais ágil.</div></div></div>
-    <label class="f">Procedimento</label>
-    <select id="proc"></select>
+    <label class="f est">Procedimento</label>
+    <select id="proc" class="est"></select>
     <div class="com">
       <div class="note" style="margin-top:12px">Os cartões aparecem no vídeo quando você fala de cada assunto (achado pela transcrição). Ajuste o momento no controle abaixo de cada um.</div>
       <label class="f">O que a paciente queria (nas palavras dela)</label><textarea id="c_desejo" placeholder="Ex.: parecer menos cansada"></textarea><div class="adj"><span>Aparece</span><input type="range" id="t_desejo" min="0" max="60" step=".1"><span></span></div>
@@ -170,8 +179,11 @@ body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
       <textarea id="capText" style="min-height:110px" placeholder="A transcrição aparece aqui"></textarea>
     </div>
     <div class="cir">
-      <label class="f">Local</label><input type="text" id="local" placeholder="Ex.: dorso, couro cabeludo, lóbulo esquerdo">
-      <label class="f">Tamanho da peça (opcional)</label><input type="text" id="tam" placeholder="Ex.: 3 x 2 cm">
+      <label class="f">Local</label><select id="localSel"></select>
+      <input type="text" id="local" placeholder="Escreva o local" style="display:none;margin-top:8px">
+      <label class="f">Tamanho da peça (opcional, em cm)</label>
+      <div class="row" style="flex-wrap:nowrap"><input type="text" inputmode="decimal" id="tamA" placeholder="comprimento" style="flex:1"><span>×</span><input type="text" inputmode="decimal" id="tamB" placeholder="largura" style="flex:1"><span>cm</span></div>
+      <input type="hidden" id="tam">
       <label class="f">Técnica</label><textarea id="tecnica"></textarea>
       <label class="f">Cuidados depois</label><textarea id="cuidados"></textarea>
     </div>
