@@ -32,7 +32,7 @@ const S = {
   img: {}, blob: {}, lm: {}, eyes: {}, adj: { dx: 0, dy: 0, ds: 0, dr: 0 },
   frames: {}, proc: 'ah', regs: new Set(PROCS.ah.regs), ml: {}, showMl: false,
   theme: 'curae', style: 'cortina', music: 'suave', sfx: true, tarja: false, angle: 'resultado',
-  checks: {}, caseNo: 1, prof: 0, result: null, roff: {}, mlSide: {}, perSide: false, voice: null, voiceName: '', withProfile: true,
+  orig: {}, crop: {}, lmOrig: {}, eyesOrig: {}, checks: {}, caseNo: 1, prof: 0, result: null, roff: {}, mlSide: {}, perSide: false, voice: null, voiceName: '', withProfile: true,
 };
 const DEF = { p1n: 'Dr. Pedro Schmitz', p1c: 'CRM/SC 38229', p2n: '', p2c: '', marca: 'Curae Santé', handle: '@curaesante', cta1: 'Agende sua', cta2: 'avaliação' };
 let CFG = Object.assign({}, DEF);
@@ -90,21 +90,109 @@ function toCanvas(img, max = 2400) {
   c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); return c;
 }
 const toBlob = (c, type = 'image/jpeg', q = .9) => new Promise(r => c.toBlob(r, type, q));
+/* ---------------- marca d'água: detecta texto/logo nas bordas e corta ---------------- */
+// Heurística: procura faixas nas bordas com muitos traços finos e contrastados (texto, logo),
+// bem mais "riscadas" que a área vizinha, sem nunca invadir o rosto.
+function findWatermark(cv, lm) {
+  const sc = Math.min(1, 360 / cv.width), w = Math.round(cv.width * sc), h = Math.round(cv.height * sc);
+  const t = M.mk(w, h), x = t.getContext('2d'); x.drawImage(cv, 0, 0, w, h);
+  const d = x.getImageData(0, 0, w, h).data, g = new Float32Array(w * h);
+  for (let i = 0; i < w * h; i++) g[i] = .299 * d[i * 4] + .587 * d[i * 4 + 1] + .114 * d[i * 4 + 2];
+  const ed = new Uint8Array(w * h);
+  for (let y = 1; y < h - 1; y++) for (let xx = 1; xx < w - 1; xx++) {
+    const i = y * w + xx; const gx = g[i + 1] - g[i - 1], gy = g[i + w] - g[i - w];
+    if (Math.abs(gx) + Math.abs(gy) > 70) ed[i] = 1;
+  }
+  // caixa protegida: rosto + margem (sem malha: centro da foto)
+  let fb;
+  if (lm) { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; lm.forEach(p => { x0 = Math.min(x0, p.x); y0 = Math.min(y0, p.y); x1 = Math.max(x1, p.x); y1 = Math.max(y1, p.y); });
+    const fw = x1 - x0, fh = y1 - y0; fb = { x0: (x0 - fw * .06) * sc, x1: (x1 + fw * .06) * sc, y0: (y0 - fh * .1) * sc, y1: (y1 + fh * .04) * sc }; }
+  else fb = { x0: w * .22, x1: w * .78, y0: h * .2, y1: h * .8 };
+  // perfil por linha (máximo entre terço esquerdo, central e direito, para pegar logo de canto)
+  const rowD = y => { let a = 0, b = 0, c = 0; const t3 = w / 3; for (let xx = 0; xx < w; xx++) { const v = ed[y * w + xx]; if (xx < t3) a += v; else if (xx < 2 * t3) b += v; else c += v; } return Math.max(a, b, c) / t3; };
+  const colD = xx => { let a = 0, b = 0, c = 0; const t3 = h / 3; for (let y = 0; y < h; y++) { const v = ed[y * w + xx]; if (y < t3) a += v; else if (y < 2 * t3) b += v; else c += v; } return Math.max(a, b, c) / t3; };
+  const med = arr => { const s2 = arr.slice().sort((p, q) => p - q); return s2[Math.floor(s2.length / 2)] || 0; };
+  // varre de fora para dentro numa faixa de até 22% da borda
+  const blocked = [];
+  function scan(n, prof, limitIn, fromStart, lado) {
+    const band = Math.floor(n * .22); const vals = []; for (let i = 0; i < n; i++) vals.push(prof(i));
+    const idx = i => fromStart ? i : n - 1 - i;
+    const inner = []; for (let i = band; i < band + Math.floor(n * .12) && i < n; i++) inner.push(vals[idx(i)]);
+    const base = med(inner), thr = Math.max(.09, base * 3 + .03);
+    let last = -1, gap = 0, hits = 0;
+    for (let i = 0; i < band; i++) { const v = vals[idx(i)]; if (v > thr) { last = i; gap = 0; hits++; } else if (last >= 0 && ++gap > n * .03) break; }
+    if (last < 0 || hits < Math.max(4, n * .008)) return 0; // linha reta (borda, batente) não é marca d'água
+    let cut = last + Math.ceil(n * .015);
+    const lim = fromStart ? limitIn : n - limitIn; if (cut > lim) { blocked.push(lado); return 0; } // invadiria o rosto: não corta
+    return cut;
+  }
+  const top = scan(h, rowD, fb.y0, true, 'em cima'), bot = scan(h, rowD, fb.y1, false, 'embaixo'), left = scan(w, colD, fb.x0, true, 'à esquerda'), right = scan(w, colD, fb.x1, false, 'à direita');
+  findWatermark.blocked = blocked;
+  if (!top && !bot && !left && !right) return null;
+  const r = { x: left / sc, y: top / sc, w: (w - left - right) / sc, h: (h - top - bot) / sc, lados: [top && 'em cima', bot && 'embaixo', left && 'à esquerda', right && 'à direita'].filter(Boolean) };
+  if (r.w < cv.width * .5 || r.h < cv.height * .5) return null;
+  return r;
+}
+function cropCanvas(cv, r) { const c = M.mk(Math.round(r.w), Math.round(r.h)); c.getContext('2d').drawImage(cv, r.x, r.y, r.w, r.h, 0, 0, c.width, c.height); return c; }
+const shiftPts = (P, r) => P && P.map(p => Object.assign({}, p, { x: p.x - r.x, y: p.y - r.y }));
+async function applyCrop(k, r) {
+  const orig = S.orig[k]; S.crop[k] = r || null;
+  const c = r ? cropCanvas(orig, r) : orig;
+  S.img[k] = c; S.blob[k] = await toBlob(toCanvas(c, 1600));
+  S.lm[k] = S.lmOrig[k] ? (r ? shiftPts(S.lmOrig[k], r) : S.lmOrig[k]) : null;
+  S.eyes[k] = S.eyesOrig[k] ? (r ? shiftPts(S.eyesOrig[k], r) : S.eyesOrig[k]) : null;
+  const slot = $(`.slot[data-k="${k}"]`); const im = slot.querySelector('img'); if (im) im.src = URL.createObjectURL(S.blob[k]);
+  slotStatus(k); buildFrames();
+}
+function slotStatus(k) {
+  const slot = $(`.slot[data-k="${k}"]`); let st = slot.querySelector('.st'); if (!st) { st = document.createElement('div'); st.className = 'st'; slot.append(st); }
+  let b = slot.querySelector('.cropb'); if (!b) { b = document.createElement('button'); b.className = 'cropb'; b.textContent = '✂'; b.title = 'Recortar'; slot.append(b); b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openCrop(k); }); }
+  const base = S.lm[k] ? '✓ rosto encontrado' : S.eyes[k] ? '✓ olhos marcados à mão' : (k[0] === 'f' ? 'rosto não achado: toque em “marcar olhos”' : 'perfil: encaixe pela foto');
+  st.textContent = base + (S.crop[k] && S.crop[k].auto ? ' · ✂ marca cortada' : S.crop[k] ? ' · ✂ recortada' : '');
+  st.classList.toggle('warn', !S.lm[k] && !S.eyes[k]);
+}
 async function setPhoto(k, src, opts = {}) {
   const c = src instanceof HTMLCanvasElement ? src : toCanvas(src);
-  S.img[k] = c;
-  S.blob[k] = opts.blob || await toBlob(toCanvas(c, 1600));
+  S.orig[k] = c; S.crop[k] = null;
   const slot = $(`.slot[data-k="${k}"]`); slot.classList.add('ok');
   let im = slot.querySelector('img'); if (!im) { im = document.createElement('img'); slot.prepend(im); }
-  im.src = URL.createObjectURL(S.blob[k]);
   let st = slot.querySelector('.st'); if (!st) { st = document.createElement('div'); st.className = 'st'; slot.append(st); }
-  if (opts.lm !== undefined || opts.eyes) { S.lm[k] = opts.lm || null; S.eyes[k] = opts.eyes || null; }
-  else { st.textContent = 'procurando o rosto…'; st.classList.remove('warn'); S.lm[k] = await detect(c); S.eyes[k] = null; }
-  if (S.lm[k]) { st.textContent = '✓ rosto encontrado'; st.classList.remove('warn'); }
-  else if (S.eyes[k]) { st.textContent = '✓ olhos marcados à mão'; st.classList.remove('warn'); }
-  else { st.textContent = k[0] === 'f' ? 'rosto não achado: toque em “marcar olhos”' : 'perfil: encaixe pela foto'; st.classList.add('warn'); }
-  buildFrames();
+  if (opts.lm !== undefined || opts.eyes) { S.lmOrig[k] = opts.lm || null; S.eyesOrig[k] = opts.eyes || null; await applyCrop(k, null); return; }
+  im.src = URL.createObjectURL(await toBlob(toCanvas(c, 1200)));
+  st.textContent = 'procurando o rosto…'; st.classList.remove('warn');
+  S.lmOrig[k] = await detect(c); S.eyesOrig[k] = null;
+  let r = null; try { r = findWatermark(c, S.lmOrig[k]); } catch (e) { console.warn(e); }
+  const bl = findWatermark.blocked || [];
+  if (r) { r.auto = true; toast('Achei marca d’água ' + r.lados.join(' e ') + ': cortei. Toque em ✂ para ajustar.' + (bl.length ? ' Há outra ' + bl.join(' e ') + ' encostada no rosto: essa não dá para cortar.' : ''), 4500); }
+  else if (bl.length) toast('Parece haver marca d’água ' + bl.join(' e ') + ', mas encostada no rosto: cortar tiraria parte do rosto. Use outra foto ou ajuste no ✂.', 5000);
+  await applyCrop(k, r);
 }
+/* recorte manual */
+let cropK = null, cropR = null;
+function openCrop(k) {
+  if (!S.orig[k]) return; cropK = k; const o = S.orig[k]; const r = S.crop[k] || { x: 0, y: 0, w: o.width, h: o.height };
+  cropR = { t: r.y / o.height * 100, b: (o.height - r.y - r.h) / o.height * 100, l: r.x / o.width * 100, r: (o.width - r.x - r.w) / o.width * 100 };
+  ['t', 'b', 'l', 'r'].forEach(s2 => { $('#cr' + s2).value = cropR[s2].toFixed(1); });
+  const c = $('#cvCrop'); const sc = Math.min((innerWidth - 40) / o.width, innerHeight * .5 / o.height); c.width = Math.round(o.width * sc); c.height = Math.round(o.height * sc);
+  drawCrop(); $('#cropModal').classList.add('on');
+}
+function drawCrop() {
+  const c = $('#cvCrop'), x = c.getContext('2d'), o = S.orig[cropK]; x.drawImage(o, 0, 0, c.width, c.height);
+  const L = cropR.l / 100 * c.width, T = cropR.t / 100 * c.height, R = c.width - cropR.r / 100 * c.width, B = c.height - cropR.b / 100 * c.height;
+  x.fillStyle = 'rgba(10,7,5,.72)'; x.fillRect(0, 0, c.width, T); x.fillRect(0, B, c.width, c.height - B); x.fillRect(0, T, L, B - T); x.fillRect(R, T, c.width - R, B - T);
+  x.strokeStyle = '#BCA78E'; x.lineWidth = 2; x.strokeRect(L, T, R - L, B - T);
+}
+['t', 'b', 'l', 'r'].forEach(s2 => $('#cr' + s2).addEventListener('input', e => { cropR[s2] = +e.target.value; drawCrop(); }));
+$('#cropNone').onclick = () => { cropR = { t: 0, b: 0, l: 0, r: 0 }; ['t', 'b', 'l', 'r'].forEach(s2 => $('#cr' + s2).value = 0); drawCrop(); };
+$('#cropAuto').onclick = () => { const o = S.orig[cropK]; const r = findWatermark(o, S.lmOrig[cropK]); if (!r) { toast('Não encontrei marca d’água nesta foto.'); return; } cropR = { t: r.y / o.height * 100, b: (o.height - r.y - r.h) / o.height * 100, l: r.x / o.width * 100, r: (o.width - r.x - r.w) / o.width * 100 }; ['t', 'b', 'l', 'r'].forEach(s2 => $('#cr' + s2).value = cropR[s2].toFixed(1)); drawCrop(); };
+$('#cropCancel').onclick = () => $('#cropModal').classList.remove('on');
+$('#cropOk').onclick = async () => {
+  const o = S.orig[cropK]; $('#cropModal').classList.remove('on');
+  if (cropR.t + cropR.b + cropR.l + cropR.r < .05) return applyCrop(cropK, null);
+  const r = { x: cropR.l / 100 * o.width, y: cropR.t / 100 * o.height, w: o.width * (1 - (cropR.l + cropR.r) / 100), h: o.height * (1 - (cropR.t + cropR.b) / 100) };
+  if (S.lmOrig[cropK]) { const A = M.anchors(S.lmOrig[cropK]); if (A.eL.x < r.x || A.eR.x > r.x + r.w || A.eL.y < r.y || A.chin.y > r.y + r.h) toast('Atenção: o corte pegou parte do rosto.', 3500); }
+  await applyCrop(cropK, r);
+};
 $$('.slot').forEach(sl => {
   const k = sl.dataset.k, inp = sl.querySelector('input');
   inp.addEventListener('change', async () => {
@@ -213,7 +301,7 @@ $('#blink').onclick = () => { blinkOn = !blinkOn; $('#blink').textContent = blin
 });
 $('#reAuto').onclick = async () => {
   S.adj = { dx: 0, dy: 0, ds: 0, dr: 0 }; ['x', 'y', 's', 'r'].forEach(k => { $('#ad' + k).value = 0; $('#ad' + k + 'v').textContent = 0; });
-  for (const k of ['fa', 'fd']) if (S.img[k]) { S.lm[k] = await detect(S.img[k]); if (S.lm[k]) S.eyes[k] = null; }
+  for (const k of ['fa', 'fd']) if (S.orig[k]) { const L = await detect(S.orig[k]); if (L) { S.lmOrig[k] = L; S.eyesOrig[k] = null; await applyCrop(k, S.crop[k]); } }
   buildFrames(); toast(S.lm.fa && S.lm.fd ? 'Rostos reencaixados.' : 'Não achei o rosto em uma das fotos: marque os olhos à mão.');
 };
 
@@ -238,7 +326,7 @@ $('#cvEye').addEventListener('pointerdown', e => {
   const r = e.target.getBoundingClientRect(); const sx = e.target.width / r.width;
   eyePts.push({ x: (e.clientX - r.left) * sx / eyeSc, y: (e.clientY - r.top) * sx / eyeSc }); drawEye();
   if (eyePts.length === 2) {
-    S.eyes[eyeK] = eyePts.slice(); S.lm[eyeK] = null;
+    S.eyes[eyeK] = eyePts.slice(); S.lm[eyeK] = null; { const r = S.crop[eyeK]; S.eyesOrig[eyeK] = r ? eyePts.map(p => ({ x: p.x + r.x, y: p.y + r.y })) : eyePts.slice(); S.lmOrig[eyeK] = null; }
     const st = $(`.slot[data-k="${eyeK}"] .st`); if (st) { st.textContent = '✓ olhos marcados à mão'; st.classList.remove('warn'); }
     setTimeout(() => { const n = eyeQueue.shift(); if (n) openEye(n); else { $('#eyeModal').classList.remove('on'); buildFrames(); } }, 250);
   }
@@ -615,5 +703,5 @@ const fontsReady = Promise.all(['500 40px "Cormorant Garamond"', 'italic 500 40p
 fontsReady.then(() => { refresh(); drawAlign(); });
 refresh(); drawAlign();
 
-window.__estudio = { S, setPhoto, buildD, refresh, loadImg };
+window.__estudio = { S, setPhoto, buildD, refresh, loadImg, findWatermark };
 })();
