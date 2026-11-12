@@ -311,3 +311,18 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 .pgroup{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin:34px 0 4px;padding-bottom:12px}
 .pgroup span{font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--marrom)}
 .pgroup a{font-size:14.5px;font-weight:700;color:var(--escuro);text-decoration-color:var(--dour);text-underline-offset:3px}
+/* pequenas cirurgias */
+.cir-idx{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 34px}
+.cir-idx a{font-size:14px;font-weight:600;padding:9px 15px;border-radius:99px;border:1px solid var(--linha);background:#fff;text-decoration:none;color:var(--marrom);transition:background .3s,color .3s}
+.cir-idx a:hover{background:var(--escuro);color:var(--off)}
+.cir-list{display:grid;gap:16px}
+.cir{background:#fff;border:1px solid var(--linha);border-radius:var(--r);padding:clamp(22px,3vw,34px);display:grid;grid-template-columns:minmax(220px,.8fr) 2.2fr;gap:24px;scroll-margin-top:90px}
+.cir-h{display:flex;gap:16px;align-items:flex-start}
+.cir-h .n{font-family:"Cormorant Garamond";font-style:italic;font-size:26px;color:var(--dour);line-height:1.1}
+.cir-h h3{margin:0}
+.cir-h .sub{font-size:14px;color:var(--sub)}
+.cir-b{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.cir-b b{display:block;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dour);margin-bottom:6px}
+.cir-b p{font-size:15.5px;margin:0}
+.cir-b .more{display:inline-block;margin-top:10px;font-weight:700;font-size:14.5px;color:var(--escuro)}
+@media(max-width:900px){.cir{grid-template-columns:1fr}.cir-b{grid-template-columns:1fr;gap:14px}}
