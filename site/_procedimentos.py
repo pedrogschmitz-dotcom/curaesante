@@ -9,7 +9,7 @@ MED = {
 PROCS = [
  {
   "slug": "toxina-botulinica", "nome": "Toxina botulínica", "kick": "Rugas de expressão",
-  "foto": "/s/img/consultorio.jpg", "assunto": "toxina botulínica",
+  "foto": "/s/img/pedro-toxina.jpg", "assunto": "toxina botulínica",
   "title": "Toxina botulínica em São José/SC | Curae Santé",
   "description": "Toxina botulínica para rugas de expressão da testa, entre as sobrancelhas e ao redor dos olhos. Como funciona, riscos e cuidados. São José/SC.",
   "lead": "Suaviza as rugas que aparecem com o movimento: testa, entre as sobrancelhas e pés de galinha. O objetivo é relaxar o músculo, não congelar a expressão.",
@@ -28,7 +28,7 @@ PROCS = [
  },
  {
   "slug": "preenchimento-acido-hialuronico", "nome": "Preenchimento com ácido hialurônico", "kick": "Volume e sustentação",
-  "foto": "/s/img/recepcao.jpg", "assunto": "preenchimento com ácido hialurônico",
+  "foto": "/s/img/pedro-espelho.jpg", "assunto": "preenchimento com ácido hialurônico",
   "title": "Preenchimento com ácido hialurônico em São José/SC",
   "description": "Preenchimento com ácido hialurônico para sulcos, malar, lábios, olheiras e contorno. Indicação, como é feito, riscos e cuidados. Curae Santé, São José/SC.",
   "lead": "Repõe volume e sustentação onde o rosto perdeu estrutura. Bem indicado, suaviza sulcos e olheiras e define contornos sem mudar quem você é.",
@@ -65,7 +65,7 @@ PROCS = [
  },
  {
   "slug": "retirada-de-cisto-lipoma-e-pintas", "nome": "Retirada de cistos, lipomas e pintas", "kick": "Pequenas cirurgias de pele",
-  "foto": "/s/img/bandeja.jpg", "assunto": "retirada de cisto, lipoma ou pinta",
+  "foto": "/s/img/pedro-cirurgia.jpg", "assunto": "retirada de cisto, lipoma ou pinta",
   "title": "Retirada de cisto, lipoma e pintas em São José/SC | Curae Santé",
   "description": "Retirada de cisto sebáceo, lipoma e pintas com anestesia local, em consultório, com biópsia quando indicada. Kobrasol, São José/SC.",
   "lead": "Aquele caroço que cresce devagar, a pinta que mudou ou que incomoda: avaliação, retirada com anestesia local em consultório e análise da peça quando indicado.",
@@ -182,7 +182,7 @@ PROCS += [
  },
  {
   "slug": "lipoma", "nome": "Lipoma", "kick": "Pequena cirurgia",
-  "foto": "/s/img/bandeja.jpg", "assunto": "lipoma",
+  "foto": "/s/img/pedro-cirurgia.jpg", "assunto": "lipoma",
   "title": "Retirada de lipoma em São José/SC | Curae Santé",
   "description": "Lipoma: quando observar, quando investigar e como é a retirada com anestesia local, em consultório. Kobrasol, São José/SC.",
   "lead": "Aquele caroço macio, que mexe sob a pele e cresce devagar. Quase sempre é benigno. Às vezes basta observar; quando incomoda, cresce ou deixa dúvida, a retirada é simples.",
@@ -254,7 +254,7 @@ PROCS += [
  },
 ]
 
-ALT = {"/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/pes.jpg":"Pés descalços sobre piso de madeira","/s/img/maos.jpg":"Mãos de mulher em luz suave","/s/img/queratose.jpg":"Pele vista de perto","/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
+ALT = {"/s/img/pedro-toxina.jpg": "Dr. Pedro Schmitz planejando os pontos de aplicação em uma ficha de toxina botulínica", "/s/img/pedro-espelho.jpg": "Dr. Pedro Schmitz explicando um ponto do rosto diante do espelho", "/s/img/pedro-cirurgia.jpg": "Dr. Pedro Schmitz com instrumentos de pequena cirurgia no consultório", "/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/pes.jpg":"Pés descalços sobre piso de madeira","/s/img/maos.jpg":"Mãos de mulher em luz suave","/s/img/queratose.jpg":"Pele vista de perto","/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
 
 def li(items): return ''.join(f'<li>{x}</li>' for x in items)
 
