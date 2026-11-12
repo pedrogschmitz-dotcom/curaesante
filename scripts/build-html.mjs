@@ -73,7 +73,11 @@ const guias = existsSync(path.join(ROOT, 'site/guias')) ? readdirSync(path.join(
 }) : [];
 
 // ---------- partes do layout ----------
-const NAV = [['/', 'Início', 'inicio'], ['/sobre/', 'Sobre', 'sobre'], ['/servicos/', 'Serviços', 'servicos'], ['/equipe/', 'Equipe', 'equipe'], ['/blog/', 'Blog', 'blog'], ['/faq/', 'FAQ', 'faq'], ['/contato/', 'Contato', 'contato']];
+const MENU_PROC = [
+  ['Pele, cabelo e cirurgias · Dr. Pedro', [['/servicos/toxina-botulinica/', 'Toxina botulínica'], ['/servicos/preenchimento-acido-hialuronico/', 'Preenchimento com ácido hialurônico'], ['/servicos/bioestimuladores-de-colageno/', 'Bioestimuladores de colágeno'], ['/servicos/pequenas-cirurgias/', 'Pequenas cirurgias de pele'], ['/servicos/retirada-de-cisto-lipoma-e-pintas/', 'Cisto, lipoma e pintas']]],
+  ['Emagrecimento e saúde da mulher · Dra. Júlia', [['/servicos/programa-de-emagrecimento/', 'Programa de emagrecimento'], ['/servicos/investigacao-metabolica/', 'Investigação metabólica'], ['/servicos/menopausa-e-insonia/', 'Menopausa e insônia'], ['/metabolismo-feminino/', 'Metabolismo feminino']]],
+];
+const NAV = [['/', 'Início', 'inicio'], ['/sobre/', 'Sobre', 'sobre'], ['/servicos/', 'Serviços', 'servicos'], ['/procedimentos/', 'Procedimentos', 'procedimentos'], ['/equipe/', 'Equipe', 'equipe'], ['/blog/', 'Blog', 'blog'], ['/faq/', 'FAQ', 'faq'], ['/contato/', 'Contato', 'contato']];
 const ICO_WA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.2-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1-.7-.3-1.4-.7-2-1.3-.5-.5-1-1.1-1.3-1.7-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>';
 
 const CLINICA_LD = {
@@ -93,7 +97,11 @@ const MEDICOS_LD = [
 function layout({ title, description, url, nav, body, cta = true, pre = false, ld = [], ogImage = '/og-image.jpg', ogType = 'website', light = false, crumbs = null, preload = null }) {
   const graph = { '@context': 'https://schema.org', '@graph': [CLINICA_LD, ...ld, ...(crumbs ? [crumbLd(crumbs)] : [])] };
   body = toWebp(body);
-  const navHtml = NAV.map(([h, t, k]) => `<a href="${h}"${k === nav ? ' aria-current="page"' : ''}>${t}</a>`).join('');
+  const drop = `<div class="dd" role="menu">${MENU_PROC.map(([g, it]) => `<div><span>${g}</span>${it.map(([u, t]) => `<a role="menuitem" href="${u}">${t}</a>`).join('')}</div>`).join('')}</div>`;
+  const navHtml = NAV.map(([h, t, k]) => k === 'procedimentos'
+    ? `<div class="has-dd"><a href="${h}"${k === nav ? ' aria-current="page"' : ''} aria-haspopup="true">${t}</a>${drop}</div>`
+    : `<a href="${h}"${k === nav ? ' aria-current="page"' : ''}>${t}</a>`).join('');
+  const navMob = NAV.map(([h, t, k]) => `<a href="${h}"${k === nav ? ' aria-current="page"' : ''}>${t}</a>`).join('');
   return `<!doctype html>
 <html lang="pt-BR" class="no-js">
 <head>
@@ -122,7 +130,7 @@ ${pre ? '<div id="pre" aria-hidden="true"><img src="/s/img/logo-claro.png" alt="
   <nav aria-label="Principal">${navHtml}${cta ? `<a class="btn gold" href="${WA_PADRAO}" target="_blank" rel="noopener">Agendar</a>` : ''}</nav>
   <button class="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mnav"><span></span><span></span><span></span></button>
 </div></header>
-<nav id="mnav" aria-label="Menu">${navHtml}${cta ? `<a class="btn gold" href="${WA_PADRAO}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>` : ''}</nav>
+<nav id="mnav" aria-label="Menu">${navMob}${cta ? `<a class="btn gold" href="${WA_PADRAO}" target="_blank" rel="noopener">Agendar pelo WhatsApp</a>` : ''}</nav>
 <main>
 ${body}
 </main>

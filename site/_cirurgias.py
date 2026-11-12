@@ -83,7 +83,7 @@ for i, (s, n, sub, oque, como, depois, link) in enumerate(CIR, 1):
 ld = [{"@type": "MedicalWebPage", "name": "Pequenas cirurgias de pele", "url": "https://curaesante.com.br/servicos/pequenas-cirurgias/",
        "reviewedBy": {"@id": "https://curaesante.com.br/#dr-pedro"},
        "about": [{"@type": "MedicalProcedure", "name": n, "procedureType": "https://schema.org/SurgicalProcedure"} for _, n, *_ in CIR]}]
-meta = {"url": "/servicos/pequenas-cirurgias/", "nav": "servicos", "parent": ["Serviços", "/servicos/"], "crumb": "Pequenas cirurgias",
+meta = {"url": "/servicos/pequenas-cirurgias/", "nav": "procedimentos", "parent": ["Procedimentos", "/procedimentos/"], "crumb": "Pequenas cirurgias",
         "preload": "/s/img/bandeja.jpg",
         "title": "Pequenas cirurgias de pele em São José/SC | Curae Santé",
         "description": "Cisto, lipoma, pintas, unha encravada, verrugas, acrocórdons, queratose, biópsia, lóbulo da orelha e mais, com anestesia local no Kobrasol, São José/SC.",
@@ -92,7 +92,7 @@ meta = {"url": "/servicos/pequenas-cirurgias/", "nav": "servicos", "parent": ["S
 html = f'''<!--meta {json.dumps(meta, ensure_ascii=False)} -->
 <section class="phead"><div class="wrap g2" style="align-items:center">
   <div>
-    <div class="crumbs" data-in><a href="/">Início</a> · <a href="/servicos/">Serviços</a> · Pequenas cirurgias</div>
+    <div class="crumbs" data-in><a href="/">Início</a> · <a href="/procedimentos/">Procedimentos</a> · Pequenas cirurgias</div>
     <span class="kick" data-in>Com anestesia local, no consultório</span>
     <h1 style="font-size:clamp(46px,6.6vw,92px)">Pequenas cirurgias de <em>pele</em></h1>
     <p class="lead" data-in>Do cisto que incomoda há anos à unha encravada que não melhora: avaliação, procedimento com anestesia local e acompanhamento até a cicatrização, com o Dr. Pedro Schmitz.</p>

@@ -161,8 +161,8 @@ for p in PROCS:
     m = MED[p.get('medico', 'pedro')]
     WA = m['wa']
     url = f"/servicos/{p['slug']}/"
-    meta = {"url": url, "nav": "servicos", "title": p["title"], "description": p["description"],
-            "parent": ["Serviços", "/servicos/"], "crumb": p["nome"], "faqItems": p["faq"],
+    meta = {"url": url, "nav": "procedimentos", "title": p["title"], "description": p["description"],
+            "parent": ["Procedimentos", "/procedimentos/"], "crumb": p["nome"], "faqItems": p["faq"],
             "ld": [{"@type": "MedicalProcedure", "name": p["nome"], "url": "https://curaesante.com.br" + url,
                     "description": p["description"], "howPerformed": p["oque"], "followup": "Retorno combinado na consulta.",
                     "procedureType": "https://schema.org/NoninvasiveProcedure" if p["slug"] != "retirada-de-cisto-lipoma-e-pintas" else "https://schema.org/SurgicalProcedure"} if p.get("tipo") != "terapia" else {"@type": "MedicalTherapy", "name": p["nome"], "url": "https://curaesante.com.br" + url, "description": p["description"]}]}
@@ -172,7 +172,7 @@ for p in PROCS:
     body = f'''<!--meta {json.dumps(meta, ensure_ascii=False)} -->
 <section class="phead"><div class="wrap g2" style="align-items:center">
   <div>
-    <div class="crumbs" data-in><a href="/">Início</a> · <a href="/servicos/">Serviços</a> · {p['nome']}</div>
+    <div class="crumbs" data-in><a href="/">Início</a> · <a href="/procedimentos/">Procedimentos</a> · {p['nome']}</div>
     <span class="kick" data-in>{p['kick']}</span>
     <h1 style="font-size:clamp(44px,6.4vw,88px)">{p['nome']}</h1>
     <p class="lead" data-in>{p['lead']}</p>

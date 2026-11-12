@@ -326,3 +326,14 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 .cir-b p{font-size:15.5px;margin:0}
 .cir-b .more{display:inline-block;margin-top:10px;font-weight:700;font-size:14.5px;color:var(--escuro)}
 @media(max-width:900px){.cir{grid-template-columns:1fr}.cir-b{grid-template-columns:1fr;gap:14px}}
+/* menu de procedimentos */
+.has-dd{position:relative}
+.has-dd>a:after{content:"";display:inline-block;width:6px;height:6px;margin-left:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-3px) rotate(45deg);opacity:.7}
+.dd{position:absolute;top:calc(100% + 18px);left:50%;transform:translate(-50%,8px);display:grid;grid-template-columns:1fr 1fr;gap:26px;width:560px;padding:26px 28px;border-radius:20px;background:rgba(42,31,20,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 30px 60px -20px rgba(0,0,0,.55);opacity:0;visibility:hidden;transition:opacity .3s,transform .3s,visibility .3s}
+.dd:before{content:"";position:absolute;left:0;right:0;top:-20px;height:20px}
+.has-dd:hover .dd,.has-dd:focus-within .dd{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.dd span{display:block;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dour);margin-bottom:10px}
+#brand nav .dd a{display:block;color:var(--creme);opacity:.85;padding:6px 0;font-size:14.5px;font-weight:500}
+#brand nav .dd a:hover{opacity:1;color:var(--off)}
+#brand nav .dd a:after{display:none}
+@media(max-width:1180px){#brand nav{gap:18px;font-size:14.5px}}
