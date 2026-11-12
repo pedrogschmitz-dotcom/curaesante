@@ -65,7 +65,7 @@ PROCS = [
  },
  {
   "slug": "retirada-de-cisto-lipoma-e-pintas", "nome": "Retirada de cistos, lipomas e pintas", "kick": "Pequenas cirurgias de pele",
-  "foto": "/s/img/equipamento.jpg", "assunto": "retirada de cisto, lipoma ou pinta",
+  "foto": "/s/img/bandeja.jpg", "assunto": "retirada de cisto, lipoma ou pinta",
   "title": "Retirada de cisto, lipoma e pintas em São José/SC | Curae Santé",
   "description": "Avaliação e retirada de cisto sebáceo (epidermoide), lipoma e pintas com anestesia local, em consultório, com envio para biópsia quando indicado. Kobrasol, São José/SC.",
   "lead": "Aquele caroço que cresce devagar, a pinta que mudou ou que incomoda: avaliação, retirada com anestesia local em consultório e análise da peça quando indicado.",
