@@ -87,7 +87,7 @@ const CLINICA_LD = {
   geo: { '@type': 'GeoCoordinates', latitude: -27.5935, longitude: -48.6195 },
   openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '18:00' }],
   sameAs: ['https://www.instagram.com/curaesante/'],
-  medicalSpecialty: ['PrimaryCare', 'Dermatology'],
+  amenityFeature: [{ '@type': 'LocationFeatureSpecification', name: 'Estacionamento gratuito', value: true }, { '@type': 'LocationFeatureSpecification', name: 'Acessível para cadeirantes', value: true }, { '@type': 'LocationFeatureSpecification', name: 'Banheiro adaptado', value: true }],
 };
 const MEDICOS_LD = [
   { '@type': 'Physician', '@id': `${SITE}/#dr-pedro`, name: 'Dr. Pedro Schmitz', identifier: 'CRM/SC 38229', worksFor: { '@id': `${SITE}/#clinica` }, sameAs: ['https://www.instagram.com/drpedroschmitz/'] },
