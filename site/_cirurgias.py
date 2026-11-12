@@ -17,7 +17,7 @@ CIR = [
  ("lobulo", "Lóbulo da orelha rasgado", "lobuloplastia",
   "Lóbulo rasgado ou alargado pelo uso de brincos pesados ou alargadores.",
   "Correção com anestesia local: as bordas são refeitas e suturadas para o lóbulo voltar a fechar.",
-  "Novo furo, se desejado, só depois da cicatrização completa, em geral após algumas semanas.", None),
+  "Novo furo, se desejado, só depois da cicatrização completa, em geral após algumas semanas.", "/servicos/lobuloplastia/"),
  ("unha", "Unha encravada", "cantoplastia",
   "Canto da unha que entra na pele, com dor, vermelhidão, inflamação ou pus, muitas vezes de repetição.",
   "Retirada da parte da unha que encrava, com anestesia local. Nos casos de repetição, a matriz daquele canto é tratada (fenolização) para a borda não voltar a crescer.",

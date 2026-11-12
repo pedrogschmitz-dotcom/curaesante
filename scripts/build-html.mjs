@@ -74,7 +74,7 @@ const guias = existsSync(path.join(ROOT, 'site/guias')) ? readdirSync(path.join(
 
 // ---------- partes do layout ----------
 const MENU_PROC = [
-  ['Pele, cabelo e cirurgias · Dr. Pedro', [['/servicos/toxina-botulinica/', 'Toxina botulínica'], ['/servicos/preenchimento-acido-hialuronico/', 'Preenchimento com ácido hialurônico'], ['/servicos/bioestimuladores-de-colageno/', 'Bioestimuladores de colágeno'], ['/servicos/pequenas-cirurgias/', 'Pequenas cirurgias de pele'], ['/servicos/lipoma/', 'Lipoma'], ['/servicos/unha-encravada/', 'Unha encravada'], ['/servicos/verrugas/', 'Verrugas']]],
+  ['Pele, cabelo e cirurgias · Dr. Pedro', [['/servicos/toxina-botulinica/', 'Toxina botulínica'], ['/servicos/preenchimento-acido-hialuronico/', 'Preenchimento com ácido hialurônico'], ['/servicos/bioestimuladores-de-colageno/', 'Bioestimuladores de colágeno'], ['/servicos/pequenas-cirurgias/', 'Pequenas cirurgias de pele'], ['/servicos/lipoma/', 'Lipoma'], ['/servicos/unha-encravada/', 'Unha encravada'], ['/servicos/verrugas/', 'Verrugas'], ['/servicos/lobuloplastia/', 'Lobuloplastia']]],
   ['Emagrecimento e saúde da mulher · Dra. Júlia', [['/servicos/programa-de-emagrecimento/', 'Programa de emagrecimento'], ['/servicos/investigacao-metabolica/', 'Investigação metabólica'], ['/servicos/menopausa-e-insonia/', 'Menopausa e insônia'], ['/metabolismo-feminino/', 'Metabolismo feminino']]],
 ];
 const NAV = [['/', 'Início', 'inicio'], ['/sobre/', 'Sobre', 'sobre'], ['/servicos/', 'Serviços', 'servicos'], ['/procedimentos/', 'Procedimentos', 'procedimentos'], ['/equipe/', 'Equipe', 'equipe'], ['/blog/', 'Blog', 'blog'], ['/faq/', 'FAQ', 'faq'], ['/contato/', 'Contato', 'contato']];

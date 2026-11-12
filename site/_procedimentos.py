@@ -252,6 +252,31 @@ PROCS += [
   ],
   "rel": ["mancha-na-pele-quando-avaliar", "envelhecimento-pele-prevencao"]
  },
+ {
+  "slug": "lobuloplastia", "nome": "Lobuloplastia", "kick": "Pequena cirurgia",
+  "foto": "/s/img/pedro-cirurgia.jpg", "assunto": "lobuloplastia (correção do lóbulo da orelha)",
+  "title": "Lobuloplastia: correção do lóbulo da orelha | Curae Santé",
+  "description": "Lóbulo da orelha rasgado ou alargado por brinco ou alargador: como é a correção com anestesia local, recuperação e quando furar de novo. São José/SC.",
+  "lead": "O furo que alargou com o peso do brinco ou o lóbulo que rasgou de vez. A correção é feita no consultório, com anestesia local, e em geral leva menos de uma hora.",
+  "oque": "Lobuloplastia é a correção do lóbulo da orelha. O furo do brinco pode alargar com o tempo, pelo peso de brincos ou pelo uso de alargadores, ou rasgar de uma vez num puxão. Na cirurgia, a pele do trajeto rasgado é retirada e as bordas são unidas com pontos, para o lóbulo voltar a fechar com o contorno natural.",
+  "para": ["Lóbulo rasgado por completo", "Furo alargado, em que o brinco já não para", "Furo deformado por alargador", "Quem quer voltar a usar brinco depois da correção"],
+  "nao_kick": "Antes de corrigir", "nao_titulo": "Quando avaliar com mais cuidado",
+  "nao": ["Queloide na orelha (cicatriz que cresce além do furo): é outro tratamento, com retirada e medicação para evitar que volte", "Infecção ativa no furo: tratar primeiro", "Uso de remédio que afina o sangue: avaliar antes", "Histórico de queloide em outras cicatrizes: avisar na consulta"],
+  "como": [["Avaliação", "Exame do lóbulo e escolha da técnica pelo tamanho do rasgo e pelo desejo de voltar a usar brinco."], ["Anestesia", "Anestesia local no lóbulo; o procedimento não dói."], ["Correção", "Retirada da pele do trajeto rasgado e pontos na frente e atrás do lóbulo. Em alguns casos, a borda é desenhada em zigue-zague para a cicatriz não puxar."], ["Cuidados e retorno", "Curativo simples, retirada dos pontos em cerca de 1 a 2 semanas e novo furo só depois que a cicatriz amadurecer."]],
+  "riscos_titulo": "Recuperação e riscos",
+  "riscos": "O incômodo costuma ser leve, controlado com analgésico comum. Podem surgir inchaço, roxo, infecção e uma pequena depressão na borda do lóbulo, que tende a melhorar com o tempo. Em quem tem tendência, pode se formar queloide. O novo furo é feito em outro ponto, fora da cicatriz.",
+  "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> Não use brinco no lado operado até a liberação no retorno. Procure a clínica se houver febre, vermelhidão que aumenta ou secreção.",
+  "evid": ["Uma revisão sistemática de 26 estudos reuniu seis grupos de técnicas, de corte reto a zigue-zague e retalhos. Todas foram consideradas simples e eficazes, com poucas complicações.", "A técnica é escolhida pelo tipo de rasgo e pela preferência do paciente e do médico. Não há uma técnica superior para todos os casos.", "Muitos autores recomendam fazer o novo furo depois, em outro ponto, e não no mesmo tempo da correção.", "Queloide de orelha é diferente de lóbulo rasgado: só retirar costuma não bastar, e o tratamento associa medicação na cicatriz para reduzir a volta."],
+  "refs": ["Nassour N, Watfa W. Outcomes and complications of traumatic ear lobe repair techniques: a systematic review. J Cosmet Dermatol, 2022.", "Watson D. Torn earlobe repair. Otolaryngol Clin North Am, 2002.", "Sharma HK et al. Orifice preserving double opposing Z-plasty for partial split ear lobe repair: 25 cases. Dermatol Surg, 2018.", "Khan FA et al. Pediatric earlobe keloids: outcomes and patterns of recurrence. J Pediatr Surg, 2020."],
+  "faq": [
+   {"q": "Dói?", "a": "A anestesia local tira a dor durante o procedimento. Depois, o incômodo costuma ser leve."},
+   {"q": "Quando posso furar de novo?", "a": "Depois que a cicatriz amadurecer. O prazo é combinado no retorno, e o novo furo é feito fora da cicatriz."},
+   {"q": "Fica cicatriz?", "a": "Fica uma cicatriz fina na borda do lóbulo, em geral discreta. Em quem tem tendência a queloide, o risco é maior e é conversado antes."},
+   {"q": "Posso corrigir as duas orelhas no mesmo dia?", "a": "Em geral, sim. A decisão é tomada na avaliação."},
+   {"q": "E se eu usar alargador?", "a": "Furos grandes por alargador também podem ser corrigidos. A técnica depende do tamanho do furo."}
+  ],
+  "rel": []
+ },
 ]
 
 ALT = {"/s/img/pedro-toxina.jpg": "Dr. Pedro Schmitz planejando os pontos de aplicação em uma ficha de toxina botulínica", "/s/img/pedro-espelho.jpg": "Dr. Pedro Schmitz explicando um ponto do rosto diante do espelho", "/s/img/pedro-cirurgia.jpg": "Dr. Pedro Schmitz com instrumentos de pequena cirurgia no consultório", "/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/pes.jpg":"Pés descalços sobre piso de madeira","/s/img/maos.jpg":"Mãos de mulher em luz suave","/s/img/queratose.jpg":"Pele vista de perto","/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
