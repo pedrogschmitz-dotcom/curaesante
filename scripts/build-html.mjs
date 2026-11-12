@@ -265,6 +265,34 @@ for (const g of guias) {
   urls.push(`/blog/${g.slug}/`);
 }
 
+// IndexNow (Bing e outros): arquivo de chave na raiz
+const INDEXNOW = readFileSync(path.join(ROOT, 'site/indexnow.key'), 'utf8').trim();
+write(`${INDEXNOW}.txt`, INDEXNOW);
+
+// llms.txt: resumo da clínica para assistentes de IA
+{
+  const info = (u) => { try { const h = readFileSync(path.join(OUT, u, 'index.html'), 'utf8'); return [h.match(/<title>(.*?)<\/title>/)[1].replace(/ \| Curae Santé$/, ''), (h.match(/name="description" content="(.*?)"/) || [])[1] || '']; } catch { return null; } };
+  const linha = (u) => { const i = info(u); return i ? `- [${i[0].replace(/&amp;/g, '&')}](${SITE}${u}): ${i[1].replace(/&amp;/g, '&').replace(/&quot;/g, '"')}` : null; };
+  const grupo = (titulo, lista) => `## ${titulo}\n\n${lista.map(linha).filter(Boolean).join('\n')}\n`;
+  const procs = urls.filter(u => u.startsWith('/servicos/') && u !== '/servicos/');
+  const txt = `# Curae Santé Clínica Médica
+
+> Clínica médica particular no Kobrasol, São José/SC (Grande Florianópolis). Consulta longa, investigação e plano individualizado em saúde clínica, pele, cabelo, unhas, harmonização facial, pequenas cirurgias de pele, emagrecimento, metabolismo e saúde hormonal feminina.
+
+- Endereço: Av. Delamar José da Silva, 186, Sala 3, Kobrasol, São José/SC, CEP 88102-100, Brasil
+- Agendamento: WhatsApp (48) 98806-4337 (https://wa.me/5548988064337)
+- E-mail: curaesante@gmail.com · Instagram: @curaesante
+- Horário: segunda a sexta, 9h às 18h, com hora marcada. Atendimento particular.
+- Médicos: Dr. Pedro Schmitz (CRM/SC 38229): pele, cabelo, unhas, harmonização facial e pequenas cirurgias de pele (cisto, lipoma, pintas, unha encravada, verrugas, biópsia). Dra. Júlia Schmitz (CRM/SC 34242): emagrecimento, metabolismo, alimentação e saúde hormonal feminina (perimenopausa, menopausa, insônia).
+- Conteúdo informativo, revisado pela equipe médica. Não substitui consulta; a indicação de qualquer tratamento é feita em avaliação individual.
+
+${grupo('Páginas principais', ['/', '/sobre/', '/equipe/', '/equipe/dr-pedro-schmitz/', '/equipe/dra-julia-schmitz/', '/servicos/', '/procedimentos/', '/clinica-medica-kobrasol-sao-jose/', '/contato/', '/faq/'])}
+${grupo('Procedimentos e tratamentos', [...procs, '/metabolismo-feminino/'])}
+${grupo('Guias por queixa', guias.map(g => `/blog/${g.slug}/`))}
+${grupo('Artigos do blog', posts.map(p => `/blog/${p.slug}/`))}`;
+  write('llms.txt', txt);
+}
+
 // sitemap
 const hoje = new Date().toISOString().slice(0, 10);
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${SITE}${u}</loc><lastmod>${hoje}</lastmod></url>`).join('\n')}\n</urlset>\n`);

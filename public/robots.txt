@@ -28,4 +28,77 @@ Disallow: /orcamento
 Disallow: /dia-wellness
 Disallow: /sono-em-dia
 
+# Assistentes de IA: liberados (resumo em /llms.txt)
+User-agent: GPTBot
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: Claude-User
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: Applebot
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /orcamento
+Disallow: /dia-wellness
+Disallow: /sono-em-dia
+
 Sitemap: https://curaesante.com.br/sitemap.xml
