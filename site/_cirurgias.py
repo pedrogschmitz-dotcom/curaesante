@@ -84,7 +84,7 @@ ld = [{"@type": "MedicalWebPage", "name": "Pequenas cirurgias de pele", "url": "
        "reviewedBy": {"@id": "https://curaesante.com.br/#dr-pedro"},
        "about": [{"@type": "MedicalProcedure", "name": n, "procedureType": "https://schema.org/SurgicalProcedure"} for _, n, *_ in CIR]}]
 meta = {"url": "/servicos/pequenas-cirurgias/", "nav": "procedimentos", "parent": ["Procedimentos", "/procedimentos/"], "crumb": "Pequenas cirurgias",
-        "preload": "/s/img/bandeja.jpg",
+        "preload": "/s/img/pedro-cirurgia.jpg",
         "title": "Pequenas cirurgias de pele em São José/SC | Curae Santé",
         "description": "Cisto, lipoma, pintas, unha encravada, verrugas, acrocórdons, queratose, biópsia, lóbulo da orelha e mais, com anestesia local no Kobrasol, São José/SC.",
         "faqItems": FAQ, "ld": ld}
@@ -98,7 +98,7 @@ html = f'''<!--meta {json.dumps(meta, ensure_ascii=False)} -->
     <p class="lead" data-in>Do cisto que incomoda há anos à unha encravada que não melhora: avaliação, procedimento com anestesia local e acompanhamento até a cicatrização, com o Dr. Pedro Schmitz.</p>
     <div class="ctas" data-in><a class="btn gold" href="{{{{WA:{WA}}}}}" target="_blank" rel="noopener">{{{{ICO_WA}}}} Agendar avaliação</a><a class="btn line" href="#lista">Ver todas</a></div>
   </div>
-  <figure data-in style="margin:0"><div class="ph tall"><img src="/s/img/bandeja.jpg" alt="Instrumentos cirúrgicos esterilizados sobre campo azul" width="1000" height="1250"></div><figcaption class="cap" style="color:var(--creme);opacity:.6">Imagem ilustrativa · Foto: Jonathan Borba/Pexels</figcaption></figure>
+  <figure data-in style="margin:0"><div class="ph tall"><img src="/s/img/pedro-cirurgia.jpg" alt="Dr. Pedro Schmitz de máscara segurando pinça e porta-agulha no consultório" width="1100" height="1375"></div><figcaption class="cap" style="color:var(--creme);opacity:.6">Dr. Pedro Schmitz no consultório da Curae Santé</figcaption></figure>
 </div></section>
 
 <section class="pad-s" id="lista">
