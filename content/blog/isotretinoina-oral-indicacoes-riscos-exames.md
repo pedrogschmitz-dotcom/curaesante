@@ -6,7 +6,7 @@ data: "2026-09-03T18:00:00.000Z"
 resumo: "Entenda quando a isotretinoína oral pode ser indicada, quais cuidados são indispensáveis e por que o tratamento exige acompanhamento médico."
 imagem: "/images/blog/botox-harmonizacao-facial.jpg"
 imagem_alt: "Imagem editorial sobre tratamento médico da acne"
-tags: ["isotretinoína", "acne", "Roacutan", "tratamento da acne", "saúde da pele"]
+tags: ["isotretinoína", "acne", "tratamento da acne", "saúde da pele"]
 published: true
 ---
 
@@ -56,9 +56,9 @@ Leia também: [acne adulta depois dos 30](/blog/acne-adulta-tratamento-depois-do
 
 ## Referências científicas
 
-- [American Academy of Dermatology: Guidelines of care for the management of acne vulgaris](https://pubmed.ncbi.nlm.nih.gov/38304663/)
-- [European S3 guideline for the treatment of acne](https://pubmed.ncbi.nlm.nih.gov/26897329/)
-- [Isotretinoin and psychiatric adverse events: a systematic review](https://pubmed.ncbi.nlm.nih.gov/24755275/)
+- [American Academy of Dermatology: Guidelines of care for the management of acne vulgaris](https://pubmed.ncbi.nlm.nih.gov/38300170/)
+- [European evidence-based (S3) guideline for the treatment of acne – update 2016](https://pubmed.ncbi.nlm.nih.gov/27514932/)
+- [Isotretinoin treatment for acne and risk of depression: a systematic review and meta-analysis](https://pubmed.ncbi.nlm.nih.gov/28291553/)
 - [Isotretinoin and laboratory monitoring: a review](https://pubmed.ncbi.nlm.nih.gov/27189824/)
 
 Este conteúdo é informativo e não substitui consulta médica. A isotretinoína oral exige prescrição e acompanhamento profissional.
