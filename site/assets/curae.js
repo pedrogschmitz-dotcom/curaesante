@@ -3,20 +3,51 @@
 (function () {
   const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const pad = n => String(n).padStart(2, '0');
+  const PATH = location.pathname;
+  const JULIA = /julia|emagrecimento|menopausa|investigacao-metabolica|metabolismo-feminino/.test(PATH);
+  const HOME = PATH === '/' || PATH === '/index.html';
+  const I = n => '/s/img/' + n + '.webp';
+  const POOL = JULIA ? [
+    [/escuta|conversa|consulta|avalia|hist/i, ['dra-julia', 'consultorio']],
+    [/exame|investiga|laborat/i, ['proc/metabolica', 'proc/metabolismo-feminino']],
+    [/plano|aliment|tratamento|conjunto/i, ['proc/emagrecimento', 'proc/menopausa']],
+    [/retorno|acompanha|cuidado|efeito/i, ['recepcao', 'consultorio']],
+    [/./, ['consultorio', 'recepcao', 'dra-julia']]
+  ] : HOME ? [
+    [/tempo|consulta/i, ['consultorio']], [/escuta/i, ['pedro-julia-jaleco']], [/investiga/i, ['pedro-estudo']], [/plano/i, ['pedro-julia-terno']], [/./, ['recepcao']]
+  ] : [
+    [/escuta|conversa|consulta|avalia|hist/i, ['pedro-mesa', 'pedro-jaleco-mesa']],
+    [/exame|investiga|diagn/i, ['pedro-wood-luz', 'pedro-estudo']],
+    [/explica|plano|planej|escolha|técnica/i, ['pedro-espelho', 'pedro-toxina']],
+    [/aplica|procedimento|retirada|anestesia|sess/i, ['pedro-cirurgia', 'pedro-toxina']],
+    [/retorno|acompanha|cuidado|efeito|casa/i, ['pedro-sorriso', 'pedro-terno-mesa']],
+    [/./, ['pedro-curae', 'pedro-mesa', 'consultorio']]
+  ];
+  function stepImg(title, used) {
+    for (const [re, arr] of POOL) if (re.test(title)) { const pick = arr.find(a => !used.has(a)) || arr[0]; used.add(pick); return pick; }
+  }
   function build(el) {
     const isSteps = el.classList.contains('steps');
     const items = [...el.children].filter(c => !c.classList.contains('fill'));
     if (items.length < 2) return;
-    const kind = el.dataset.carr || (isSteps ? 'txt' : 'txt');
+    const kind = el.dataset.carr || (isSteps ? 'step' : 'txt');
     el.querySelectorAll(':scope > .fill').forEach(f => f.remove());
     el.removeAttribute('data-stagger');
     el.classList.remove('steps', 'g2', 'g3', 'g4'); el.classList.add('carr', 'carr-' + kind);
     el.style.gridTemplateColumns = '';
     const vp = document.createElement('div'); vp.className = 'carr-vp';
     const tr = document.createElement('div'); tr.className = 'carr-tr'; vp.appendChild(tr);
+    const used = new Set();
     items.forEach((it, i) => {
       const sl = document.createElement('div'); sl.className = 'carr-sl';
-      if (isSteps) { const n = document.createElement('span'); n.className = 'carr-n'; n.textContent = pad(i + 1); it.prepend(n); it.classList.add('on'); }
+      if (isSteps) {
+        const h = it.querySelector('h3'); const src = stepImg(h ? h.textContent : '', used);
+        const fig = document.createElement('div'); fig.className = 'carr-img';
+        fig.innerHTML = '<img loading="lazy" alt="" src="' + I(src) + '">';
+        const n = document.createElement('span'); n.className = 'carr-n'; n.textContent = 'Etapa ' + pad(i + 1);
+        const tx = document.createElement('div'); tx.className = 'carr-tx'; tx.append(n, ...it.childNodes);
+        it.append(fig, tx); it.classList.add('on', 'carr-step');
+      }
       sl.appendChild(it); tr.appendChild(sl);
     });
     const nav = document.createElement('div'); nav.className = 'carr-nav';
@@ -24,7 +55,7 @@
     el.innerHTML = ''; el.appendChild(vp); el.appendChild(nav);
     const dots = nav.querySelector('.carr-dots'), cnt = nav.querySelector('.carr-c');
     const n = items.length; let i = 0, timer = null, hover = false, vis = false;
-    const per = () => { const w = innerWidth; const k = kind === 'foto' ? (w < 700 ? 1 : w < 1000 ? 2 : 3) : (w < 700 ? 1 : w < 1100 ? 2 : 3); return Math.min(k, n); };
+    const per = () => { if (kind === 'step') return 1; const w = innerWidth; const k = kind === 'foto' ? (w < 700 ? 1 : w < 1000 ? 2 : 3) : (w < 700 ? 1 : w < 1100 ? 2 : 3); return Math.min(k, n); };
     const maxI = () => n - per();
     items.forEach((_, k) => { const d = document.createElement('button'); d.type = 'button'; d.setAttribute('aria-label', 'Ir para ' + (k + 1)); d.onclick = () => go(k, true); dots.appendChild(d); });
     function layout() { el.style.setProperty('--per', per()); go(Math.min(i, maxI()), false, true); }
@@ -33,6 +64,7 @@
       i = k > m ? 0 : k < 0 ? m : k;            // infinito: acabou, volta ao início
       const sl = tr.children[0]; const step = sl.getBoundingClientRect().width + parseFloat(getComputedStyle(tr).columnGap || 0);
       tr.style.transition = instant ? 'none' : '';
+      [...tr.children].forEach((c, k2) => c.classList.toggle('cur', k2 === i));
       tr.style.transform = `translate3d(${-i * step}px,0,0)`;
       [...dots.children].forEach((d, k2) => d.classList.toggle('on', k2 >= i && k2 < i + per()));
       cnt.textContent = pad(i + 1) + ' / ' + pad(n);
