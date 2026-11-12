@@ -14,7 +14,7 @@
     [/retorno|acompanha|cuidado|efeito/i, ['recepcao', 'consultorio']],
     [/./, ['consultorio', 'recepcao', 'dra-julia']]
   ] : HOME ? [
-    [/tempo|consulta/i, ['consultorio']], [/escuta/i, ['pedro-julia-jaleco']], [/investiga/i, ['pedro-estudo']], [/plano/i, ['pedro-julia-terno']], [/./, ['recepcao']]
+    [/tempo|consulta/i, ['consultorio']], [/escuta/i, ['recepcao']], [/investiga/i, ['equipamento']], [/plano/i, ['fachada']], [/./, ['pele']]
   ] : [
     [/escuta|conversa|consulta|avalia|hist/i, ['pedro-mesa', 'pedro-jaleco-mesa']],
     [/exame|investiga|diagn/i, ['pedro-wood-luz', 'pedro-estudo']],
