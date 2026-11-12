@@ -72,7 +72,7 @@ for i, (s, n, sub, oque, como, depois, link) in enumerate(CIR, 1):
     mais = f'<a class="more" href="{link}">Página completa</a>' if link else ''
     blocos += f'''
       <article class="cir" id="{s}" data-fade>
-        <div class="cir-h"><span class="n">{i:02d}</span><div><h3>{n}</h3><span class="sub">{sub}</span></div></div>
+        <div class="cir-h"><div><h3>{n}</h3><span class="sub">{sub}</span></div></div>
         <div class="cir-b">
           <div><b>O que é</b><p>{oque}</p></div>
           <div><b>Como é feito</b><p>{como}</p></div>

@@ -337,3 +337,32 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 #brand nav .dd a:hover{opacity:1;color:var(--off)}
 #brand nav .dd a:after{display:none}
 @media(max-width:1180px){#brand nav{gap:18px;font-size:14.5px}}
+/* cartões de tratamento com foto */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px)}
+.pgrid.c4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1000px){.pgrid,.pgrid.c4{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.pgrid,.pgrid.c4{grid-template-columns:1fr}}
+.pcard{position:relative;display:block;aspect-ratio:4/5;border-radius:24px;overflow:hidden;text-decoration:none;color:var(--off);background:var(--escuro);isolation:isolate}
+.pcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.pcard:hover img{transform:scale(1.07)}
+.pcard:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,22,16,0) 40%,rgba(30,22,16,.6) 65%,rgba(30,22,16,.94));z-index:0}
+.pcard .tx{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:clamp(20px,2.4vw,30px)}
+.pcard .tg{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dour);margin-bottom:8px}
+.pcard h3{color:var(--off);font-size:clamp(26px,2.4vw,32px);margin:0 0 8px;line-height:1.05}
+.pcard p{color:var(--creme);font-size:15px;line-height:1.45;margin:0 0 14px;opacity:.9}
+.pcard .go{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+.pcard .go:after{content:"";width:28px;height:1px;background:var(--dour);transition:width .4s}
+.pcard:hover .go:after{width:52px}
+.pcard.wide{grid-column:span 2;aspect-ratio:auto}
+@media(max-width:560px){.pcard.wide{grid-column:auto;aspect-ratio:4/5}}
+.proc summary .i:before{content:"";display:block;width:9px;height:9px;transform:rotate(45deg);border:1px solid var(--dour)}
+.proc summary{grid-template-columns:40px 1fr 40px}
+@media(max-width:760px){.proc summary{grid-template-columns:28px 1fr 30px}}
+.proc .b{padding-left:50px}
+@media(max-width:760px){.proc .b{padding-left:0}}
+.pcard:after{background:linear-gradient(180deg,rgba(30,22,16,0) 30%,rgba(30,22,16,.72) 58%,rgba(30,22,16,.97))}
+.pgrid.c4{grid-template-columns:1fr 1fr}
+.pgrid.c4 .pcard{aspect-ratio:16/10}
+.pgrid.c4 .pcard img{object-position:center 30%}
+.pgrid.c4 .pcard p{max-width:40ch}
+@media(max-width:560px){.pgrid.c4{grid-template-columns:1fr}.pgrid.c4 .pcard{aspect-ratio:4/5}}
