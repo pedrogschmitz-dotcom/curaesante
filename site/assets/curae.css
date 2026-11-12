@@ -369,3 +369,28 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 .refs{margin:18px 0 10px;border-top:1px solid var(--linha);padding-top:14px}
 .refs summary{cursor:pointer;font-weight:700;font-size:15px;color:var(--escuro)}
 .refs ol{margin:12px 0 0 20px;font-size:14px;color:var(--sub);display:grid;gap:6px}
+
+/* carrossel infinito */
+.carr{position:relative;margin-top:34px;outline:none}
+.carr-vp{overflow:hidden;border-radius:24px}
+.carr-tr{display:flex;column-gap:22px;transition:transform .8s cubic-bezier(.77,0,.18,1);will-change:transform}
+.carr-sl{flex:0 0 calc((100% - (var(--per,3) - 1)*22px)/var(--per,3));min-width:0}
+.carr-sl>*{height:100%;margin:0}
+.carr-sl figure{margin:0}
+.carr-txt .carr-sl>*{background:var(--off);border:1px solid rgba(188,167,142,.35);border-radius:22px;padding:30px 28px;box-sizing:border-box}
+.dk .carr-txt .carr-sl>*,#pil .carr-sl>*{background:rgba(255,255,255,.04);border-color:rgba(188,167,142,.3)}
+.carr-n{display:block;font-family:"Cormorant Garamond",serif;font-size:46px;line-height:1;color:var(--dour);margin-bottom:18px}
+.carr-txt h3{font-size:clamp(24px,2.4vw,30px);margin:0 0 8px}
+.carr-nav{display:flex;align-items:center;gap:16px;margin-top:22px}
+.carr-b{width:46px;height:46px;border-radius:50%;border:1px solid var(--dour);background:transparent;color:inherit;font-size:18px;cursor:pointer;transition:background .3s,color .3s}
+.carr-b:hover{background:var(--dour);color:var(--escuro)}
+.carr-c{font-size:13px;letter-spacing:.14em;opacity:.7;min-width:70px}
+.carr-dots{display:flex;gap:6px;flex:1}
+.carr-dots button{width:22px;height:2px;border:0;padding:0;background:rgba(188,167,142,.35);cursor:pointer;transition:background .3s,width .3s}
+.carr-dots button.on{background:var(--dour);width:34px}
+#rail.carr{display:block;width:auto;padding:0 clamp(20px,5vw,72px) 100px;max-width:1300px;margin:0 auto}
+#rail.carr .card{width:auto;min-height:380px}
+#rail.carr .carr-vp{border-radius:22px}
+@media(max-width:700px){.carr-dots{display:none}.carr-nav{justify-content:space-between}}
+.carr{min-width:0;width:100%;max-width:100%}
+.g2>*,.g3>*,.wrap>*{min-width:0}

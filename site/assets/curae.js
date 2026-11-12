@@ -1,4 +1,57 @@
 /* Curae Santé · movimento do site (GSAP + ScrollTrigger + Lenis) */
+/* Carrossel infinito (fotos em sequência e textos numerados) */
+(function () {
+  const RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pad = n => String(n).padStart(2, '0');
+  function build(el) {
+    const isSteps = el.classList.contains('steps');
+    const items = [...el.children].filter(c => !c.classList.contains('fill'));
+    if (items.length < 2) return;
+    const kind = el.dataset.carr || (isSteps ? 'txt' : 'txt');
+    el.querySelectorAll(':scope > .fill').forEach(f => f.remove());
+    el.removeAttribute('data-stagger');
+    el.classList.remove('steps', 'g2', 'g3', 'g4'); el.classList.add('carr', 'carr-' + kind);
+    el.style.gridTemplateColumns = '';
+    const vp = document.createElement('div'); vp.className = 'carr-vp';
+    const tr = document.createElement('div'); tr.className = 'carr-tr'; vp.appendChild(tr);
+    items.forEach((it, i) => {
+      const sl = document.createElement('div'); sl.className = 'carr-sl';
+      if (isSteps) { const n = document.createElement('span'); n.className = 'carr-n'; n.textContent = pad(i + 1); it.prepend(n); it.classList.add('on'); }
+      sl.appendChild(it); tr.appendChild(sl);
+    });
+    const nav = document.createElement('div'); nav.className = 'carr-nav';
+    nav.innerHTML = '<button type="button" class="carr-b" aria-label="Anterior">←</button><span class="carr-c"></span><div class="carr-dots"></div><button type="button" class="carr-b" aria-label="Próximo">→</button>';
+    el.innerHTML = ''; el.appendChild(vp); el.appendChild(nav);
+    const dots = nav.querySelector('.carr-dots'), cnt = nav.querySelector('.carr-c');
+    const n = items.length; let i = 0, timer = null, hover = false, vis = false;
+    const per = () => { const w = innerWidth; const k = kind === 'foto' ? (w < 700 ? 1 : w < 1000 ? 2 : 3) : (w < 700 ? 1 : w < 1100 ? 2 : 3); return Math.min(k, n); };
+    const maxI = () => n - per();
+    items.forEach((_, k) => { const d = document.createElement('button'); d.type = 'button'; d.setAttribute('aria-label', 'Ir para ' + (k + 1)); d.onclick = () => go(k, true); dots.appendChild(d); });
+    function layout() { el.style.setProperty('--per', per()); go(Math.min(i, maxI()), false, true); }
+    function go(k, user, instant) {
+      const m = maxI();
+      i = k > m ? 0 : k < 0 ? m : k;            // infinito: acabou, volta ao início
+      const sl = tr.children[0]; const step = sl.getBoundingClientRect().width + parseFloat(getComputedStyle(tr).columnGap || 0);
+      tr.style.transition = instant ? 'none' : '';
+      tr.style.transform = `translate3d(${-i * step}px,0,0)`;
+      [...dots.children].forEach((d, k2) => d.classList.toggle('on', k2 >= i && k2 < i + per()));
+      cnt.textContent = pad(i + 1) + ' / ' + pad(n);
+      if (user) restart();
+    }
+    function restart() { clearInterval(timer); if (!RM) timer = setInterval(() => { if (!hover && vis && !document.hidden) go(i + 1); }, kind === 'foto' ? 4200 : 5200); }
+    nav.firstChild.onclick = () => go(i - 1, true);
+    nav.lastChild.onclick = () => go(i + 1, true);
+    el.addEventListener('mouseenter', () => hover = true); el.addEventListener('mouseleave', () => hover = false);
+    let x0 = null, y0 = null;
+    vp.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; hover = true; }, { passive: true });
+    vp.addEventListener('touchend', e => { hover = false; if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) go(i + (dx < 0 ? 1 : -1), true); x0 = null; });
+    el.tabIndex = 0; el.addEventListener('keydown', e => { if (e.key === 'ArrowRight') go(i + 1, true); if (e.key === 'ArrowLeft') go(i - 1, true); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(x => vis = x.isIntersecting), { threshold: .25 }).observe(el); else vis = true;
+    addEventListener('resize', layout); layout(); restart();
+  }
+  document.querySelectorAll('[data-carr], .steps').forEach(build);
+})();
+
 (function () {
   const doc = document.documentElement;
   doc.classList.remove('no-js');
@@ -150,7 +203,7 @@
 
   // trilho horizontal travado (desktop) / empilhado (celular)
   const rail = document.getElementById('rail');
-  if (rail) {
+  if (rail && !rail.classList.contains('carr')) {
     const mm = gsap.matchMedia();
     mm.add('(min-width: 861px)', () => {
       const dist = () => rail.scrollWidth - window.innerWidth + 48;
