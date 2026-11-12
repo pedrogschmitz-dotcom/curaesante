@@ -8,7 +8,7 @@ const PROCS = {
   ah: { nome: 'Preenchimento com ácido hialurônico', curto: 'Preenchimento', indic: 'Perda de volume e de sustentação, com sulcos e sombras que deixam o rosto com aspecto cansado.', compl: 'Inchaço, roxos e sensibilidade nos primeiros dias. Mais raramente: nódulos, assimetria ou complicação vascular, que exige avaliação imediata.', interval: 'Imediatamente após', regs: ['malar', 'bigode', 'mento'] },
   bio: { nome: 'Bioestimulador de colágeno', curto: 'Bioestimulador', indic: 'Flacidez leve a moderada e perda de firmeza da pele.', compl: 'Inchaço e roxos transitórios; nódulos são possíveis. O resultado é gradual, ao longo de semanas a meses.', interval: '90 dias após', regs: ['malar', 'mandibula', 'prejowl'] },
   tox: { nome: 'Toxina botulínica', curto: 'Toxina botulínica', indic: 'Linhas de expressão que aparecem com o movimento: testa, entre as sobrancelhas e ao redor dos olhos.', compl: 'Pequenos roxos no local e dor de cabeça leve. Raramente, queda transitória da pálpebra ou da sobrancelha.', interval: '15 dias após', regs: ['testa', 'glabela', 'pes'] },
-  sb: { nome: 'Skinbooster', curto: 'Skinbooster', indic: 'Pele desidratada, sem viço e com linhas finas.', compl: 'Pequenas pápulas e inchaço por 1 a 3 dias; roxos pontuais.', interval: '30 dias após', regs: ['malar', 'olheiras'] },
+  sb: { nome: 'Hidratação injetável da pele', curto: 'Hidratação injetável', indic: 'Pele desidratada, sem viço e com linhas finas.', compl: 'Pequenas pápulas e inchaço por 1 a 3 dias; roxos pontuais.', interval: '30 dias após', regs: ['malar', 'olheiras'] },
   fio: { nome: 'Fios de PDO', curto: 'Fios de PDO', indic: 'Flacidez leve com perda de contorno do rosto.', compl: 'Inchaço, sensibilidade e pequenas irregularidades transitórias. Raramente, exposição do fio ou infecção.', interval: '30 dias após', regs: ['malar', 'mandibula'] },
   rino: { nome: 'Rinomodelação com ácido hialurônico', curto: 'Rinomodelação', indic: 'Pequenas irregularidades do dorso e da ponta do nariz, para quem não quer cirurgia.', compl: 'Inchaço e roxos leves. Complicação vascular é rara e exige avaliação imediata.', interval: 'Imediatamente após', regs: ['nariz'] },
   lab: { nome: 'Preenchimento labial', curto: 'Preenchimento labial', indic: 'Lábios com pouco volume, contorno apagado ou assimetria.', compl: 'Inchaço e roxos por alguns dias; herpes labial pode ser reativado. Complicação vascular é rara e exige avaliação imediata.', interval: 'Imediatamente após', regs: ['labios'] },
@@ -521,7 +521,7 @@ function renderTiles() {
   Object.entries(CIRS).forEach(([k, c]) => {
     const d = document.createElement('div'); d.className = 'tile' + (S.cirSel === k ? ' on' : '');
     d.innerHTML = `<b>${c.curto}</b><span>${({ lipoma: 'Nódulo de gordura sob a pele', cisto: '“Cisto sebáceo”: bolsa de queratina com cápsula', lobulo: 'Lóbulo da orelha rasgado ou alargado', nevo: 'Pinta ou lesão, com exame da peça' })[k]}</span>`;
-    d.onclick = () => { S.cirSel = k; document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); setTimeout(() => $('#s1').scrollIntoView({ behavior: 'smooth', block: 'start' }), 80); };
+    d.onclick = () => { S.cirSel = k; document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); setTimeout(() => wzGo(WZ.i + 1), 220); };
     box.append(d);
   });
 }
@@ -1054,6 +1054,7 @@ async function loadCase(c) {
     await setPhoto(k, img, { blob: b, lm: c.lm && c.lm[k] || null, eyes: c.eyes && c.eyes[k] });
   }
   renderRegs(); buildFrames();
+  WZ.procOk = true; if (S.mode === 'cir') S.cirSel = c.proc; $$('#modeTiles .tile').forEach(x => x.classList.toggle('on', x.dataset.v === S.mode)); renderProcTiles(); wzGo(wzPages().length - 1);
 }
 
 /* ---------------- ajustes ---------------- */
@@ -1066,12 +1067,54 @@ async function loadCase(c) {
 function go(v) { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v)); $$('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); scrollTo(0, 0); if (v === 'galeria') renderGal(); }
 $$('nav.tabs button').forEach(b => b.onclick = () => go(b.dataset.v));
 
+
+/* ---------------- etapas (modo → procedimento → fotos → …) ---------------- */
+const WZ = { i: 0, procOk: false };
+const wzPages = () => S.mode === 'cir' ? ['sMode', 's0', 's1', 's2', 's3', 's4', 's5'] : ['sMode', 'sProc', 's1', 's2', 's3', 's4', 's5'];
+const WZ_NOMES = { sMode: 'Modo', sProc: 'Procedimento', s0: 'Cirurgia', s1: 'Fotos', s2: 'Encaixe', s3: 'O caso', s4: 'Estilo', s5: 'Prévia e vídeo' };
+function renderProcTiles() {
+  const box = $('#procTiles'); box.innerHTML = '';
+  Object.entries(PROCS).forEach(([k, p]) => {
+    const d = document.createElement('div'); d.className = 'tile' + (WZ.procOk && S.proc === k ? ' on' : '');
+    d.innerHTML = `<b>${p.curto}</b><span>${p.indic.split('.')[0]}.</span>`;
+    d.onclick = () => { procSel.value = k; applyProc(k); WZ.procOk = true; renderProcTiles(); refresh(true); setTimeout(() => wzGo(WZ.i + 1), 220); };
+    box.append(d);
+  });
+}
+function wzCan(id) {
+  if (id === 'sProc') return WZ.procOk || 'Escolha o procedimento.';
+  if (id === 's0') return !!S.cirSel || 'Escolha a cirurgia.';
+  if (id === 's1') return (S.img.fa && S.img.fd) ? true : 'Suba as fotos obrigatórias (antes e depois).';
+  return true;
+}
+function wzGo(i) {
+  const P = wzPages(); i = Math.max(0, Math.min(P.length - 1, i));
+  if (i > WZ.i) for (let k = WZ.i; k < i; k++) { const ok = wzCan(P[k]); if (ok !== true) { toast(ok); i = k; break; } }
+  WZ.i = i;
+  ['sMode', 'sProc', 's0', 's1', 's2', 's3', 's4', 's5'].forEach(id => { const el = $('#' + id); if (el) el.classList.toggle('wz-off', id !== P[i]); });
+  P.forEach((id, k) => { const n = $('#' + id + ' .hd .num'); if (n) n.textContent = k + 1; });
+  $('#wzFill').style.width = ((i + 1) / P.length * 100) + '%';
+  $('#wzLab').textContent = `Etapa ${i + 1} de ${P.length} · ${WZ_NOMES[P[i]]}`;
+  $('#wzBack').disabled = i === 0; $('#wzNext').style.display = i === P.length - 1 ? 'none' : '';
+  $('#wzNext').textContent = i === P.length - 2 ? 'Ver prévia →' : 'Avançar →';
+  if (P[i] === 's2') drawAlign(); refresh(true);
+  scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#wzBack').onclick = () => wzGo(WZ.i - 1);
+$('#wzNext').onclick = () => wzGo(WZ.i + 1);
+$$('#modeTiles .tile').forEach(t => t.onclick = () => {
+  $$('#modeTiles .tile').forEach(x => x.classList.toggle('on', x === t));
+  const b = $(`#mode button[data-v="${t.dataset.v}"]`); if (S.mode !== t.dataset.v) { WZ.procOk = false; b.click(); }
+  setTimeout(() => { renderProcTiles(); wzGo(1); }, 60);
+});
+
 /* ---------------- início ---------------- */
 applyProc('ah'); renderProfs(); renderGal(); addCamBtns(); destUI();
 $$('#theme button').forEach(b => b.classList.toggle('on', b.dataset.v === S.theme));
 const fontsReady = Promise.all(['500 40px "Cormorant Garamond"', 'italic 500 40px "Cormorant Garamond"', '600 40px "Red Hat Display"', '700 40px "Red Hat Display"', '40px Anton', '800 40px Inter', '600 40px Inter', '700 40px "Space Mono"'].map(f => document.fonts.load(f).catch(() => { })));
 fontsReady.then(() => { refresh(); drawAlign(); });
 refresh(); drawAlign();
+renderProcTiles(); wzGo(0);
 
 window.__estudio = { S, setPhoto, buildD, refresh, loadImg, findWatermark };
 })();

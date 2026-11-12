@@ -110,6 +110,13 @@ body.cir.nocir #s1,body.cir.nocir #s2,body.cir.nocir #s3,body.cir.nocir #s4,body
 .seg button.on{background:var(--dour);color:#2A1F14}
 .adj{display:grid;grid-template-columns:70px 1fr 44px;gap:8px;align-items:center;font-size:13px;color:var(--sub)}
 #resVideo{width:min(78vw,340px);border-radius:18px;display:none}
+body.cir .notcir{display:none!important}
+.wz-top{margin:6px 0 14px}.wz-bar{height:3px;background:rgba(188,167,142,.18);border-radius:3px;overflow:hidden}.wz-bar div{height:100%;width:0;background:var(--dour);transition:width .4s}
+.wz-lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub);margin-top:8px}
+#v-criar .step.wz-off{display:none!important}
+.wz-modes{grid-template-columns:1fr}
+.wz-nav{position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));display:flex;gap:10px;padding:12px 0;background:linear-gradient(transparent,var(--bg,#14100b) 30%);z-index:40}
+.wz-nav .btn{flex:1}.wz-nav .btn[disabled]{opacity:.35;pointer-events:none}
 </style>
 </head>
 <body>
@@ -121,7 +128,20 @@ body.cir.nocir #s1,body.cir.nocir #s2,body.cir.nocir #s3,body.cir.nocir #s4,body
 
 <!-- ================= CRIAR ================= -->
 <section class="view on" id="v-criar">
-  <div class="seg" id="mode" style="margin:4px 0 4px"><button data-v="est" class="on">Estético (rosto)</button><button data-v="cir">Cirúrgico</button><button data-v="com">Caso comentado</button></div>
+  <div class="wz-top"><div class="wz-bar"><div id="wzFill"></div></div><div class="wz-lab" id="wzLab"></div></div>
+  <div class="step" id="sMode">
+    <div class="hd"><span class="num">1</span><div><h2>Qual modo?</h2><div class="hint">Escolha o tipo de caso. Depois vem o procedimento e, só então, as fotos.</div></div></div>
+    <div class="seg" id="mode" style="display:none"><button data-v="est" class="on">Estético (rosto)</button><button data-v="cir">Cirúrgico</button><button data-v="com">Caso comentado</button></div>
+    <div class="tiles wz-modes" id="modeTiles">
+      <div class="tile on" data-v="est"><b>Estético (rosto)</b><span>Preenchimento, toxina, bioestimulador e outros. Encaixe automático pelo rosto.</span></div>
+      <div class="tile" data-v="cir"><b>Cirúrgico</b><span>Lipoma, cisto, lobuloplastia e pintas. Antes, cicatriz e peça.</span></div>
+      <div class="tile" data-v="com"><b>Caso comentado</b><span>Seu vídeo narrando o caso, com legenda e cartões no tempo da fala.</span></div>
+    </div>
+  </div>
+  <div class="step notcir" id="sProc">
+    <div class="hd"><span class="num">2</span><div><h2>Qual procedimento?</h2><div class="hint">Indicação, evolução, efeitos e regiões já vêm preenchidos a partir daqui.</div></div></div>
+    <div class="tiles" id="procTiles"></div>
+  </div>
   <div class="step cir" id="s0">
     <div class="hd"><span class="num">●</span><div><h2>Qual cirurgia?</h2><div class="hint">Escolha primeiro. Os textos do vídeo e da legenda vêm daqui, sem digitar.</div></div></div>
     <div class="tiles" id="cirTiles"></div>
@@ -167,8 +187,7 @@ body.cir.nocir #s1,body.cir.nocir #s2,body.cir.nocir #s3,body.cir.nocir #s4,body
 
   <div class="step" id="s3">
     <div class="hd"><span class="num">3</span><div><h2>O caso</h2><div class="hint">Marque só as regiões tratadas. Até 6 deixa o vídeo mais ágil.</div></div></div>
-    <label class="f est">Procedimento</label>
-    <select id="proc" class="est"></select>
+    <select id="proc" style="display:none"></select>
     <div class="com">
       <div class="note" style="margin-top:12px">Os cartões aparecem no vídeo quando você fala de cada assunto (achado pela transcrição). Ajuste o momento no controle abaixo de cada um.</div>
       <label class="f">O que a paciente queria (nas palavras dela)</label><textarea id="c_desejo" placeholder="Ex.: parecer menos cansada"></textarea><div class="adj"><span>Aparece</span><input type="range" id="t_desejo" min="0" max="60" step=".1"><span></span></div>
@@ -258,6 +277,7 @@ body.cir.nocir #s1,body.cir.nocir #s2,body.cir.nocir #s3,body.cir.nocir #s4,body
     <label class="f">Respostas prontas (direct e comentários)</label>
     <div class="copybox" id="faq"></div><button class="btn small ghost" data-copy="faq">Copiar</button>
   </div>
+  <div class="wz-nav" id="wzNav"><button class="btn ghost" id="wzBack">← Voltar</button><button class="btn" id="wzNext">Avançar →</button></div>
 </section>
 
 <!-- ================= SEMANA ================= -->
