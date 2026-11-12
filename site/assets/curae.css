@@ -394,3 +394,4 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 @media(max-width:700px){.carr-dots{display:none}.carr-nav{justify-content:space-between}}
 .carr{min-width:0;width:100%;max-width:100%}
 .g2>*,.g3>*,.wrap>*{min-width:0}
+@media(max-width:860px){#rail.carr .card{min-height:0}#rail.carr .card h3{margin-top:28px}}
