@@ -108,7 +108,7 @@ html = f'''<!--meta {json.dumps(meta, ensure_ascii=False)} -->
     <nav class="cir-idx" aria-label="Procedimentos" data-fade>{idx}</nav>
     <div class="cir-list">{blocos}
     </div>
-    <p class="note" style="margin-top:26px">Conteúdo informativo. A indicação e a técnica são definidas na avaliação. Casos que precisam de centro cirúrgico ou de outro especialista são encaminhados.</p>
+    <p class="note" style="margin-top:26px">Conteúdo informativo. A indicação e a técnica são definidas na avaliação. Casos que precisam de centro cirúrgico ou de outro profissional são encaminhados.</p>
   </div>
 </section>
 

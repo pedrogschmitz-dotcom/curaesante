@@ -163,7 +163,7 @@ function postCard(p) {
   return `<a class="post" href="/blog/${p.slug}/" data-cat="${p.cats.join(' ')}${p.aut ? ' a-' + p.aut : ''}">${cover(p)}<div class="tx"><h3>${esc(p.title)}</h3><p>${esc(p.resumo)}</p><span class="meta">${esc(p.autor || 'Curae Santé')} · ${dataBR(p.data)}</span></div></a>`;
 }
 function guiaCard(g) {
-  return `<a class="post guia" href="/blog/${g.slug}/" data-cat="${g.cats.join(' ')}">${cover({ ...g, guia: true, title: g.titulo })}<div class="tx"><span class="kick">Guia por queixa</span><h3 style="font-size:32px">${esc(g.titulo)}</h3><p>${esc(g.resumo)}</p><span class="meta">Revisado por ${esc(g.revisor)} · ${dataBR(g.data)}</span></div></a>`;
+  return `<a class="post guia" href="/blog/${g.slug}/" data-cat="${g.cats.join(' ')}">${cover({ ...g, guia: true, title: g.titulo, capaAlt: g.capaAlt })}<div class="tx"><span class="kick">Guia por queixa</span><h3 style="font-size:32px">${esc(g.titulo)}</h3><p>${esc(g.resumo)}</p><span class="meta">Revisado por ${esc(g.revisor)} · ${dataBR(g.data)}</span></div></a>`;
 }
 const FAQ = JSON.parse(readFileSync(path.join(ROOT, 'site/faq.json'), 'utf8'));
 function faqHtml(items, withCat = true) {

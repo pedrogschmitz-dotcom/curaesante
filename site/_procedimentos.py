@@ -11,7 +11,7 @@ PROCS = [
   "slug": "toxina-botulinica", "nome": "Toxina botulínica", "kick": "Rugas de expressão",
   "foto": "/s/img/consultorio.jpg", "assunto": "toxina botulínica",
   "title": "Toxina botulínica em São José/SC | Curae Santé",
-  "description": "Toxina botulínica para rugas de expressão na testa, entre as sobrancelhas e ao redor dos olhos. Como funciona, para quem é, cuidados e riscos. Kobrasol, São José/SC.",
+  "description": "Toxina botulínica para rugas de expressão da testa, entre as sobrancelhas e ao redor dos olhos. Como funciona, riscos e cuidados. São José/SC.",
   "lead": "Suaviza as rugas que aparecem com o movimento: testa, entre as sobrancelhas e pés de galinha. O objetivo é relaxar o músculo, não congelar a expressão.",
   "oque": "A toxina botulínica é um medicamento que reduz temporariamente a força de músculos específicos. Com menos contração, a pele por cima marca menos e as rugas de expressão suavizam. A dose e os pontos são definidos para cada rosto, conforme a força dos músculos e o que incomoda você.",
   "para": ["Rugas da testa", "Linhas entre as sobrancelhas", "Pés de galinha", "Algumas situações específicas, como o sorriso que mostra muita gengiva, avaliadas caso a caso"],
@@ -29,7 +29,7 @@ PROCS = [
  {
   "slug": "preenchimento-acido-hialuronico", "nome": "Preenchimento com ácido hialurônico", "kick": "Volume e sustentação",
   "foto": "/s/img/recepcao.jpg", "assunto": "preenchimento com ácido hialurônico",
-  "title": "Preenchimento com ácido hialurônico | Curae Santé",
+  "title": "Preenchimento com ácido hialurônico em São José/SC",
   "description": "Preenchimento com ácido hialurônico para sulcos, malar, lábios, olheiras e contorno. Indicação, como é feito, riscos e cuidados. Curae Santé, São José/SC.",
   "lead": "Repõe volume e sustentação onde o rosto perdeu estrutura. Bem indicado, suaviza sulcos e olheiras e define contornos sem mudar quem você é.",
   "oque": "O ácido hialurônico é uma substância que já existe na pele. Na forma de gel, ele é aplicado em pontos planejados para devolver volume e suporte. Diferentes géis têm diferentes firmezas, escolhidas conforme a região e o objetivo. É um procedimento médico: a região do rosto tem vasos importantes, e o conhecimento da anatomia é parte da segurança.",
@@ -49,7 +49,7 @@ PROCS = [
   "slug": "bioestimuladores-de-colageno", "nome": "Bioestimuladores de colágeno", "kick": "Firmeza da pele",
   "foto": "/s/img/pele.jpg", "assunto": "bioestimulador de colágeno",
   "title": "Bioestimuladores de colágeno em São José/SC | Curae Santé",
-  "description": "Bioestimuladores de colágeno para firmeza e flacidez do rosto e do corpo: como funcionam, sessões, tempo de resposta e riscos. Curae Santé, Kobrasol, São José/SC.",
+  "description": "Bioestimuladores de colágeno para firmeza da pele: como funcionam, número de sessões, tempo de resposta e riscos. Curae Santé, São José/SC.",
   "lead": "Estimulam a sua pele a produzir colágeno novo. O resultado é gradual, ao longo de semanas e meses, com melhora de firmeza e qualidade da pele.",
   "oque": "Bioestimuladores são substâncias aplicadas na pele que provocam uma resposta do próprio organismo: a produção de colágeno. Os mais usados são o ácido poli-L-lático, a hidroxiapatita de cálcio e a policaprolactona, cada um com características próprias. A escolha depende da região, da pele e do objetivo.",
   "para": ["Flacidez leve a moderada do rosto", "Perda de firmeza e qualidade da pele", "Pescoço, colo e mãos, em casos selecionados", "Algumas regiões do corpo, conforme avaliação"],
@@ -67,7 +67,7 @@ PROCS = [
   "slug": "retirada-de-cisto-lipoma-e-pintas", "nome": "Retirada de cistos, lipomas e pintas", "kick": "Pequenas cirurgias de pele",
   "foto": "/s/img/bandeja.jpg", "assunto": "retirada de cisto, lipoma ou pinta",
   "title": "Retirada de cisto, lipoma e pintas em São José/SC | Curae Santé",
-  "description": "Avaliação e retirada de cisto sebáceo (epidermoide), lipoma e pintas com anestesia local, em consultório, com envio para biópsia quando indicado. Kobrasol, São José/SC.",
+  "description": "Retirada de cisto sebáceo, lipoma e pintas com anestesia local, em consultório, com biópsia quando indicada. Kobrasol, São José/SC.",
   "lead": "Aquele caroço que cresce devagar, a pinta que mudou ou que incomoda: avaliação, retirada com anestesia local em consultório e análise da peça quando indicado.",
   "oque": "São pequenas cirurgias feitas no consultório, com anestesia local. O cisto epidermoide (popularmente chamado de cisto sebáceo) precisa ser retirado com a sua cápsula para diminuir a chance de voltar. O lipoma é um acúmulo benigno de gordura sob a pele. Pintas são retiradas quando há mudança, suspeita ou incômodo, e a peça pode ser enviada para análise (biópsia).",
   "para": ["Cisto epidermoide (cisto sebáceo)", "Lipoma", "Pintas e outras lesões de pele", "Correção do lóbulo da orelha rasgado ou alargado"],
@@ -90,7 +90,7 @@ PROCS += [
   "slug": "programa-de-emagrecimento", "nome": "Programa de emagrecimento", "kick": "Emagrecimento com acompanhamento",
   "foto": "/s/img/dra-julia.jpg", "assunto": "o programa de emagrecimento",
   "title": "Programa de emagrecimento em São José/SC | Curae Santé",
-  "description": "Emagrecimento com acompanhamento médico: investigação do que trava o peso, plano alimentar, movimento, sono e medicamentos quando indicados. Curae Santé, Kobrasol, São José/SC.",
+  "description": "Emagrecimento com acompanhamento médico: investigação do que trava o peso, alimentação, sono e medicamentos quando indicados. Kobrasol, São José/SC.",
   "lead": "Para quem já tentou de tudo e o peso não sai, ou sai e volta. Primeiro entender o porquê, depois montar um plano que cabe na sua rotina.",
   "oque": "É um acompanhamento médico contínuo, não uma dieta pronta. Começa por investigar o que dificulta o emagrecimento: resistência à insulina, alterações hormonais, sono, estresse, medicamentos em uso e histórico de tentativas. A partir disso, o plano combina alimentação, movimento, sono e, quando há indicação, medicamentos, sempre com retornos para ajustar o caminho e preservar massa muscular.",
   "para": ["Peso que não sai mesmo com esforço", "Efeito sanfona e reganho depois de dietas", "Resistência à insulina, pré-diabetes ou gordura no fígado", "Ganho de peso na perimenopausa e menopausa", "Quem quer emagrecer preservando músculo"],
@@ -113,7 +113,7 @@ PROCS += [
   "slug": "menopausa-e-insonia", "nome": "Menopausa e insônia", "kick": "Saúde da mulher",
   "foto": "/s/img/recepcao.jpg", "assunto": "menopausa e insônia",
   "title": "Menopausa e insônia em São José/SC | Curae Santé",
-  "description": "Perimenopausa, menopausa e insônia: calores, sono ruim, irritabilidade e ganho de peso investigados com calma. Reposição hormonal só quando indicada. Curae Santé, São José/SC.",
+  "description": "Perimenopausa, menopausa e insônia: calores, sono ruim e irritabilidade investigados com calma. Reposição hormonal só quando indicada. São José/SC.",
   "lead": "Calores, noites mal dormidas, irritabilidade, ganho de peso. Os sintomas da transição para a menopausa merecem ser levados a sério, e o sono costuma ser o primeiro a sofrer.",
   "oque": "A perimenopausa pode começar anos antes da última menstruação, com mudanças no ciclo, no sono, no humor e no peso. A insônia nessa fase tem muitas causas possíveis: calores noturnos, ansiedade, hábitos, medicamentos, apneia do sono e outras doenças. O atendimento investiga o conjunto, explica as opções com riscos e benefícios, e decide junto com você o que faz sentido, da mudança de rotina ao tratamento medicamentoso, incluindo a reposição hormonal quando indicada.",
   "para": ["Calores e suores noturnos", "Dificuldade para dormir ou acordar várias vezes à noite", "Irritabilidade, ansiedade ou queda de libido", "Ganho de peso e mudança no formato do corpo", "Ciclos irregulares depois dos 40"],
@@ -135,8 +135,8 @@ PROCS += [
   "medico": "julia", "tipo": "terapia",
   "slug": "investigacao-metabolica", "nome": "Investigação metabólica", "kick": "Metabolismo",
   "foto": "/s/img/consultorio.jpg", "assunto": "investigação metabólica",
-  "title": "Resistência à insulina e investigação metabólica | Curae Santé",
-  "description": "Investigação de resistência à insulina, pré-diabetes, colesterol, gordura no fígado e tireoide, com plano de acompanhamento. Curae Santé, Kobrasol, São José/SC.",
+  "title": "Resistência à insulina e metabolismo em São José/SC",
+  "description": "Investigação de resistência à insulina, colesterol, gordura no fígado e tireoide, com plano de acompanhamento. Curae Santé, São José/SC.",
   "lead": "Cansaço, ganho de peso, exames alterados que ninguém explicou direito. A investigação metabólica junta as peças e transforma números em um plano.",
   "oque": "É uma avaliação clínica focada em como o seu corpo usa e armazena energia. Inclui história, exame físico, medidas e exames laboratoriais direcionados, como glicose, insulina, hemoglobina glicada, colesterol, função do fígado e da tireoide. O objetivo é entender o risco e a causa, e não apenas tratar um exame isolado.",
   "para": ["Resistência à insulina e pré-diabetes", "Colesterol ou triglicerídeos alterados", "Gordura no fígado (esteatose)", "Alterações da tireoide", "Gordura abdominal e risco cardiovascular"],
@@ -154,6 +154,8 @@ PROCS += [
   "rel": ["resistencia-a-insulina-sintomas-exames", "esteatose-hepatica-reversao", "gordura-abdominal-e-risco-cardiovascular"]
  },
 ]
+
+ALT = {"/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
 
 def li(items): return ''.join(f'<li>{x}</li>' for x in items)
 
@@ -178,7 +180,7 @@ for p in PROCS:
     <p class="lead" data-in>{p['lead']}</p>
     <div class="ctas" data-in><a class="btn gold" href="{{{{WA:{WA.format(p['assunto'])}}}}}" target="_blank" rel="noopener">{{{{ICO_WA}}}} Agendar avaliação</a><a class="btn line" href="#como">Como é feito</a></div>
   </div>
-  <div class="ph tall" data-in><img src="{p['foto']}" alt="" width="1000" height="1250"></div>
+  <div class="ph tall" data-in><img src="{p['foto']}" alt="{ALT.get(p['foto'], '')}" width="1000" height="1250"></div>
 </div></section>
 
 <section class="pad">
