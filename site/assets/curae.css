@@ -366,3 +366,6 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 .pgrid.c4 .pcard img{object-position:center 30%}
 .pgrid.c4 .pcard p{max-width:40ch}
 @media(max-width:560px){.pgrid.c4{grid-template-columns:1fr}.pgrid.c4 .pcard{aspect-ratio:4/5}}
+.refs{margin:18px 0 10px;border-top:1px solid var(--linha);padding-top:14px}
+.refs summary{cursor:pointer;font-weight:700;font-size:15px;color:var(--escuro)}
+.refs ol{margin:12px 0 0 20px;font-size:14px;color:var(--sub);display:grid;gap:6px}

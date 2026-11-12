@@ -155,7 +155,106 @@ PROCS += [
  },
 ]
 
-ALT = {"/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
+PROCS += [
+ {
+  "slug": "unha-encravada", "nome": "Unha encravada", "kick": "Pequena cirurgia",
+  "foto": "/s/img/pes.jpg", "assunto": "unha encravada",
+  "title": "Unha encravada: tratamento e cirurgia em São José/SC",
+  "description": "Unha encravada que inflama ou volta sempre: quando tratar em casa e quando operar. Cirurgia com anestesia local no Kobrasol, São José/SC.",
+  "lead": "Dor no canto do dedão, vermelhidão, pus, e a unha que volta a encravar. Nos casos leves dá para cuidar em casa; quando inflama ou se repete, uma pequena cirurgia resolve na maioria das vezes.",
+  "oque": "A unha encravada acontece quando a borda da unha entra na pele do canto do dedo, quase sempre o dedão. É muito comum, principalmente em jovens. Os principais gatilhos são cortar a unha curta demais ou arredondar os cantos, usar calçado apertado, suar muito nos pés e pancadas. A cirurgia retira só a faixa lateral da unha que encrava e trata a raiz daquele canto para ela não voltar a crescer torta.",
+  "para": ["Unha que inflama, dói ou solta pus", "Unha que já encravou mais de uma vez", "Quando os cuidados em casa não resolveram", "Carne crescida no canto da unha (granuloma)"],
+  "nao_kick": "Antes de operar", "nao_titulo": "Quando cuidar em casa ou adiar",
+  "nao": ["Casos leves, sem pus: banhos mornos, algodão sob a borda e corte reto podem bastar", "Gravidez: muda a técnica usada na raiz da unha", "Diabetes descompensado ou má circulação nos pés: avaliação antes de qualquer procedimento", "Infecção espalhando pelo dedo ou pelo pé: primeiro tratar a infecção"],
+  "como": [["Avaliação", "Exame do dedo, da circulação e do histórico de recidivas."], ["Anestesia", "Anestesia do dedo com uma injeção na base; depois disso, o procedimento não dói."], ["Procedimento", "Retirada da faixa lateral da unha e tratamento da raiz daquele canto. Leva cerca de 30 minutos."], ["Cuidados e retorno", "Pé elevado no primeiro dia, curativo e banhos mornos por 1 a 3 semanas, calçado aberto no início."]],
+  "riscos_titulo": "Recuperação e riscos",
+  "riscos": "A dor costuma ser leve e controlada com analgésico comum. É normal sair uma secreção clara por 2 a 3 semanas. Mais raramente: infecção, cicatrização lenta ou a unha voltar a encravar. Antibiótico não é necessário de rotina, só quando há infecção espalhando.",
+  "aviso": "<strong>Procure a clínica</strong> se houver febre, vermelhidão subindo pelo pé, pus que aumenta ou dor que piora depois do segundo dia.",
+  "evid": ["Em revisões sistemáticas de ensaios clínicos, retirar a borda da unha tratando a raiz daquele canto reduz muito a chance de voltar a encravar, em comparação a só arrancar a borda. A qualidade desses estudos é baixa, mas a direção é consistente.", "As diretrizes não recomendam antibiótico de rotina antes ou depois do procedimento, apenas quando há celulite (infecção espalhando pela pele).", "Os cuidados em casa ajudam nos casos leves, mas têm evidência mais fraca e recidiva maior."],
+  "refs": ["Exley V et al. Surgical treatments for ingrown toenails, part I and II. J Foot Ankle Res, 2023 (revisão sistemática e metanálise).", "Vinay K et al. Phenol-based partial matricectomy in onychocryptosis. J Eur Acad Dermatol Venereol, 2022 (revisão sistemática).", "Eekhof JA et al. Interventions for ingrowing toenails. Cochrane Database Syst Rev, 2012.", "Mayeaux EJ, Carter C, Murphy TE. Ingrown toenail management. Am Fam Physician, 2019.", "Barreiros H et al. Ácido tricloroacético 80% na unha encravada. An Bras Dermatol, 2013."],
+  "faq": [
+   {"q": "Vou perder a unha?", "a": "Não. Retira-se só a faixa lateral que encrava. A unha fica um pouco mais estreita, e na maioria das vezes isso quase não aparece."},
+   {"q": "Posso trabalhar depois?", "a": "Em geral, sim, já no dia seguinte, com calçado aberto e evitando esforço e impacto nos primeiros dias."},
+   {"q": "Como evitar que volte?", "a": "Cortar a unha reta, sem arredondar os cantos e sem deixar curta demais, usar calçado com espaço para os dedos e cuidar do suor excessivo nos pés."},
+   {"q": "Criança pode fazer?", "a": "Pode, quando indicado. Em crianças, os cuidados em casa costumam ser tentados primeiro."}
+  ],
+  "rel": ["mancha-na-pele-quando-avaliar"]
+ },
+ {
+  "slug": "lipoma", "nome": "Lipoma", "kick": "Pequena cirurgia",
+  "foto": "/s/img/bandeja.jpg", "assunto": "lipoma",
+  "title": "Retirada de lipoma em São José/SC | Curae Santé",
+  "description": "Lipoma: quando observar, quando investigar e como é a retirada com anestesia local, em consultório. Kobrasol, São José/SC.",
+  "lead": "Aquele caroço macio, que mexe sob a pele e cresce devagar. Quase sempre é benigno. Às vezes basta observar; quando incomoda, cresce ou deixa dúvida, a retirada é simples.",
+  "oque": "O lipoma é um acúmulo benigno de gordura sob a pele, o tumor de partes moles mais comum. Costuma aparecer entre os 40 e os 60 anos, no pescoço, ombros, costas e braços. É macio, móvel e indolor. A retirada é feita por um corte pequeno, tirando o lipoma inteiro com a sua cápsula, para diminuir a chance de voltar.",
+  "para": ["Lipoma que incomoda pela aparência ou pelo atrito da roupa", "Lipoma que cresceu ou ficou dolorido", "Dúvida se é mesmo um lipoma", "Lipomas pequenos e superficiais, que podem ser retirados no consultório"],
+  "nao_kick": "Antes de operar", "nao_titulo": "Quando investigar primeiro",
+  "nao": ["Caroço maior que 5 cm", "Caroço profundo, duro, preso ou que não mexe", "Crescimento rápido ou recente", "Nesses casos, ultrassom ou ressonância vêm antes, e pode ser preciso centro cirúrgico ou outro profissional"],
+  "como": [["Avaliação", "Exame do caroço e, quando indicado, ultrassom."], ["Anestesia", "Anestesia local na região; o procedimento não dói."], ["Retirada", "Corte pequeno, retirada do lipoma inteiro com a cápsula e pontos. A peça pode ir para análise."], ["Cuidados e retorno", "Curativo, compressão leve nos primeiros dias e retirada dos pontos em 1 a 2 semanas."]],
+  "riscos_titulo": "Recuperação e riscos",
+  "riscos": "A dor costuma ser leve a moderada, controlada com analgésico comum. Podem surgir roxo, acúmulo de líquido ou sangue sob a pele (que às vezes precisa ser drenado), infecção e cicatriz. A volta do lipoma é pouco comum quando ele sai inteiro.",
+  "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> Procure a clínica se houver febre, inchaço que aumenta, sangramento ou dor que piora.",
+  "evid": ["A maioria dos lipomas pode ser apenas observada. A retirada é indicada quando incomoda, cresce ou deixa dúvida.", "O ultrassom é o primeiro exame recomendado para caroços de gordura superficiais, com boa precisão em revisão sistemática.", "Caroço grande (acima de 5 cm), profundo, endurecido ou que cresce rápido deve ser investigado com imagem antes de qualquer cirurgia. Retirar sem planejamento uma lesão que não é lipoma pode piorar o tratamento.", "A técnica de referência é a retirada completa com a cápsula. Técnicas alternativas (lipoaspiração, corte mínimo) têm bons resultados em séries de casos, mas ainda sem ensaios comparativos."],
+  "refs": ["Rahmani G, McCarthy P, Bergin D. Diagnostic accuracy of ultrasonography for soft tissue lipomas: systematic review. Acta Radiol Open, 2017.", "Salam GA. Lipoma excision. Am Fam Physician, 2002.", "Smolle MA, Leithner A, Grimer RJ. Evaluating the British sarcoma referral form. Ann R Coll Surg Engl, 2015.", "Gahanbani Ardakani AH et al. Soft tissue sarcoma: recognizing a rare disease. Cleve Clin J Med, 2022.", "Gronchi A et al. Soft tissue and visceral sarcomas: ESMO-EURACAN-GENTURIS clinical practice guidelines. Ann Oncol, 2021."],
+  "faq": [
+   {"q": "Lipoma vira câncer?", "a": "O lipoma comum é benigno e não vira câncer. O cuidado é outro: alguns tumores raros podem parecer lipoma. Por isso caroços grandes, profundos ou que crescem rápido são investigados antes."},
+   {"q": "Preciso tirar?", "a": "Não necessariamente. Se é pequeno, macio, estável e não incomoda, pode ser só acompanhado."},
+   {"q": "Fica cicatriz?", "a": "Fica uma cicatriz linear, do tamanho do corte, planejada para ficar o mais discreta possível, de preferência nas linhas naturais da pele."},
+   {"q": "Pode voltar?", "a": "É pouco comum quando o lipoma sai inteiro com a cápsula. Novos lipomas podem surgir em outros lugares."}
+  ],
+  "rel": ["mancha-na-pele-quando-avaliar"]
+ },
+ {
+  "slug": "verrugas", "nome": "Verrugas", "kick": "Pele",
+  "foto": "/s/img/maos.jpg", "assunto": "verrugas",
+  "title": "Verrugas: quando e como tratar em São José/SC | Curae Santé",
+  "description": "Verrugas nas mãos e nos pés: quando esperar, quando tratar e o que funciona segundo as diretrizes. Avaliação na Curae Santé, Kobrasol, São José/SC.",
+  "lead": "Verruga é uma infecção comum e benigna da pele. Muitas somem sozinhas, mas podem demorar meses ou anos. Quando incomodam, há tratamentos com boa base científica, e a escolha depende do local.",
+  "oque": "As verrugas são causadas pelo HPV de pele, tipos diferentes dos que afetam a região genital. Pegam por contato direto ou em pisos úmidos compartilhados e são muito comuns em crianças. As da planta do pé são as mais resistentes. O tratamento combina medicação na pele com sessões no consultório, como a crioterapia (congelamento), e às vezes curetagem ou cauterização.",
+  "para": ["Verruga que dói, sangra ou incomoda", "Verrugas que se espalham", "Verruga que não sumiu depois de meses de tratamento em casa", "Dúvida se a lesão é mesmo uma verruga"],
+  "nao_kick": "Para alinhar expectativas", "nao_titulo": "Quando observar ou avaliar melhor",
+  "nao": ["Verruga pequena que não incomoda: pode-se esperar, muitas somem sozinhas", "Verrugas genitais ou anais: outro tipo de cuidado, com encaminhamento", "Imunidade baixa (transplante, quimioterapia, HIV): avaliação mais ampla", "Lesão escura, que sangra ou cresce rápido: avaliar outros diagnósticos"],
+  "como": [["Avaliação", "Confirmar que é verruga e escolher o tratamento pelo local e pela idade."], ["Tratamento em casa", "Medicação na pele todos os dias, com lixamento leve, quando indicado."], ["Sessões no consultório", "Congelamento ou outra técnica, repetidos a cada 2 a 4 semanas, por até cerca de 3 meses."], ["Retorno", "Reavaliar a resposta e ajustar o plano."]],
+  "riscos_titulo": "Efeitos e riscos",
+  "riscos": "O congelamento arde na hora e por algumas horas, e pode formar bolha nos dias seguintes. Em pele mais escura, pode deixar mancha clara ou escura. Cicatriz é rara e ocorre mais com técnicas agressivas. Verrugas voltam com frequência, por isso o acompanhamento faz parte do tratamento.",
+  "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> Não estoure bolhas e não compartilhe toalhas, lixas ou alicates.",
+  "evid": ["Muitas verrugas somem sozinhas: cerca de metade das crianças melhora em 1 ano e dois terços em 2 anos. Em adultos, a resolução costuma ser mais lenta.", "O ácido salicílico na pele funciona melhor que placebo, com efeito moderado, segundo revisão Cochrane de 85 ensaios.", "Somar o congelamento ao ácido salicílico funciona melhor que o ácido sozinho. O congelamento costuma responder melhor nas mãos do que na planta do pé.", "Em um ensaio com 250 pacientes, a verruga comum teve mais cura com congelamento do que com ácido salicílico ou só observação, em 13 semanas."],
+  "refs": ["Kwok CS et al. Topical treatments for cutaneous warts. Cochrane Database Syst Rev, 2012.", "Sterling JC et al. British Association of Dermatologists' guidelines for the management of cutaneous warts. Br J Dermatol, 2014.", "Bruggink SC et al. Cryotherapy vs salicylic acid for cutaneous warts in primary care: randomized trial. CMAJ, 2010.", "Bruggink SC et al. Natural course of cutaneous warts among primary schoolchildren. Ann Fam Med, 2013."],
+  "faq": [
+   {"q": "Verruga pega?", "a": "Pega, por contato direto ou em pisos úmidos compartilhados. Usar chinelo em vestiários e não compartilhar toalhas e lixas ajuda."},
+   {"q": "Precisa tratar?", "a": "Não sempre. Se não incomoda, esperar é uma opção razoável, principalmente em crianças."},
+   {"q": "Quantas sessões são necessárias?", "a": "Varia. Em geral, sessões a cada 2 a 4 semanas por cerca de 3 meses. As da planta do pé costumam precisar de mais."},
+   {"q": "Fita adesiva funciona?", "a": "Nos estudos reunidos, a fita adesiva não mostrou vantagem clara sobre placebo."}
+  ],
+  "rel": ["mancha-na-pele-quando-avaliar"]
+ },
+ {
+  "slug": "queratose-seborreica", "nome": "Queratose seborreica", "kick": "Pele",
+  "foto": "/s/img/queratose.jpg", "assunto": "queratose seborreica",
+  "title": "Queratose seborreica: o que é e como remover | Curae Santé",
+  "description": "Queratose seborreica: as manchas elevadas que aparecem com a idade. Quando é só estética, quando avaliar e como é a remoção. São José/SC.",
+  "lead": "Manchas elevadas, acastanhadas, de aspecto \"colado\" na pele, que aparecem com a idade. São benignas e muito comuns. A remoção é uma escolha, e o exame antes é o que garante que é mesmo uma queratose.",
+  "oque": "A queratose seborreica é a lesão benigna mais comum da pele. Surge com a idade, no rosto, no tronco e no pescoço, e tem forte componente genético. Não vira câncer. O ponto de atenção é outro: algumas lesões malignas podem imitar uma queratose. Por isso o exame com dermatoscópio vem antes de qualquer remoção.",
+  "para": ["Lesão que incomoda pela aparência", "Lesão que enrosca na roupa, coça ou irrita", "Dúvida se a mancha é mesmo uma queratose", "Lesão que mudou de cor, tamanho ou formato"],
+  "nao_kick": "Antes de remover", "nao_titulo": "Quando investigar primeiro",
+  "nao": ["Lesão que sangra, ulcera ou cresce rápido", "Pontos escuros irregulares ou cores diferentes na mesma lesão", "Na dúvida, a lesão é retirada e enviada para análise, e não apenas destruída", "Surgimento repentino de muitas lesões ao mesmo tempo merece avaliação clínica"],
+  "como": [["Avaliação", "Exame com dermatoscópio para confirmar o diagnóstico."], ["Escolha da técnica", "Congelamento, curetagem, cauterização ou laser, conforme o tamanho, o local e o tom de pele."], ["Procedimento", "Rápido, com anestésico local quando necessário."], ["Cuidados", "Crosta que cai em 1 a 3 semanas, sem arrancar, e protetor solar na área."]],
+  "riscos_titulo": "Efeitos e riscos",
+  "riscos": "O principal efeito é a mudança de cor na área tratada, mancha clara ou escura, mais frequente em pele morena ou negra. Por isso a técnica é escolhida pelo tom de pele. Cicatriz é pouco comum. Novas queratoses podem surgir com o tempo.",
+  "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> Proteja a área do sol durante a cicatrização para reduzir manchas.",
+  "evid": ["A queratose seborreica é benigna e, em geral, não precisa de tratamento; a remoção é estética ou por irritação.", "A dermatoscopia ajuda a diferenciar, mas algumas lesões malignas podem ser muito parecidas. Na dúvida, a lesão deve ser retirada e analisada.", "Em um ensaio clínico pequeno, cauterização e lasers tiveram resultado e satisfação melhores que o congelamento. A evidência ainda é limitada.", "Em pele mais escura, a alteração de cor depois do procedimento é o efeito mais relatado."],
+  "refs": ["Barthelmann S et al. Seborrheic keratosis. J Dtsch Dermatol Ges, 2023 (revisão).", "Karadag AS, Parish LC. The status of the seborrheic keratosis. Clin Dermatol, 2018.", "Janowska A et al. Seborrheic keratosis-like melanoma: a diagnostic challenge. Melanoma Res, 2021.", "Zaresharifi S et al. Cryotherapy, electrodesiccation, CO2 and Er:YAG laser in seborrheic keratosis: randomized trial. Dermatol Ther, 2021.", "Jain S, Caire H, Haas CJ. Management of dermatosis papulosa nigra: systematic review. Int J Dermatol, 2025."],
+  "faq": [
+   {"q": "Queratose seborreica vira câncer?", "a": "Não. Ela é benigna. O cuidado é confirmar o diagnóstico, porque algumas lesões malignas podem se parecer com ela."},
+   {"q": "Preciso remover?", "a": "Não é obrigatório. A remoção é indicada quando incomoda ou quando há dúvida no diagnóstico."},
+   {"q": "Deixa mancha?", "a": "Pode deixar mancha clara ou escura, principalmente em pele morena ou negra. A técnica e os cuidados com o sol ajudam a reduzir esse risco."},
+   {"q": "Pode voltar?", "a": "A lesão tratada raramente volta quando sai inteira, mas novas queratoses aparecem com o tempo."}
+  ],
+  "rel": ["mancha-na-pele-quando-avaliar", "envelhecimento-pele-prevencao"]
+ },
+]
+
+ALT = {"/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/pes.jpg":"Pés descalços sobre piso de madeira","/s/img/maos.jpg":"Mãos de mulher em luz suave","/s/img/queratose.jpg":"Pele vista de perto","/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
 
 def li(items): return ''.join(f'<li>{x}</li>' for x in items)
 
@@ -170,6 +269,7 @@ for p in PROCS:
                     "procedureType": "https://schema.org/NoninvasiveProcedure" if p["slug"] != "retirada-de-cisto-lipoma-e-pintas" else "https://schema.org/SurgicalProcedure"} if p.get("tipo") != "terapia" else {"@type": "MedicalTherapy", "name": p["nome"], "url": "https://curaesante.com.br" + url, "description": p["description"]}]}
     steps = ''.join(f'<div class="s"><h3>{t}</h3><p>{d}</p></div>' for t, d in p['como'])
     irmaos = ''.join(f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/servicos/{o["slug"]}/">{o["nome"]}</a>' for o in PROCS if o.get('medico','pedro') == p.get('medico','pedro') and o is not p) + (f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/metabolismo-feminino/">Metabolismo feminino</a>' if p.get('medico')=='julia' else f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/servicos/pequenas-cirurgias/">Pequenas cirurgias</a><a class="btn lined" style="padding:12px 20px;font-size:14px" href="/blog/bigode-chines/">Guia: bigode chinês</a>')
+    refs_html = (f'<section class="pad-s"><div class="wrap narrow"><span class="kick" data-fade>Base científica</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">O que dizem as diretrizes</h2>' + ''.join(f'<p data-fade>{x}</p>' for x in p['evid']) + '<details class="refs"><summary>Referências</summary><ol>' + ''.join(f'<li>{r}</li>' for r in p['refs']) + '</ol></details><p class="note">Revisado por Dr. Pedro Schmitz (CRM/SC 38229). Conteúdo informativo; não substitui a consulta.</p></div></section>\n\n') if p.get('refs') else ''
     rel = ''.join(f'{{{{POST:{r}}}}}' for r in p['rel'])
     body = f'''<!--meta {json.dumps(meta, ensure_ascii=False)} -->
 <section class="phead"><div class="wrap g2" style="align-items:center">
@@ -212,7 +312,7 @@ for p in PROCS:
   </div>
 </section>
 
-<section class="pad cr">
+{refs_html}<section class="pad cr">
   <div class="wrap narrow faq">
     <span class="kick" data-fade>Perguntas frequentes</span>
     <h2 data-split>Dúvidas comuns</h2>
