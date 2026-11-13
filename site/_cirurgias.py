@@ -25,7 +25,7 @@ CIR = [
  ("acrocordon", "Acrocórdons", "os \"pólipos\" de pele",
   "Pequenas bolinhas de pele, moles e pediculadas, comuns no pescoço, axilas e virilha.",
   "Retirada rápida com anestesia local quando necessário, por corte ou cauterização.",
-  "Pequenas crostas que caem em poucos dias.", None),
+  "Pequenas crostas que caem em poucos dias.", "/servicos/acrocordons/"),
  ("verrugas", "Verrugas", "causadas por vírus",
   "Lesões ásperas causadas pelo HPV, comuns nas mãos e nos pés, que podem se espalhar.",
   "Tratamento conforme o tipo e o local: cauterização, curetagem ou outras técnicas, às vezes em mais de uma sessão.",

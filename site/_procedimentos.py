@@ -277,9 +277,34 @@ PROCS += [
   ],
   "rel": []
  },
+ {
+  "slug": "acrocordons", "nome": "Fibroma mole (acrocórdons)", "kick": "Pequena cirurgia",
+  "foto": "/s/img/pedro-wood-luz.jpg", "assunto": "retirada de fibroma mole (acrocórdons)",
+  "title": "Fibroma mole (acrocórdon): retirada no consultório | Curae Santé",
+  "description": "Fibroma mole, acrocórdon ou \"pólipo\" de pele no pescoço, axila ou virilha: o que é, quando retirar, como é feito e o que pode indicar. São José/SC.",
+  "lead": "Aquelas bolinhas de pele moles no pescoço, nas axilas ou na virilha. São benignas, mas podem enroscar na roupa, sangrar ou incomodar. A retirada é rápida, no consultório.",
+  "oque": "Fibroma mole, também chamado de acrocórdon ou \"pólipo de pele\", é uma pequena saliência de pele, mole e presa por um pedículo fino. Aparece em áreas de dobra, como pescoço, axilas, virilha e pálpebras. É benigno e muito comum, principalmente depois dos 40 anos e em quem tem sobrepeso. Não vira câncer.",
+  "para": ["Fibromas que enroscam em colar, roupa ou barbeador", "Lesões que sangram, inflamam ou incomodam", "Quem quer retirar por estética", "Muitos fibromas no pescoço e nas axilas, para investigar a causa junto"],
+  "nao_kick": "Antes de retirar", "nao_titulo": "Quando avaliar com mais cuidado",
+  "nao": ["Lesão que mudou de cor, cresceu rápido ou não parece um fibroma típico: examinar antes e, se preciso, mandar para análise", "Pinta escura com pedículo: não é retirada como fibroma sem avaliação", "Uso de remédio que afina o sangue: avisar antes", "Fibroma na pálpebra muito perto do olho: técnica e cuidado próprios"],
+  "como": [["Avaliação", "Exame da pele, com dermatoscópio quando há dúvida, para confirmar que é fibroma mole."], ["Preparo", "Limpeza da pele e, para lesões maiores, anestesia local. Os bem pequenos muitas vezes dispensam anestesia."], ["Retirada", "Corte na base com tesoura delicada, cauterização ou congelamento, conforme o tamanho e o local. Vários podem ser retirados no mesmo dia."], ["Cuidados", "Curativo simples. Fica uma pequena crosta que cai em poucos dias."]],
+  "riscos_titulo": "Recuperação e riscos",
+  "riscos": "O incômodo costuma ser mínimo. Pode haver pequeno sangramento na hora, crosta por alguns dias e, em pele morena ou negra, mancha clara ou escura que tende a melhorar com o tempo. Infecção é rara. Novos fibromas podem surgir em outros pontos, porque a tendência continua.",
+  "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> Não arranque nem amarre fibromas em casa: pode sangrar, infeccionar e deixar passar uma lesão que precisava de análise.",
+  "evid": ["Fibromas moles são benignos e muito comuns. A retirada é indicada por incômodo, sangramento, inflamação ou estética, e pode ser feita por corte, cauterização ou congelamento.", "Um estudo brasileiro com 201 pessoas encontrou forte associação entre ter mais de 5 fibromas no pescoço ou axilas e resistência à insulina, independente de outros fatores.", "Outros estudos associam fibromas múltiplos a sobrepeso, colesterol e triglicerídeos altos e acantose nigricans (pele escurecida e aveludada nas dobras).", "Por isso, quem tem muitos fibromas pode se beneficiar de checar glicose, colesterol e peso, além de retirar as lesões."],
+  "refs": ["Tamega AA et al. Associação entre acrocórdons e resistência à insulina. An Bras Dermatol, 2010.", "Platsidaki E et al. The association of various metabolic parameters with multiple skin tags. J Clin Aesthet Dermatol, 2018.", "Pandey A, Sonthalia S. Skin Tag (Acrochordon). StatPearls, 2025.", "Joseph Chandran B et al. A clinico-morphological study of acrochordons and the association with diabetes mellitus. Cureus, 2025."],
+  "faq": [
+   {"q": "Fibroma mole vira câncer?", "a": "Não. É uma lesão benigna. A avaliação serve para confirmar que é mesmo um fibroma e não outra lesão parecida."},
+   {"q": "Dói para tirar?", "a": "Os pequenos costumam ser retirados sem dor relevante. Nos maiores, usamos anestesia local."},
+   {"q": "Volta depois de tirar?", "a": "O que foi retirado não volta no mesmo ponto, mas novos podem surgir em outros lugares, porque a tendência da pele continua."},
+   {"q": "Posso tirar vários no mesmo dia?", "a": "Sim, na maioria dos casos. A quantidade é combinada na avaliação."},
+   {"q": "Ter muitos fibromas tem a ver com diabetes?", "a": "Estudos mostram associação com resistência à insulina e colesterol alto. Vale conversar sobre exames de glicose e colesterol na consulta."}
+  ],
+  "rel": []
+ },
 ]
 
-ALT = {"/s/img/pedro-toxina.jpg": "Dr. Pedro Schmitz planejando os pontos de aplicação em uma ficha de toxina botulínica", "/s/img/pedro-espelho.jpg": "Dr. Pedro Schmitz explicando um ponto do rosto diante do espelho", "/s/img/pedro-cirurgia.jpg": "Dr. Pedro Schmitz com instrumentos de pequena cirurgia no consultório", "/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/pes.jpg":"Pés descalços sobre piso de madeira","/s/img/maos.jpg":"Mãos de mulher em luz suave","/s/img/queratose.jpg":"Pele vista de perto","/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
+ALT = {"/s/img/pedro-wood-luz.jpg": "Dr. Pedro Schmitz segurando a lâmpada de exame da pele", "/s/img/pedro-toxina.jpg": "Dr. Pedro Schmitz planejando os pontos de aplicação em uma ficha de toxina botulínica", "/s/img/pedro-espelho.jpg": "Dr. Pedro Schmitz explicando um ponto do rosto diante do espelho", "/s/img/pedro-cirurgia.jpg": "Dr. Pedro Schmitz com instrumentos de pequena cirurgia no consultório", "/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/pes.jpg":"Pés descalços sobre piso de madeira","/s/img/maos.jpg":"Mãos de mulher em luz suave","/s/img/queratose.jpg":"Pele vista de perto","/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
 
 def li(items): return ''.join(f'<li>{x}</li>' for x in items)
 
