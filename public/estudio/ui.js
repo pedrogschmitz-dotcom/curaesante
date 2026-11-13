@@ -328,7 +328,7 @@ function openCrop(k) {
   cropR = { t: r.y / o.height * 100, b: (o.height - r.y - r.h) / o.height * 100, l: r.x / o.width * 100, r: (o.width - r.x - r.w) / o.width * 100 };
   ['t', 'b', 'l', 'r'].forEach(s2 => { $('#cr' + s2).value = cropR[s2].toFixed(1); });
   const c = $('#cvCrop'); const sc = Math.min((innerWidth - 40) / o.width, innerHeight * .5 / o.height); c.width = Math.round(o.width * sc); c.height = Math.round(o.height * sc);
-  drawCrop(); $('#cropModal').classList.add('on');
+  drawCrop(); $('#cropModal').classList.add('on'); if (typeof cropHist !== 'undefined') cropHist.length = 0;
 }
 function drawCrop() {
   const c = $('#cvCrop'), x = c.getContext('2d'), o = S.orig[cropK]; x.drawImage(o, 0, 0, c.width, c.height);
@@ -1166,6 +1166,32 @@ $$('nav.tabs button').forEach(b => b.onclick = () => go(b.dataset.v));
 ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => e.preventDefault(), { passive: false }));
 document.addEventListener('touchmove', e => { if (e.touches.length > 1 && !e.target.closest('canvas')) e.preventDefault(); }, { passive: false });
 let lastTouch = 0; document.addEventListener('touchend', e => { const n = Date.now(); if (n - lastTouch < 300 && !e.target.closest('input,textarea,select,button,label,.tile,.chip')) e.preventDefault(); lastTouch = n; }, { passive: false });
+
+
+/* ---------------- desfazer, toque duplo, prévia em tela cheia, Drive ao guardar ---------------- */
+const adjHist = [], cropHist = [];
+const pushAdj = () => { const l = adjHist[adjHist.length - 1], a = { ...S.adj }; if (!l || JSON.stringify(l) !== JSON.stringify(a)) { adjHist.push(a); if (adjHist.length > 40) adjHist.shift(); } };
+function setAdj(a) { S.adj = { ...a }; [['x', S.adj.dx], ['y', S.adj.dy], ['s', Math.round(S.adj.ds * 100)], ['r', S.adj.dr]].forEach(([k, v]) => { $('#ad' + k).value = v; $('#ad' + k + 'v').textContent = v; }); buildFrames('fd'); }
+$('#adjUndo').onclick = () => { if (!adjHist.length) return toast('Nada para desfazer.'); setAdj(adjHist.pop()); };
+['adx', 'ady', 'ads', 'adr'].forEach(id => $('#' + id).addEventListener('pointerdown', pushAdj));
+$('#cvAlign').addEventListener('pointerdown', pushAdj, true);
+$('#reAuto').addEventListener('click', pushAdj, true);
+let tapT = 0, tapX = 0, tapY = 0;
+$('#cvAlign').addEventListener('pointerup', e => {
+  const n = Date.now(); if (n - tapT < 320 && Math.hypot(e.clientX - tapX, e.clientY - tapY) < 30) { tapT = 0; pushAdj();
+    if (S.mode === 'cir') setAdj({ dx: 0, dy: 0, ds: 0, dr: 0 }); else $('#reAuto').click(); toast('Encaixe refeito.'); return; }
+  tapT = n; tapX = e.clientX; tapY = e.clientY;
+});
+const pushCrop = () => { if (cropR) { cropHist.push({ ...cropR }); if (cropHist.length > 40) cropHist.shift(); } };
+$('#cvCrop').addEventListener('pointerdown', pushCrop, true);
+['crt', 'crb', 'crl', 'crr'].forEach(id => $('#' + id).addEventListener('pointerdown', pushCrop));
+['cropAuto', 'cropNone'].forEach(id => $('#' + id).addEventListener('click', pushCrop, true));
+$('#cropUndo').onclick = () => { if (!cropHist.length) return toast('Nada para desfazer.'); cropR = cropHist.pop(); ['t', 'b', 'l', 'r'].forEach(s2 => $('#cr' + s2).value = (+cropR[s2]).toFixed(1)); drawCrop(); };
+$('#cvPrev').addEventListener('click', () => { const on = !$('#cvPrev').classList.contains('fs'); $('#cvPrev').classList.toggle('fs', on); document.body.classList.toggle('prevfs', on); if (on) toast('Toque de novo para sair.'); });
+let autoDrive = true; try { autoDrive = localStorage.getItem('estudio-autodrive') !== '0'; } catch (e) { }
+$('#swAutoDrive').classList.toggle('on', autoDrive);
+$('#swAutoDrive').onclick = e => { autoDrive = !autoDrive; e.currentTarget.classList.toggle('on', autoDrive); try { localStorage.setItem('estudio-autodrive', autoDrive ? '1' : '0'); } catch (_) { } };
+$('#saveCase').addEventListener('click', () => { if (autoDrive && S.img.fa && S.img.fd) $('#toDrive').onclick(); });
 
 /* ---------------- etapas (modo → procedimento → fotos → …) ---------------- */
 const WZ = { i: 0, procOk: false };
