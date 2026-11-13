@@ -7,6 +7,7 @@
 <title>Estúdio Curae · Antes e Depois</title>
 <link rel="manifest" href="/estudio/manifest.webmanifest">
 <meta name="theme-color" content="#1E1610">
+<script>(function(){var t='auto';try{t=localStorage.getItem('estudio-tema')||'auto'}catch(e){}var d=t==='dia'||(t==='auto'&&matchMedia('(prefers-color-scheme: light)').matches);if(d)document.documentElement.classList.add('light');})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -17,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@500;600;700;800&family=Red+Hat+Display:wght@400;500;600;700&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
 <style>
-:root{--off:#F9F6F2;--creme:#EAE4DA;--rosa:#BC9FA5;--dour:#BCA78E;--marrom:#5D4424;--esc:#1E1610;--esc2:#2A1F14;--card:#33261A;--line:rgba(234,228,218,.14);--sub:#B9A995}
+:root{--off:#F9F6F2;--creme:#EAE4DA;--rosa:#BC9FA5;--dour:#BCA78E;--marrom:#5D4424;--esc:#1E1610;--field:#1A130D;--navbg:rgba(20,15,10,.94);--modalbg:rgba(10,7,5,.92);--swoff:#4a3a2a;--btntx:#2A1F14;--esc2:#2A1F14;--card:#33261A;--line:rgba(234,228,218,.14);--sub:#B9A995}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--esc);color:var(--off);font-family:"Red Hat Display",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 body{padding:env(safe-area-inset-top) 0 calc(84px + env(safe-area-inset-bottom))}
@@ -36,6 +37,7 @@ header.top h1 em{color:var(--dour)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .slot{position:relative;aspect-ratio:3/4;border:1.5px dashed rgba(188,167,142,.45);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;padding:10px;cursor:pointer;background:rgba(0,0,0,.15)}
 .slot.ok{border-style:solid;border-color:var(--dour)}
+.slot.ok .lab,.slot.ok .big,.slot.ok .req{display:none}
 .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .slot .lab{position:relative;z-index:2;font-size:11px;letter-spacing:.18em;font-weight:700;color:var(--sub)}
 .slot .big{position:relative;z-index:2;font-family:"Cormorant Garamond",serif;font-size:30px;color:var(--dour);font-weight:600}
@@ -52,14 +54,14 @@ header.top h1 em{color:var(--dour)}
 .btn:disabled{opacity:.4}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 label.f{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--sub);font-weight:700;margin:14px 0 6px}
-input[type=text],select,textarea{width:100%;background:#1A130D;border:1px solid var(--line);border-radius:12px;color:var(--off);font:500 16px "Red Hat Display",sans-serif;padding:12px}
+input[type=text],select,textarea{width:100%;background:var(--field);border:1px solid var(--line);border-radius:12px;color:var(--off);font:500 16px "Red Hat Display",sans-serif;padding:12px}
 textarea{min-height:72px;resize:vertical;line-height:1.4}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{padding:9px 13px;border-radius:99px;border:1px solid var(--line);font-size:14px;font-weight:600;color:var(--creme);cursor:pointer;user-select:none}
 .chip.on{background:var(--dour);color:#2A1F14;border-color:var(--dour)}
 .tog{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
 .tog b{font-weight:600}
-.sw{width:50px;height:30px;border-radius:99px;background:#4a3a2a;position:relative;flex:none;cursor:pointer;transition:.2s}
+.sw{width:50px;height:30px;border-radius:99px;background:var(--swoff);position:relative;flex:none;cursor:pointer;transition:.2s}
 .sw:after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
 .sw.on{background:var(--dour)}.sw.on:after{left:23px}
 .mlrow{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
@@ -67,7 +69,7 @@ textarea{min-height:72px;resize:vertical;line-height:1.4}
 .step-ml button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--off);font-size:18px}
 .step-ml input{width:64px;text-align:center;padding:7px}
 .styles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.sty{border-radius:14px;overflow:hidden;border:1.5px solid transparent;background:#1A130D;cursor:pointer;position:relative}
+.sty{border-radius:14px;overflow:hidden;border:1.5px solid transparent;background:var(--field);cursor:pointer;position:relative}
 .sty canvas{width:100%;display:block;aspect-ratio:9/16;background:#0d0a07}
 .sty .nm{font-size:13px;font-weight:700;padding:7px 8px 2px}
 .sty .ds{font-size:11px;color:var(--sub);padding:0 8px 8px;line-height:1.3}
@@ -80,40 +82,40 @@ input[type=range]{width:100%;accent-color:var(--dour)}
 .check i{width:24px;height:24px;border-radius:7px;border:1.5px solid var(--dour);flex:none;display:grid;place-items:center;font-style:normal;font-weight:800;color:#2A1F14}
 .check.on i{background:var(--dour)}
 .check.on i:after{content:"✓"}
-.copybox{background:#1A130D;border:1px solid var(--line);border-radius:14px;padding:14px;white-space:pre-wrap;font-size:14.5px;line-height:1.5;margin:8px 0}
-.bar{height:8px;border-radius:99px;background:#1A130D;overflow:hidden}
+.copybox{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:14px;white-space:pre-wrap;font-size:14.5px;line-height:1.5;margin:8px 0}
+.bar{height:8px;border-radius:99px;background:var(--field);overflow:hidden}
 .bar>div{height:100%;width:0;background:var(--dour);transition:width .2s}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(20,15,10,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:50}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--navbg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:50}
 nav.tabs button{background:none;border:0;color:var(--sub);font:700 11px "Red Hat Display";letter-spacing:.08em;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 10px;text-transform:uppercase}
 nav.tabs button.on{color:var(--dour)}
 nav.tabs svg{width:22px;height:22px}
 .view{display:none}.view.on{display:block}
 body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}body:not(.com) .com{display:none!important}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tile{border:1.5px solid var(--line);border-radius:16px;padding:16px 14px;background:#1A130D;cursor:pointer;text-align:left}
+.tile{border:1.5px solid var(--line);border-radius:16px;padding:16px 14px;background:var(--field);cursor:pointer;text-align:left}
 .tile b{display:block;font-size:17px;margin-bottom:4px}.tile span{font-size:13px;color:var(--sub);line-height:1.35}
 .tile.on{border-color:var(--dour);background:rgba(188,167,142,.14)}
 body.cir.nocir #s1,body.cir.nocir #s2,body.cir.nocir #s3,body.cir.nocir #s4,body.cir.nocir #s5{opacity:.35;pointer-events:none}
-.clip{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;background:#1A130D;border:1px solid var(--line);border-radius:14px;padding:8px;margin-top:8px}
+.clip{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;background:var(--field);border:1px solid var(--line);border-radius:14px;padding:8px;margin-top:8px}
 .clip video{width:72px;height:96px;object-fit:cover;border-radius:10px;background:#000}
-.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--off);color:#2A1F14;padding:12px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
+.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--off);color:var(--esc);padding:12px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
 .modal.on ~ .toast{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
-.modal{position:fixed;inset:0;background:rgba(10,7,5,.92);z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:12px}
+.modal{position:fixed;inset:0;background:var(--modalbg);z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:12px}
 .modal.on{display:flex}
 .modal canvas{max-width:100%;max-height:68vh;border-radius:12px;touch-action:none}
 .week{display:grid;gap:10px}
-.day{display:flex;gap:12px;align-items:center;background:#1A130D;border:1px solid var(--line);border-radius:16px;padding:12px}
+.day{display:flex;gap:12px;align-items:center;background:var(--field);border:1px solid var(--line);border-radius:16px;padding:12px}
 .day .d{width:54px;text-align:center;font-family:"Cormorant Garamond";font-size:24px;color:var(--dour);flex:none}
 .day .t{flex:1}.day .t b{display:block;font-size:15px}.day .t span{font-size:13px;color:var(--sub)}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.gal .it{border-radius:12px;overflow:hidden;background:#1A130D;cursor:pointer;position:relative}
+.gal .it{border-radius:12px;overflow:hidden;background:var(--field);cursor:pointer;position:relative}
 .gal img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
 .gal .it .del{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:50%;border:0;background:rgba(20,15,10,.85);color:#fff;font-size:14px}
 .gal .it.arm .del{background:#B3261E}
 .gal .it span{position:absolute;left:6px;bottom:6px;right:6px;font-size:11px;background:rgba(20,15,10,.8);padding:4px 6px;border-radius:8px}
 .note{font-size:13px;color:var(--sub);background:rgba(188,167,142,.08);border:1px solid rgba(188,167,142,.25);border-radius:12px;padding:10px 12px;line-height:1.45}
-.seg{display:flex;background:#1A130D;border-radius:99px;padding:4px;gap:4px}
+.seg{display:flex;background:var(--field);border-radius:99px;padding:4px;gap:4px}
 .seg button{flex:1;border:0;background:transparent;color:var(--sub);font:700 13px "Red Hat Display";padding:10px;border-radius:99px}
 .seg button.on{background:var(--dour);color:#2A1F14}
 .adj{display:grid;grid-template-columns:70px 1fr 44px;gap:8px;align-items:center;font-size:13px;color:var(--sub)}
@@ -141,6 +143,16 @@ body{position:fixed;inset:0;display:flex;flex-direction:column;padding:0!importa
 #scroller{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-top:env(safe-area-inset-top)}
 nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;flex:none;padding-bottom:calc(6px + env(safe-area-inset-bottom) * .8)}
 .wz-nav{bottom:0!important}
+
+/* modo dia */
+:root.light{--off:#2A1F14;--esc:#F7F2EA;--esc2:#EFE6D8;--card:#FFFFFF;--field:#F1E9DD;--line:rgba(42,31,20,.14);--sub:#7A6650;--dour:#A88B66;--navbg:rgba(250,246,240,.95);--modalbg:rgba(247,242,234,.97);--swoff:#D9CDBC;--btntx:#FFFFFF}
+:root.light .btn:not(.ghost),:root.light .seg button.on{color:var(--btntx)}
+:root.light .step,:root.light .tile,:root.light .day,:root.light .copybox{box-shadow:0 1px 0 rgba(42,31,20,.04)}
+:root.light .player canvas,:root.light #cvPrev{box-shadow:0 14px 34px rgba(42,31,20,.18)}
+:root.light .note{background:rgba(168,139,102,.10)}
+:root.light .slot .st,:root.light .slot .req,:root.light .gal .it span{color:#F9F6F2}
+:root.light .slot .req{color:#EAE4DA}
+:root.light .wz-nav{background:linear-gradient(transparent,var(--esc) 30%)}
 </style>
 </head>
 <body>
@@ -319,6 +331,9 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
 <!-- ================= AJUSTES ================= -->
 <section class="view" id="v-ajustes">
   <div class="step"><div class="hd"><span class="num">⚙</span><div><h2>Ajustes</h2><div class="hint">Ficam salvos neste aparelho.</div></div></div>
+    <label class="f" style="margin-top:0">Aparência</label>
+    <div class="seg" id="temaSeg"><button data-v="auto">Automático</button><button data-v="dia">Dia</button><button data-v="noite">Noite</button></div>
+    <div class="hint" style="margin-top:6px">Automático segue o modo claro ou escuro do iPhone.</div>
     <label class="f">Profissional 1</label><div class="grid2"><input type="text" id="p1n"><input type="text" id="p1c"></div>
     <label class="f">Profissional 2</label><div class="grid2"><input type="text" id="p2n" placeholder="Nome"><input type="text" id="p2c" placeholder="CRM/UF 00000"></div>
     <label class="f">Marca no topo do vídeo</label><input type="text" id="marca">
@@ -329,7 +344,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="hint">Desativando, o app volta a pedir a senha e oferece o Face ID de novo.</div>
     <label class="f">Google Drive</label>
     <div class="tog"><div><b>Enviar ao Drive ao guardar o caso</b><div class="hint">Ao tocar em “Guardar caso”, abre o envio para o Drive na hora.</div></div><div class="sw on" id="swAutoDrive"></div></div>
-    <div class="hint" style="margin-top:14px">Versão do app: 8</div>
+    <div class="hint" style="margin-top:14px">Versão do app: 9</div>
     <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
   </div>
 </section>
@@ -384,7 +399,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
 try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) { }
 (function () { const ios = /iPhone|iPad|iPod/.test(navigator.userAgent); const app = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
   if (!ios || app || localStorage.getItem('estudio-dica') === '1') return;
-  const d = document.createElement('div'); d.className = 'note'; d.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:60;background:#2A1F14;box-shadow:0 10px 30px rgba(0,0,0,.5)';
+  const d = document.createElement('div'); d.className = 'note'; d.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:60;background:var(--esc2);box-shadow:0 10px 30px rgba(0,0,0,.5)';
   d.innerHTML = '<b>Instale o app:</b> toque em Compartilhar (quadrado com seta) e depois em <b>Adicionar à Tela de Início</b>. <button class="btn small ghost" style="margin-left:6px">Ok</button>';
   d.querySelector('button').onclick = () => { localStorage.setItem('estudio-dica', '1'); d.remove(); }; document.body.append(d); })();
 if ('serviceWorker' in navigator) {

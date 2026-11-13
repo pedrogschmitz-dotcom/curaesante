@@ -59,7 +59,7 @@ const saveCfg = () => { try { localStorage.setItem('estudio-cfg', JSON.stringify
   const temBio = async () => { try { return !!(window.PublicKeyCredential && await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()); } catch (e) { return false; } };
   const sha = async t => { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); };
   let g = null;
-  const tela = html => { if (!g) { g = document.createElement('div'); g.className = 'modal on'; g.style.zIndex = 200; g.style.background = '#1E1610'; document.body.append(g); } g.innerHTML = '<div class="kick">Curae Santé · estúdio</div>' + html; };
+  const tela = html => { if (!g) { g = document.createElement('div'); g.className = 'modal on'; g.style.zIndex = 200; g.style.background = 'var(--esc)'; document.body.append(g); } g.innerHTML = '<div class="kick">Curae Santé · estúdio</div>' + html; };
   const sair = () => { if (g) { g.remove(); g = null; } };
   const msg = t => { const m = document.getElementById('gMsg'); if (m) m.textContent = t; };
 
@@ -1108,6 +1108,18 @@ async function loadCase(c) {
 });
 
 $('#fidOff').onclick = () => { if (window.__estudioDesativarFace) { window.__estudioDesativarFace(); toast('Face ID desativado. Na próxima abertura, entre com a senha.'); } else toast('O Face ID só funciona no site.'); };
+
+
+/* ---------------- aparência: dia, noite ou automático ---------------- */
+(() => {
+  let tema = 'auto'; try { tema = localStorage.getItem('estudio-tema') || 'auto'; } catch (e) { }
+  const mq = matchMedia('(prefers-color-scheme: light)');
+  const aplicar = () => { const dia = tema === 'dia' || (tema === 'auto' && mq.matches); document.documentElement.classList.toggle('light', dia);
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = dia ? '#F7F2EA' : '#1E1610';
+    $$('#temaSeg button').forEach(b => b.classList.toggle('on', b.dataset.v === tema)); };
+  $$('#temaSeg button').forEach(b => b.onclick = () => { tema = b.dataset.v; try { localStorage.setItem('estudio-tema', tema); } catch (e) { } aplicar(); });
+  mq.addEventListener ? mq.addEventListener('change', aplicar) : mq.addListener(aplicar); aplicar();
+})();
 
 /* ---------------- navegação ---------------- */
 function go(v) { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v)); $$('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); $('#scroller').scrollTo(0, 0); if (v === 'galeria') renderGal(); }
