@@ -733,7 +733,7 @@ function renderStyles() {
 function mkStyle(k) { const st = M.ST[k];
   const d = document.createElement('div'); d.className = 'sty' + (k === S.style ? ' on' : ''); d.dataset.k = k;
   d.innerHTML = `<canvas width="216" height="384"></canvas><div class="nm">${st.nome}</div><div class="ds">${st.desc}</div>`;
-  d.onclick = () => { S.style = k; $$('.sty').forEach(x => x.classList.toggle('on', x === d)); stopAudio(); playing = false; tNow = 0; refresh(); document.getElementById('s5').scrollIntoView({ behavior: 'smooth', block: 'start' }); if (Dcur) setTimeout(() => { if (!playing) $('#play').click(); }, 450); };
+  d.onclick = () => { S.style = k; $$('.sty').forEach(x => x.classList.toggle('on', x === d)); stopAudio(); playing = false; tNow = 0; refresh(); if (Dcur) setTimeout(() => { if (!playing) $('#play').click(); }, 450); };
   styleBox.append(d);
 }
 renderStyles();
@@ -1046,7 +1046,7 @@ WEEK.forEach(([d, style, ang, tit, desc]) => {
     S.style = style; S.angle = ang;
     $$('.sty').forEach(x => x.classList.toggle('on', x.dataset.k === style));
     $$('#angle button').forEach(x => x.classList.toggle('on', x.dataset.v === ang));
-    go('criar'); refresh(); setTimeout(() => $('#s5').scrollIntoView({ behavior: 'smooth' }), 60);
+    go('criar'); refresh(); setTimeout(() => { WZ.procOk = true; wzGo(wzPages().length - 1); }, 60);
     if (!Dcur) toast('Suba as fotos do caso primeiro.');
   };
   $('#week').append(el);
@@ -1110,7 +1110,7 @@ async function loadCase(c) {
 $('#fidOff').onclick = () => { if (window.__estudioDesativarFace) { window.__estudioDesativarFace(); toast('Face ID desativado. Na próxima abertura, entre com a senha.'); } else toast('O Face ID só funciona no site.'); };
 
 /* ---------------- navegação ---------------- */
-function go(v) { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v)); $$('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); scrollTo(0, 0); if (v === 'galeria') renderGal(); }
+function go(v) { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v)); $$('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); $('#scroller').scrollTo(0, 0); if (v === 'galeria') renderGal(); }
 $$('nav.tabs button').forEach(b => b.onclick = () => go(b.dataset.v));
 
 
@@ -1223,7 +1223,7 @@ function wzGo(i) {
   $('#wzBack').disabled = i === 0; $('#wzNext').style.display = i === P.length - 1 ? 'none' : '';
   $('#wzNext').textContent = i === P.length - 2 ? 'Ver prévia →' : 'Avançar →';
   if (P[i] === 's2') drawAlign(); refresh(true);
-  scrollTo({ top: 0, behavior: 'smooth' });
+  $('#scroller').scrollTo({ top: 0, behavior: 'smooth' });
 }
 $('#wzBack').onclick = () => wzGo(WZ.i - 1);
 $('#wzNext').onclick = () => wzGo(WZ.i + 1);
