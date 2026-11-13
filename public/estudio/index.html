@@ -135,6 +135,8 @@ input,textarea,select,.copybox{-webkit-user-select:text;user-select:text;font-si
 #cvAlign,#cvReg{width:min(78vw,340px,calc((100dvh - 330px) * 9 / 16))}
 #cvPrev.fs{position:fixed;inset:0;margin:auto;width:auto!important;height:100dvh;max-width:100vw;object-fit:contain;z-index:95;border-radius:0;background:#000}
 body.prevfs::after{content:"";position:fixed;inset:0;background:#000;z-index:94}
+nav.tabs{bottom:var(--gapfix,0px)}
+.wz-nav{bottom:calc(70px + env(safe-area-inset-bottom) + var(--gapfix,0px))}
 </style>
 </head>
 <body>
@@ -372,6 +374,17 @@ body.prevfs::after{content:"";position:fixed;inset:0;background:#000;z-index:94}
 <script src="canon.js"></script>
 <script src="app.js"></script>
 <script src="ui.js"></script>
+<script>
+/* iPhone (app instalado): corrige o vão embaixo da barra quando a altura útil vem menor que a tela */
+(function () {
+  const app = navigator.standalone || matchMedia('(display-mode: standalone)').matches; if (!app) return;
+  const probe = document.createElement('div'); probe.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:100vh;visibility:hidden;pointer-events:none';
+  const fix = () => { document.body.append(probe); const full = probe.getBoundingClientRect().height; probe.remove();
+    const gap = Math.round(full - innerHeight); document.documentElement.style.setProperty('--gapfix', gap > 8 && gap < 120 ? (-gap) + 'px' : '0px'); };
+  addEventListener('load', fix); addEventListener('resize', fix); addEventListener('orientationchange', () => setTimeout(fix, 300)); setTimeout(fix, 600);
+})();
+</script>
+
 <script>
 try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) { }
 (function () { const ios = /iPhone|iPad|iPod/.test(navigator.userAgent); const app = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
