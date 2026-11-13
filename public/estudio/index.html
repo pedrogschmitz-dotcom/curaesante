@@ -144,9 +144,6 @@ body{position:fixed;inset:0;display:flex;flex-direction:column;padding:0!importa
 #scroller{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-top:env(safe-area-inset-top)}
 nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;flex:none;padding-bottom:calc(6px + env(safe-area-inset-bottom) * .8)}
 .wz-nav{bottom:0!important}
-/* app instalado: no iPhone a altura útil pode vir menor que a tela; 100vh pega a tela inteira */
-@media (display-mode: standalone){body{bottom:auto;height:100vh}}
-:root.app body{bottom:auto;height:100vh}
 
 /* modo dia */
 :root.light{--off:#2A1F14;--esc:#F7F2EA;--esc2:#EFE6D8;--card:#FFFFFF;--field:#F1E9DD;--line:rgba(42,31,20,.14);--sub:#7A6650;--dour:#A88B66;--navbg:rgba(250,246,240,.95);--modalbg:rgba(247,242,234,.97);--swoff:#D9CDBC;--btntx:#FFFFFF}
@@ -348,7 +345,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="hint">Desativando, o app volta a pedir a senha e oferece o Face ID de novo.</div>
     <label class="f">Google Drive</label>
     <div class="tog"><div><b>Enviar ao Drive ao guardar o caso</b><div class="hint">Ao tocar em “Guardar caso”, abre o envio para o Drive na hora.</div></div><div class="sw on" id="swAutoDrive"></div></div>
-    <div class="hint" style="margin-top:14px">Versão do app: 10</div>
+    <div class="hint" style="margin-top:14px">Versão do app: 11</div>
     <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
   </div>
 </section>
