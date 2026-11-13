@@ -386,6 +386,10 @@ try { navigator.storage && navigator.storage.persist && navigator.storage.persis
   const d = document.createElement('div'); d.className = 'note'; d.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:60;background:#2A1F14;box-shadow:0 10px 30px rgba(0,0,0,.5)';
   d.innerHTML = '<b>Instale o app:</b> toque em Compartilhar (quadrado com seta) e depois em <b>Adicionar à Tela de Início</b>. <button class="btn small ghost" style="margin-left:6px">Ok</button>';
   d.querySelector('button').onclick = () => { localStorage.setItem('estudio-dica', '1'); d.remove(); }; document.body.append(d); })();
-if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/estudio/sw.js', { scope: '/estudio/' }).catch(() => {}));</script>
+if ('serviceWorker' in navigator) {
+  let recarregou = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (recarregou) return; recarregou = true; location.reload(); });
+  addEventListener('load', () => navigator.serviceWorker.register('/estudio/sw.js', { scope: '/estudio/', updateViaCache: 'none' }).then(r => { r.update(); document.addEventListener('visibilitychange', () => { if (!document.hidden) r.update(); }); }).catch(() => {}));
+}</script>
 </body>
 </html>
