@@ -1,0 +1,16 @@
+{
+  "name": "Estúdio Curae · Antes e Depois",
+  "short_name": "Estúdio Curae",
+  "start_url": "/estudio/",
+  "scope": "/estudio/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1E1610",
+  "theme_color": "#1E1610",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/estudio/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/estudio/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/estudio/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
