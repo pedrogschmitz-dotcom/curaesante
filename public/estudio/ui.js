@@ -416,7 +416,7 @@ function drawReg() {
   c.addEventListener('pointerdown', e => {
     const D = buildD(); if (!D) return; const p = pos(e); let best = null, bd = 1e9;
     M.regList(D).forEach(r => r.ptsA.forEach(q => { const d = Math.hypot(q.x - p.x, q.y - p.y); if (d < bd) { bd = d; best = { id: r.reg.id, side: q.lado }; } }));
-    if (best && bd < 160) { dragId = best.id; dragStart = { p, o: Object.assign({ dx: 0, dy: 0 }, S.roff[dragId]), side: best.side }; c.setPointerCapture(e.pointerId); drawReg(); }
+    if (best && bd < 160) { dragId = best.id; dragStart = { p, o: Object.assign({ dx: 0, dy: 0 }, S.roff[dragId]), side: best.side }; try { c.setPointerCapture(e.pointerId); } catch (_) { } drawReg(); }
   });
   c.addEventListener('pointermove', e => {
     if (!dragId) return; const p = pos(e); const dx = p.x - dragStart.p.x, dy = p.y - dragStart.p.y;
@@ -1113,6 +1113,59 @@ $('#fidOff').onclick = () => { if (window.__estudioDesativarFace) { window.__est
 function go(v) { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v)); $$('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); scrollTo(0, 0); if (v === 'galeria') renderGal(); }
 $$('nav.tabs button').forEach(b => b.onclick = () => go(b.dataset.v));
 
+
+
+/* ---------------- gestos: encaixe (1 dedo move, 2 dedos zoom e giro) ---------------- */
+(() => {
+  const c = $('#cvAlign'); const pts = new Map(); let base = null, raf = 0;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const sync = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => {
+    S.adj.dx = clamp(Math.round(S.adj.dx), -400, 400); S.adj.dy = clamp(Math.round(S.adj.dy), -400, 400); S.adj.ds = clamp(S.adj.ds, -.5, .8); S.adj.dr = clamp(Math.round(S.adj.dr * 2) / 2, -25, 25);
+    [['x', S.adj.dx], ['y', S.adj.dy], ['s', Math.round(S.adj.ds * 100)], ['r', S.adj.dr]].forEach(([k, v]) => { $('#ad' + k).value = v; $('#ad' + k + 'v').textContent = v; });
+    buildFrames('fd'); }); };
+  const st = () => { const a = [...pts.values()]; const r = c.getBoundingClientRect(); const k = W / r.width;
+    if (a.length === 1) return { k, x: a[0].x, y: a[0].y, n: 1 };
+    const [p, q] = a; return { k, x: (p.x + q.x) / 2, y: (p.y + q.y) / 2, d: Math.hypot(q.x - p.x, q.y - p.y), ang: Math.atan2(q.y - p.y, q.x - p.x), n: 2 }; };
+  const begin = () => { base = { g: st(), adj: { ...S.adj } }; };
+  c.addEventListener('pointerdown', e => { if (!S.frames.fd) return; try { c.setPointerCapture(e.pointerId); } catch (_) { } pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); begin(); });
+  c.addEventListener('pointermove', e => { if (!pts.has(e.pointerId) || !base) return; pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); const g2 = st(), g1 = base.g; if (g2.n !== g1.n) return begin();
+    S.adj.dx = base.adj.dx + (g2.x - g1.x) * g1.k; S.adj.dy = base.adj.dy + (g2.y - g1.y) * g1.k;
+    if (g2.n === 2) { S.adj.ds = base.adj.ds + Math.log2(g2.d / g1.d); S.adj.dr = base.adj.dr + (g2.ang - g1.ang) * 180 / Math.PI; }
+    sync(); });
+  const end = e => { pts.delete(e.pointerId); if (pts.size) begin(); else base = null; };
+  c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
+})();
+
+/* ---------------- gestos: recorte (mover, pinçar, puxar borda) ---------------- */
+(() => {
+  const c = $('#cvCrop'); const pts = new Map(); let base = null, edge = null;
+  const MIN = 20; // % mínimo do quadro
+  const rect = () => ({ l: cropR.l, t: cropR.t, w: 100 - cropR.l - cropR.r, h: 100 - cropR.t - cropR.b });
+  const setRect = R => { R.w = Math.max(MIN, Math.min(100, R.w)); R.h = Math.max(MIN, Math.min(100, R.h)); R.l = Math.max(0, Math.min(100 - R.w, R.l)); R.t = Math.max(0, Math.min(100 - R.h, R.t));
+    cropR = { l: R.l, t: R.t, r: 100 - R.l - R.w, b: 100 - R.t - R.h }; ['t', 'b', 'l', 'r'].forEach(s2 => $('#cr' + s2).value = cropR[s2].toFixed(1)); drawCrop(); };
+  const pct = (x, y) => { const r = c.getBoundingClientRect(); return { x: (x - r.left) / r.width * 100, y: (y - r.top) / r.height * 100, kx: 100 / r.width, ky: 100 / r.height }; };
+  const st = () => { const a = [...pts.values()]; if (a.length === 1) return { ...pct(a[0].x, a[0].y), n: 1 }; const [p, q] = a; const m = pct((p.x + q.x) / 2, (p.y + q.y) / 2); return { ...m, d: Math.hypot(q.x - p.x, q.y - p.y), n: 2 }; };
+  const begin = () => { base = { g: st(), R: rect() }; };
+  c.addEventListener('pointerdown', e => { try { c.setPointerCapture(e.pointerId); } catch (_) { } pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); begin();
+    edge = null; if (pts.size === 1) { const P = base.g, R = base.R, tol = 6; // % de tolerância
+      if (Math.abs(P.x - R.l) < tol) edge = 'l'; else if (Math.abs(P.x - (R.l + R.w)) < tol) edge = 'r'; else if (Math.abs(P.y - R.t) < tol) edge = 't'; else if (Math.abs(P.y - (R.t + R.h)) < tol) edge = 'b'; } });
+  c.addEventListener('pointermove', e => { if (!pts.has(e.pointerId) || !base) return; pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); const g2 = st(), g1 = base.g; if (g2.n !== g1.n) return begin();
+    const R = { ...base.R }, dx = g2.x - g1.x, dy = g2.y - g1.y;
+    if (g2.n === 2) { const f = g1.d / g2.d; const cx = R.l + R.w / 2 - dx, cy = R.t + R.h / 2 - dy; R.w *= f; R.h *= f; R.l = cx - R.w / 2; R.t = cy - R.h / 2; }
+    else if (edge === 'l') { const nl = Math.min(R.l + R.w - MIN, Math.max(0, R.l + dx)); R.w += R.l - nl; R.l = nl; }
+    else if (edge === 'r') R.w = Math.min(100 - R.l, R.w + dx);
+    else if (edge === 't') { const nt = Math.min(R.t + R.h - MIN, Math.max(0, R.t + dy)); R.h += R.t - nt; R.t = nt; }
+    else if (edge === 'b') R.h = Math.min(100 - R.t, R.h + dy);
+    else { R.l += dx; R.t += dy; }
+    setRect(R); });
+  const end = e => { pts.delete(e.pointerId); if (pts.size) begin(); else { base = null; edge = null; } };
+  c.addEventListener('pointerup', end); c.addEventListener('pointercancel', end);
+})();
+
+/* ---------------- sem zoom da página (iOS) ---------------- */
+['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => e.preventDefault(), { passive: false }));
+document.addEventListener('touchmove', e => { if (e.touches.length > 1 && !e.target.closest('canvas')) e.preventDefault(); }, { passive: false });
+let lastTouch = 0; document.addEventListener('touchend', e => { const n = Date.now(); if (n - lastTouch < 300 && !e.target.closest('input,textarea,select,button,label,.tile,.chip')) e.preventDefault(); lastTouch = n; }, { passive: false });
 
 /* ---------------- etapas (modo → procedimento → fotos → …) ---------------- */
 const WZ = { i: 0, procOk: false };

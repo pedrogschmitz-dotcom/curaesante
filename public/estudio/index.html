@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Estúdio Curae · Antes e Depois</title>
 <link rel="manifest" href="/estudio/manifest.webmanifest">
 <meta name="theme-color" content="#1E1610">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Estúdio Curae">
 <link rel="apple-touch-icon" href="/estudio/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/estudio/icon-192.png">
@@ -125,6 +125,14 @@ body.cir .notcir{display:none!important}
 .wz-modes{grid-template-columns:1fr}
 .wz-nav{position:sticky;bottom:calc(70px + env(safe-area-inset-bottom));display:flex;gap:10px;padding:12px 0;background:linear-gradient(transparent,var(--bg,#14100b) 30%);z-index:40}
 .wz-nav .btn{flex:1}.wz-nav .btn[disabled]{opacity:.35;pointer-events:none}
+html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%;overscroll-behavior:none}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select,.copybox{-webkit-user-select:text;user-select:text;font-size:16px!important}
+#cvAlign,#cvReg,#cvCrop,#cvEye{touch-action:none}
+.slot .req{top:auto;bottom:46px;left:50%;transform:translateX(-50%);white-space:nowrap}
+.slot .camb{right:50px}
+.gest{font-size:12px;color:var(--sub);text-align:center;margin-top:-4px}
+#cvAlign,#cvReg{width:min(78vw,340px,calc((100dvh - 330px) * 9 / 16))}
 </style>
 </head>
 <body>
@@ -181,16 +189,16 @@ body.cir .notcir{display:none!important}
 
   <div class="step" id="s2">
     <div class="hd"><span class="num">2</span><div><h2>Encaixe pelo rosto</h2><div class="hint">Alinho os dois rostos pelos olhos. Confira deslizando a mistura.</div></div></div>
-    <div class="player"><canvas id="cvAlign" width="540" height="960"></canvas></div>
+    <div class="player"><canvas id="cvAlign" width="540" height="960"></canvas><div class="gest">Um dedo arrasta o depois · dois dedos dão zoom e giram</div></div>
     <label class="f">Mistura antes ↔ depois</label>
     <input type="range" id="mix" min="0" max="100" value="50">
     <div class="row" style="margin:10px 0"><button class="btn small ghost" id="blink">Piscar</button><button class="btn small ghost est" id="reAuto">Reencaixar automático</button><button class="btn small ghost est" id="manEyes">Marcar olhos à mão</button></div>
     <div class="note" style="margin-bottom:8px">Ajuste fino da foto do <b>depois</b> (só posição, nunca cor ou retoque):</div>
     <div class="note" id="lightWarn" style="display:none;margin-bottom:8px;border-color:#E8A05A;color:#FFD39A"></div>
-    <div class="adj"><span>Horizontal</span><input type="range" id="adx" min="-150" max="150" value="0"><span id="adxv">0</span></div>
-    <div class="adj"><span>Vertical</span><input type="range" id="ady" min="-150" max="150" value="0"><span id="adyv">0</span></div>
-    <div class="adj"><span>Zoom</span><input type="range" id="ads" min="-30" max="30" value="0"><span id="adsv">0</span></div>
-    <div class="adj"><span>Girar</span><input type="range" id="adr" min="-15" max="15" value="0" step=".5"><span id="adrv">0</span></div>
+    <div class="adj"><span>Horizontal</span><input type="range" id="adx" min="-400" max="400" value="0"><span id="adxv">0</span></div>
+    <div class="adj"><span>Vertical</span><input type="range" id="ady" min="-400" max="400" value="0"><span id="adyv">0</span></div>
+    <div class="adj"><span>Zoom</span><input type="range" id="ads" min="-50" max="80" value="0"><span id="adsv">0</span></div>
+    <div class="adj"><span>Girar</span><input type="range" id="adr" min="-25" max="25" value="0" step=".5"><span id="adrv">0</span></div>
   </div>
 
   <div class="step" id="s3">
@@ -344,11 +352,12 @@ body.cir .notcir{display:none!important}
   <div class="serif" style="font-size:26px">Recortar a foto</div>
   <div class="hint" style="text-align:center;max-width:420px">Use para tirar marca d’água, data ou logo de outro app. Só corta: não apaga nem retoca nada.</div>
   <canvas id="cvCrop"></canvas>
+  <div class="gest">Arraste para mover o quadro · pince com dois dedos para aproximar · puxe uma borda para cortar só aquele lado</div>
   <div style="width:min(92vw,420px)">
-    <div class="adj"><span>Em cima</span><input type="range" id="crt" min="0" max="40" step=".5"><span></span></div>
-    <div class="adj"><span>Embaixo</span><input type="range" id="crb" min="0" max="40" step=".5"><span></span></div>
-    <div class="adj"><span>Esquerda</span><input type="range" id="crl" min="0" max="40" step=".5"><span></span></div>
-    <div class="adj"><span>Direita</span><input type="range" id="crr" min="0" max="40" step=".5"><span></span></div>
+    <div class="adj"><span>Em cima</span><input type="range" id="crt" min="0" max="80" step=".5"><span></span></div>
+    <div class="adj"><span>Embaixo</span><input type="range" id="crb" min="0" max="80" step=".5"><span></span></div>
+    <div class="adj"><span>Esquerda</span><input type="range" id="crl" min="0" max="80" step=".5"><span></span></div>
+    <div class="adj"><span>Direita</span><input type="range" id="crr" min="0" max="80" step=".5"><span></span></div>
   </div>
   <div class="row" style="justify-content:center"><button class="btn ghost small" id="cropAuto">Detectar marca</button><button class="btn ghost small" id="cropNone">Sem corte</button><button class="btn ghost small" id="cropCancel">Cancelar</button><button class="btn small" id="cropOk">Aplicar</button></div>
 </div>
@@ -363,7 +372,7 @@ body.cir .notcir{display:none!important}
 try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) { }
 (function () { const ios = /iPhone|iPad|iPod/.test(navigator.userAgent); const app = navigator.standalone || matchMedia('(display-mode: standalone)').matches;
   if (!ios || app || localStorage.getItem('estudio-dica') === '1') return;
-  const d = document.createElement('div'); d.className = 'note'; d.style.cssText = 'position:fixed;left:12px;right:12px;bottom:calc(86px + env(safe-area-inset-bottom));z-index:60;background:#2A1F14';
+  const d = document.createElement('div'); d.className = 'note'; d.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:60;background:#2A1F14;box-shadow:0 10px 30px rgba(0,0,0,.5)';
   d.innerHTML = '<b>Instale o app:</b> toque em Compartilhar (quadrado com seta) e depois em <b>Adicionar à Tela de Início</b>. <button class="btn small ghost" style="margin-left:6px">Ok</button>';
   d.querySelector('button').onclick = () => { localStorage.setItem('estudio-dica', '1'); d.remove(); }; document.body.append(d); })();
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/estudio/sw.js', { scope: '/estudio/' }).catch(() => {}));</script>
