@@ -11,7 +11,7 @@
 <script>(function(){var t='auto';try{t=localStorage.getItem('estudio-tema')||'auto'}catch(e){}var d=t==='dia'||(t==='auto'&&matchMedia('(prefers-color-scheme: light)').matches);if(d)document.documentElement.classList.add('light');})();</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Estúdio Curae">
 <link rel="apple-touch-icon" href="/estudio/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/estudio/icon-192.png">
@@ -37,7 +37,9 @@ header.top h1 em{color:var(--dour)}
 .num{width:30px;height:30px;border-radius:50%;border:1px solid var(--dour);color:var(--dour);display:grid;place-items:center;font-size:14px;font-weight:700;flex:none}
 .step h2{font-size:28px;line-height:1}
 .hint{color:var(--sub);font-size:14px;line-height:1.45}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.evo .slot .big{font-size:24px;line-height:1.05}.evoX input{width:100%;min-width:0}
+.evoHd{margin:16px 0 8px;font-weight:700;font-size:14px;color:var(--dour)}.evoHd span{font-weight:500;color:var(--sub,#9a8f80);font-size:12px;margin-left:6px}.evoX{display:flex;flex-direction:column;justify-content:center}
 .pecaHd{grid-column:1/-1;margin-top:8px;font-weight:700;font-size:14px;color:var(--dour)}.pecaHd span{font-weight:500;color:var(--sub,#9a8f80);font-size:12px;margin-left:6px}
 .slot{position:relative;aspect-ratio:3/4;border:1.5px dashed rgba(188,167,142,.45);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;padding:10px;cursor:pointer;background:rgba(0,0,0,.15)}
 .slot.ok{border-style:solid;border-color:var(--dour)}
@@ -158,7 +160,10 @@ html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 body{position:fixed;inset:0;display:flex;flex-direction:column;padding:0!important}
 #scroller{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-top:env(safe-area-inset-top)}
 nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;flex:none;padding-bottom:calc(6px + env(safe-area-inset-bottom) * .8)}
-.wz-nav{bottom:0!important}
+.wz-nav{bottom:0!important;margin-top:auto}
+#scroller>.wrap{min-height:100%;display:flex;flex-direction:column}
+#v-criar.on{display:flex;flex-direction:column;flex:1 0 auto}
+body{height:var(--apph,100%)}
 
 /* modo dia */
 :root.light{--off:#2A1F14;--esc:#F7F2EA;--esc2:#EFE6D8;--card:#FFFFFF;--field:#F1E9DD;--line:rgba(42,31,20,.14);--sub:#7A6650;--dour:#A88B66;--navbg:rgba(250,246,240,.95);--modalbg:rgba(247,242,234,.97);--swoff:#D9CDBC;--btntx:#FFFFFF}
@@ -170,8 +175,14 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
 :root.light .slot .req{color:#EAE4DA}
 :root.light .wz-nav{background:linear-gradient(transparent,var(--esc) 30%)}
 </style>
+<script>
+/* iPhone instalado: a tela às vezes fica mais curta que o aparelho e sobra faixa embaixo da barra */
+(function(){function fit(){var st=navigator.standalone||matchMedia('(display-mode: standalone)').matches;var p=document.getElementById('sap');var top=p?p.offsetHeight:0;var sh=Math.max(screen.height,screen.width)>innerHeight&&innerWidth<innerHeight?screen.height:innerHeight;var gap=sh-innerHeight;document.documentElement.style.setProperty('--apph',(st&&top>0&&gap>0&&gap<100?sh:innerHeight)+'px');}
+addEventListener('resize',fit);addEventListener('orientationchange',function(){setTimeout(fit,300)});addEventListener('pageshow',fit);document.addEventListener('DOMContentLoaded',fit);})();
+</script>
 </head>
 <body>
+<div id="sap" style="position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top);visibility:hidden;pointer-events:none"></div>
 <div id="scroller"><div class="wrap">
 <header class="top">
   <div><div class="kick">Curae Santé · estúdio</div><h1>Antes <em>&amp;</em> Depois</h1></div>
@@ -209,6 +220,15 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
       <label class="slot cir peca" data-k="k1"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 1</span><input type="file" accept="image/*"></label>
       <label class="slot cir peca" data-k="k2"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 2</span><input type="file" accept="image/*"></label>
       <label class="slot cir peca" data-k="k3"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 3</span><input type="file" accept="image/*"></label>
+    </div>
+    <div class="evoHd">Evolução <span>opcional · fotos entre o antes e o depois</span></div>
+    <div class="grid2 evo">
+      <label class="slot" data-k="v0"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">Pós imediato</span><input type="file" accept="image/*"></label>
+      <label class="slot" data-k="v7"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">7 dias</span><input type="file" accept="image/*"></label>
+      <label class="slot" data-k="v14"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">14 dias</span><input type="file" accept="image/*"></label>
+      <label class="slot" data-k="v30"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">30 dias</span><input type="file" accept="image/*"></label>
+      <label class="slot" data-k="vx"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">Outro tempo</span><input type="file" accept="image/*"></label>
+      <div class="evoX"><label class="f" style="margin-top:0">Tempo da foto “outro”</label><input id="evx" placeholder="ex.: 60 dias"></div>
     </div>
     <div class="tog est" style="margin-top:12px"><div><b>Fundo preto automático</b><div class="hint">Recorta a pessoa e pinta o fundo de preto. Não mexe na pele nem no rosto.</div></div><div class="sw on" id="swBg"></div></div>
     <div class="com" style="margin-top:14px">
@@ -367,7 +387,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="hint">Desativando, o app volta a pedir a senha e oferece o Face ID de novo.</div>
     <label class="f">Google Drive</label>
     <div class="tog"><div><b>Enviar ao Drive ao guardar o caso</b><div class="hint">Ao tocar em “Guardar caso”, abre o envio para o Drive na hora.</div></div><div class="sw on" id="swAutoDrive"></div></div>
-    <div class="hint" style="margin-top:14px">Versão do app: 15</div>
+    <div class="hint" style="margin-top:14px">Versão do app: 16</div>
     <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
   </div>
 </section>

@@ -253,7 +253,7 @@ function slotStatus(k) {
   const slot = $(`.slot[data-k="${k}"]`); let st = slot.querySelector('.st'); if (!st) { st = document.createElement('div'); st.className = 'st'; slot.append(st); }
   let b = slot.querySelector('.cropb'); if (!b) { b = document.createElement('button'); b.className = 'cropb'; b.textContent = '✂'; b.title = 'Recortar'; slot.append(b); b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openCrop(k); }); }
   base0(k);
-  const base = S.mode === 'cir' ? '✓ foto pronta' : S.lm[k] ? '✓ rosto encontrado' : S.eyes[k] ? '✓ olhos marcados à mão' : (k[0] === 'f' ? 'rosto não achado: toque em “marcar olhos”' : 'perfil: encaixe pela foto');
+  const base = S.mode === 'cir' ? '✓ foto pronta' : S.lm[k] ? '✓ rosto encontrado' : S.eyes[k] ? '✓ olhos marcados à mão' : (k[0] === 'f' ? 'rosto não achado: toque em “marcar olhos”' : k[0] === 'v' ? 'rosto não achado: sem tarja, confira' : 'perfil: encaixe pela foto');
   st.textContent = base + (S.crop[k] && S.crop[k].auto ? ' · ✂ marca cortada' : S.crop[k] ? ' · ✂ recortada' : '') + (S.bgDone[k] ? ' · fundo preto' : '');
   st.classList.toggle('warn', !S.lm[k] && !S.eyes[k]);
 }
@@ -274,7 +274,7 @@ async function setPhoto(k, src, opts = {}) {
   await applyCrop(k, r);
 }
 /* ---------------- câmera com fantasma ---------------- */
-const REF = { fa: null, fd: 'fa', pa: null, pd: 'pa', k1: null, k2: null, k3: null };
+const REF = { fa: null, fd: 'fa', pa: null, pd: 'pa', k1: null, k2: null, k3: null, v0: 'fa', v7: 'fa', v14: 'fa', v30: 'fa', vx: 'fa' };
 let camK = null, camStream = null, camRaf = 0, camRefLuma = null, camFacing = 'environment';
 function regionLuma(src, sw, sh) { const c = M.mk(32, 32), x = c.getContext('2d'); x.drawImage(src, sw * .3, sh * .3, sw * .4, sh * .4, 0, 0, 32, 32); const d = x.getImageData(0, 0, 32, 32).data; let s = 0; for (let i = 0; i < d.length; i += 4) s += .2126 * d[i] + .7152 * d[i + 1] + .0722 * d[i + 2]; return s / 1024; }
 async function openCam(k) {
@@ -283,7 +283,7 @@ async function openCam(k) {
   try { camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: camFacing, width: { ideal: 2160 }, height: { ideal: 3840 } }, audio: false }); }
   catch (e) { toast('Sem acesso à câmera. Libere a câmera para o site nas permissões do Safari.', 4500); return; }
   const v = $('#camVid'); v.srcObject = camStream; await v.play().catch(() => { });
-  $('#camTitle').textContent = (S.mode === 'cir' ? { fa: 'Antes', fd: 'Depois', pa: 'Antes · outro ângulo', pd: 'Depois · outro ângulo', k1: 'Peça · ângulo 1', k2: 'Peça · ângulo 2', k3: 'Peça · ângulo 3' } : { fa: 'Frente · antes', fd: 'Frente · depois', pa: 'Perfil · antes', pd: 'Perfil · depois' })[k];
+  $('#camTitle').textContent = (S.mode === 'cir' ? { fa: 'Antes', fd: 'Depois', pa: 'Antes · outro ângulo', pd: 'Depois · outro ângulo', k1: 'Peça · ângulo 1', k2: 'Peça · ângulo 2', k3: 'Peça · ângulo 3', v0: 'Pós imediato', v7: '7 dias', v14: '14 dias', v30: '30 dias', vx: 'Outro tempo' } : { v0: 'Pós imediato', v7: '7 dias', v14: '14 dias', v30: '30 dias', vx: 'Outro tempo', fa: 'Frente · antes', fd: 'Frente · depois', pa: 'Perfil · antes', pd: 'Perfil · depois' })[k];
   $('#camGhostRow').style.display = ref ? 'grid' : 'none';
   camRefLuma = ref ? regionLuma(ref, ref.width, ref.height) : null;
   $('#camModal').classList.add('on'); camLoop();
@@ -369,7 +369,7 @@ let bfH = 0;
 function buildFrames(only) {
   cancelAnimationFrame(bfH);
   bfH = requestAnimationFrame(() => {
-    const keys = only ? [only] : ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3'];
+    const keys = only ? [only] : ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3', 'v0', 'v7', 'v14', 'v30', 'vx'];
     for (const k of keys) {
       if (!S.img[k]) { S.frames[k] = null; continue; }
       const adj = k === 'fd' ? S.adj : null;
@@ -551,9 +551,9 @@ function renderMl() {
 }
 const orderedRegs = () => S.mode === 'com' ? S.regOrder.filter(id => S.regs.has(id)).concat(M.REGIOES.map(r => r.id).filter(id => S.regs.has(id) && !S.regOrder.includes(id))) : M.REGIOES.map(r => r.id).filter(id => S.regs.has(id));
 $('#swMl').onclick = e => { S.showMl = !S.showMl; e.currentTarget.classList.toggle('on', S.showMl); renderMl(); refresh(); };
-['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2', 'tecnica', 'cuidados', 'local', 'tam'].forEach(id => $('#' + id).addEventListener('input', () => refresh()));
+['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2', 'tecnica', 'cuidados', 'local', 'tam', 'evx'].forEach(id => $('#' + id).addEventListener('input', () => refresh()));
 ['hook1', 'hook2'].forEach(id => $('#' + id).addEventListener('input', e => e.target.dataset.touched = 1));
-$('#swBg').onclick = async e => { S.bgBlack = !S.bgBlack; e.currentTarget.classList.toggle('on', S.bgBlack); for (const k of ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3']) if (S.orig[k]) await applyCrop(k, S.crop[k]); };
+$('#swBg').onclick = async e => { S.bgBlack = !S.bgBlack; e.currentTarget.classList.toggle('on', S.bgBlack); for (const k of ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3', 'v0', 'v7', 'v14', 'v30', 'vx']) if (S.orig[k]) await applyCrop(k, S.crop[k]); };
 $('#swSens').onclick = e => { S.sens = !S.sens; e.currentTarget.classList.toggle('on', S.sens); refresh(); };
 function profs() { const l = [{ nome: CFG.p1n, crm: CFG.p1c }]; if (CFG.p2n) l.push({ nome: CFG.p2n, crm: CFG.p2c }); return l; }
 function renderProfs() { const s = $('#profSel'); s.innerHTML = ''; profs().forEach((p, i) => s.add(new Option(p.nome + ' · ' + p.crm, i))); s.value = Math.min(S.prof, profs().length - 1); }
@@ -765,6 +765,7 @@ function buildD() {
   const sess = $('#sess').value, iv = $('#interval').value;
   const D = {
     T, A: fa.cv, B: fd.cv, LA: fa.L, LB: fd.L, PA: S.frames.pa && S.frames.pa.cv, PB: S.frames.pd && S.frames.pd.cv, PC: ['k1', 'k2', 'k3'].map(k => S.frames[k] && S.frames[k].cv).filter(Boolean),
+    EV: [['v0', 'Pós imediato'], ['v7', '7 dias'], ['v14', '14 dias'], ['v30', '30 dias'], ['vx', ($('#evx').value.trim() || 'Outro tempo')]].filter(([k]) => S.frames[k]).map(([k, lab]) => ({ cv: S.frames[k].cv, lab })), evDepois: S.mode === 'cir' ? 'Depois' : $('#interval').value,
     regs, ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl && tot > 0,
     indic: $('#indic').value.trim(), compl: $('#compl').value.trim(),
     indicCurta: $('#indic').value.split(/[.,:]/)[0],
@@ -791,7 +792,7 @@ function buildD() {
       dias: $('#interval').value, evol: 'Foto da cicatriz: ' + $('#interval').value + '.', procCurto: c.curto, procTxt: c.nome + '.', hook1: $('#hook1').value || c.curto, hook2: $('#hook2').value || 'Antes e depois' });
   }
   D.dest = S.dest; if (S.dest !== 'reel' && S.mode !== 'com') D.k = .82;
-  if (S.voice && S.mode !== 'com') { const need = S.voice.duration + M.VOICE_AT + .5 - M.infoD(D) - M.endD(D) - ((S.withProfile && D.PA && D.PB) ? M.PROF_DUR : 0); D.k = Math.max(.85, Math.min(3, need / M.ST[S.style].dur(D))); }
+  if (S.voice && S.mode !== 'com') { const need = S.voice.duration + M.VOICE_AT + .5 - M.infoD(D) - M.endD(D) - ((S.withProfile && D.PA && D.PB) ? M.PROF_DUR : 0) - M.evoDur(D); D.k = Math.max(.85, Math.min(3, need / M.ST[S.style].dur(D))); }
   return D;
 }
 const listaPt = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1];
@@ -1066,7 +1067,7 @@ $('#saveCase').onclick = async () => {
     photos: Object.fromEntries(Object.keys(S.blob).map(k => [k, S.blob[k]])),
     lm: Object.fromEntries(Object.keys(S.img).map(k => [k, round(S.lm[k])])), eyes: S.eyes, adj: S.adj,
     pv: 2, mode: S.mode, proc: S.proc, regs: [...S.regs], ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl, roff: S.roff,
-    f: Object.fromEntries(['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2'].map(k => [k, $('#' + k).value])),
+    f: Object.fromEntries(['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2', 'evx'].map(k => [k, $('#' + k).value])),
   };
   try { await dbPut(v); S.caseId = v.id; toast('Caso guardado neste aparelho.'); renderGal(); } catch (e) { toast('Este navegador não deixou guardar. Mantenha as fotos no seu arquivo.', 4000); }
 };
@@ -1092,7 +1093,7 @@ async function loadCase(c) {
   Object.entries(c.f || {}).forEach(([k, v]) => { if ($('#' + k)) $('#' + k).value = v; });
   S.adj = c.adj || S.adj; [['x', 'dx', 1], ['y', 'dy', 1], ['s', 'ds', 100], ['r', 'dr', 1]].forEach(([a, k, m]) => { $('#ad' + a).value = S.adj[k] * m; $('#ad' + a + 'v').textContent = Math.round(S.adj[k] * m); });
   if (c.mode === 'cir' && !c.pv && c.photos.pa && !c.photos.k1) { c.photos = { ...c.photos, k1: c.photos.pa }; delete c.photos.pa; }
-  for (const k of ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3']) {
+  for (const k of ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3', 'v0', 'v7', 'v14', 'v30', 'vx']) {
     const b = c.photos[k]; const slot = $(`.slot[data-k="${k}"]`);
     if (!b) { S.img[k] = null; continue; }
     const img = await loadImg(b);

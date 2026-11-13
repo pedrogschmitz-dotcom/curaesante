@@ -1305,18 +1305,40 @@ function profileSeg(ctx, D, t) {
   titulo(ctx, D, 'De perfil', 300, T.upper ? 110 : 104, seg(t, 0, .6), { d3: true });
 }
 
+/* evolução (opcional): antes → pós imediato → 7 → 14 → 30 dias → depois */
+const EVO_STEP = 1.35;
+const evoDur = D => (D.EV && D.EV.length) ? .6 + EVO_STEP * (D.EV.length + 2) : 0;
+function evoSeg(ctx, D, t) {
+  const T = D.T; ctx.fillStyle = T.bg; ctx.fillRect(0, 0, W, H);
+  const L = [{ cv: D.A, lab: 'Antes' }].concat(D.EV, [{ cv: D.B, lab: D.evDepois || 'Depois' }]);
+  const tt = Math.max(0, t - .6), i = Math.min(L.length - 1, Math.floor(tt / EVO_STEP)), lt = tt - i * EVO_STEP;
+  const fade = i > 0 ? E.io(seg(lt, 0, .35)) : 1;
+  if (i > 0 && fade < 1) face(ctx, L[i - 1].cv, 1.02, CX, H / 2, CX, H / 2);
+  ctx.save(); ctx.globalAlpha = fade; face(ctx, L[i].cv, 1.02 + .02 * seg(lt, 0, EVO_STEP), CX, H / 2, CX, H / 2); ctx.restore();
+  vignette(ctx);
+  kicker(ctx, D, 'Evolução', 300, seg(t, 0, .4));
+  titulo(ctx, D, T.upper ? L[i].lab.toUpperCase() : L[i].lab, 430, T.upper ? 104 : 98, seg(lt, .05, .4), { color: T.ac, d3: true });
+  // linha do tempo com pontos
+  const n = L.length, x0 = 140, x1 = W - 140, y = 1600, a = seg(t, .1, .5);
+  ctx.save(); ctx.globalAlpha = a; ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+  ctx.strokeStyle = T.ac; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 + (x1 - x0) * Math.min(1, (i + seg(lt, 0, .35)) / (n - 1)), y); ctx.stroke();
+  for (let k = 0; k < n; k++) { const x = x0 + (x1 - x0) * k / (n - 1); ctx.fillStyle = k <= i ? T.ac : 'rgba(255,255,255,.5)'; ctx.beginPath(); ctx.arc(x, y, k === i ? 14 : 9, 0, Math.PI * 2); ctx.fill(); }
+  ctx.restore();
+}
+
 /* ---------------- montagem do roteiro ---------------- */
 const K = D => D.k || 1;
 const mainDur = D => ST[D.style].dur(D) * K(D);
 const profDur = D => (D.withProfile && D.PA && D.PB) ? PROF_DUR : 0;
-function totalDur(D) { return mainDur(D) + profDur(D) + infoD(D) + endD(D); }
+function totalDur(D) { return mainDur(D) + profDur(D) + evoDur(D) + infoD(D) + endD(D); }
 function drawFrame(ctx, D, t) {
   const st = ST[D.style];
-  const T0 = mainDur(D), Tp = T0 + profDur(D), T1 = Tp + infoD(D), TT = T1 + endD(D);
+  const T0 = mainDur(D), Tq = T0 + profDur(D), Tp = Tq + evoDur(D), T1 = Tp + infoD(D), TT = T1 + endD(D);
   ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
   if (t < T0) st.draw(ctx, D, t / K(D));
-  if (Tp > T0 && t >= T0 - .4 && t < Tp) { ctx.save(); ctx.globalAlpha = E.io(seg(t, T0 - .4, T0)); profileSeg(ctx, D, Math.max(0, t - T0 + .2)); ctx.restore(); }
+  if (Tq > T0 && t >= T0 - .4 && t < Tq) { ctx.save(); ctx.globalAlpha = E.io(seg(t, T0 - .4, T0)); profileSeg(ctx, D, Math.max(0, t - T0 + .2)); ctx.restore(); }
+  if (Tp > Tq && t >= Tq - .4 && t < Tp) { ctx.save(); ctx.globalAlpha = E.io(seg(t, Tq - .4, Tq)); evoSeg(ctx, D, Math.max(0, t - Tq + .2)); ctx.restore(); }
   if (t >= Tp - .45 && t < T1) {
     const a = E.io(seg(t, Tp - .45, Tp));
     ctx.save(); ctx.globalAlpha = a; infoCard(ctx, D, Math.max(0, t - Tp + .2)); ctx.restore();
@@ -1375,7 +1397,7 @@ async function renderAudio(D, dur, sr = 48000) {
   }
   // efeitos discretos nas transições
   const nb = ctx.createBuffer(1, sr * 1, sr); const nd = nb.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
-  const cues = (ST[D.style].cues(D) || []).map(c => c * K(D)).concat([mainDur(D) - .3, mainDur(D) + profDur(D) + infoD(D) - .25]);
+  const cues = (ST[D.style].cues(D) || []).map(c => c * K(D)).concat([mainDur(D) - .3, mainDur(D) + profDur(D) + evoDur(D) + infoD(D) - .25]);
   if (D.sfx) cues.forEach(c => {
     if (c < 0 || c > dur) return;
     const s = ctx.createBufferSource(); s.buffer = nb;
@@ -1506,4 +1528,4 @@ function storyPoll(ctx, D) {
 function storyInfo(ctx, D) {
   infoCard(ctx, Object.assign({}, D, { dest: 'stories' }), 12);
 }
-window.Motor = { prepNarr, syncNarr, prepFrame, syncClips, cirSegs, storyPoll, storyInfo, infoD, endD, ORDEM, mainDur, PROF_DUR, VOICE_AT, regList, cardLayout, offPts, tris, W, H, CX, EYE_Y, IED, PR, FPS, THEMES, REGIOES, REG, ST, anchors, regiaoPts, eyeXform, eyesXform, composeAdj, coverXform, prerender, drawFrame, totalDur, renderAudio, pickAvc, aacOk, opusOk, exportWebCodecs, exportRecorder, apply, mk, INFO_DUR, END_DUR };
+window.Motor = { evoDur, prepNarr, syncNarr, prepFrame, syncClips, cirSegs, storyPoll, storyInfo, infoD, endD, ORDEM, mainDur, PROF_DUR, VOICE_AT, regList, cardLayout, offPts, tris, W, H, CX, EYE_Y, IED, PR, FPS, THEMES, REGIOES, REG, ST, anchors, regiaoPts, eyeXform, eyesXform, composeAdj, coverXform, prerender, drawFrame, totalDur, renderAudio, pickAvc, aacOk, opusOk, exportWebCodecs, exportRecorder, apply, mk, INFO_DUR, END_DUR };
