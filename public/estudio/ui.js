@@ -274,7 +274,7 @@ async function setPhoto(k, src, opts = {}) {
   await applyCrop(k, r);
 }
 /* ---------------- câmera com fantasma ---------------- */
-const REF = { fa: null, fd: 'fa', pa: null, pd: 'pa' };
+const REF = { fa: null, fd: 'fa', pa: null, pd: 'pa', k1: null, k2: null, k3: null };
 let camK = null, camStream = null, camRaf = 0, camRefLuma = null, camFacing = 'environment';
 function regionLuma(src, sw, sh) { const c = M.mk(32, 32), x = c.getContext('2d'); x.drawImage(src, sw * .3, sh * .3, sw * .4, sh * .4, 0, 0, 32, 32); const d = x.getImageData(0, 0, 32, 32).data; let s = 0; for (let i = 0; i < d.length; i += 4) s += .2126 * d[i] + .7152 * d[i + 1] + .0722 * d[i + 2]; return s / 1024; }
 async function openCam(k) {
@@ -283,7 +283,7 @@ async function openCam(k) {
   try { camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: camFacing, width: { ideal: 2160 }, height: { ideal: 3840 } }, audio: false }); }
   catch (e) { toast('Sem acesso à câmera. Libere a câmera para o site nas permissões do Safari.', 4500); return; }
   const v = $('#camVid'); v.srcObject = camStream; await v.play().catch(() => { });
-  $('#camTitle').textContent = ({ fa: 'Frente · antes', fd: 'Frente · depois', pa: 'Perfil · antes', pd: 'Perfil · depois' })[k];
+  $('#camTitle').textContent = (S.mode === 'cir' ? { fa: 'Antes', fd: 'Depois', pa: 'Antes · outro ângulo', pd: 'Depois · outro ângulo', k1: 'Peça · ângulo 1', k2: 'Peça · ângulo 2', k3: 'Peça · ângulo 3' } : { fa: 'Frente · antes', fd: 'Frente · depois', pa: 'Perfil · antes', pd: 'Perfil · depois' })[k];
   $('#camGhostRow').style.display = ref ? 'grid' : 'none';
   camRefLuma = ref ? regionLuma(ref, ref.width, ref.height) : null;
   $('#camModal').classList.add('on'); camLoop();
@@ -369,7 +369,7 @@ let bfH = 0;
 function buildFrames(only) {
   cancelAnimationFrame(bfH);
   bfH = requestAnimationFrame(() => {
-    const keys = only ? [only] : ['fa', 'fd', 'pa', 'pd'];
+    const keys = only ? [only] : ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3'];
     for (const k of keys) {
       if (!S.img[k]) { S.frames[k] = null; continue; }
       const adj = k === 'fd' ? S.adj : null;
@@ -382,7 +382,7 @@ function buildFrames(only) {
       tOpts.black = !!S.bgDone[k];
       S.frames[k] = { cv: M.prerender(S.img[k], f.M, tOpts), L: Lf };
     }
-    drawAlign(); lightCheck(); drawReg(); $('#profTog').style.display = S.frames.pa && S.frames.pd ? 'flex' : 'none'; refresh(true);
+    drawAlign(); lightCheck(); drawReg(); $('#profTog').style.display = S.mode !== 'cir' && S.frames.pa && S.frames.pd ? 'flex' : 'none'; refresh(true);
   });
 }
 
@@ -553,7 +553,7 @@ const orderedRegs = () => S.mode === 'com' ? S.regOrder.filter(id => S.regs.has(
 $('#swMl').onclick = e => { S.showMl = !S.showMl; e.currentTarget.classList.toggle('on', S.showMl); renderMl(); refresh(); };
 ['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2', 'tecnica', 'cuidados', 'local', 'tam'].forEach(id => $('#' + id).addEventListener('input', () => refresh()));
 ['hook1', 'hook2'].forEach(id => $('#' + id).addEventListener('input', e => e.target.dataset.touched = 1));
-$('#swBg').onclick = async e => { S.bgBlack = !S.bgBlack; e.currentTarget.classList.toggle('on', S.bgBlack); for (const k of ['fa', 'fd', 'pa', 'pd']) if (S.orig[k]) await applyCrop(k, S.crop[k]); };
+$('#swBg').onclick = async e => { S.bgBlack = !S.bgBlack; e.currentTarget.classList.toggle('on', S.bgBlack); for (const k of ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3']) if (S.orig[k]) await applyCrop(k, S.crop[k]); };
 $('#swSens').onclick = e => { S.sens = !S.sens; e.currentTarget.classList.toggle('on', S.sens); refresh(); };
 function profs() { const l = [{ nome: CFG.p1n, crm: CFG.p1c }]; if (CFG.p2n) l.push({ nome: CFG.p2n, crm: CFG.p2c }); return l; }
 function renderProfs() { const s = $('#profSel'); s.innerHTML = ''; profs().forEach((p, i) => s.add(new Option(p.nome + ' · ' + p.crm, i))); s.value = Math.min(S.prof, profs().length - 1); }
@@ -684,7 +684,7 @@ function segCtl(id, key, cb) {
 segCtl('mode', 'mode', () => setTimeout(applyMode, 0));
 function applyMode() {
   const cir = S.mode === 'cir'; document.body.classList.toggle('cir', cir); document.body.classList.toggle('com', S.mode === 'com');
-  const L = cir ? { fa: ['ANTES', 'Antes'], fd: ['CICATRIZ', 'Depois'], pa: ['PEÇA RETIRADA', 'Peça'], pd: ['PERFIL OU 3/4', 'Depois'] } : { fa: ['FRENTE', 'Antes'], fd: ['FRENTE', 'Depois'], pa: ['PERFIL OU 3/4', 'Antes'], pd: ['PERFIL OU 3/4', 'Depois'] };
+  const L = cir ? { fa: ['ANTES', 'Antes'], fd: ['CICATRIZ', 'Depois'], pa: ['OUTRO ÂNGULO', 'Antes'], pd: ['OUTRO ÂNGULO', 'Depois'] } : { fa: ['FRENTE', 'Antes'], fd: ['FRENTE', 'Depois'], pa: ['PERFIL OU 3/4', 'Antes'], pd: ['PERFIL OU 3/4', 'Depois'] };
   Object.entries(L).forEach(([k, [a, b]]) => { const sl = $(`.slot[data-k="${k}"]`); sl.querySelector('.lab').textContent = a; sl.querySelector('.big').textContent = b; });
   $('#s2 h2').textContent = cir ? 'Encaixe das fotos' : 'Encaixe pelo rosto';
   $('#s2 .hint').textContent = cir ? 'Ajuste o depois sobre o antes (mesma posição e tamanho). Confira deslizando a mistura.' : 'Alinho os dois rostos pelos olhos. Confira deslizando a mistura.';
@@ -764,7 +764,7 @@ function buildD() {
   const p = profs()[Math.min(S.prof, profs().length - 1)];
   const sess = $('#sess').value, iv = $('#interval').value;
   const D = {
-    T, A: fa.cv, B: fd.cv, LA: fa.L, LB: fd.L, PA: S.frames.pa && S.frames.pa.cv, PB: S.frames.pd && S.frames.pd.cv,
+    T, A: fa.cv, B: fd.cv, LA: fa.L, LB: fd.L, PA: S.frames.pa && S.frames.pa.cv, PB: S.frames.pd && S.frames.pd.cv, PC: ['k1', 'k2', 'k3'].map(k => S.frames[k] && S.frames[k].cv).filter(Boolean),
     regs, ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl && tot > 0,
     indic: $('#indic').value.trim(), compl: $('#compl').value.trim(),
     indicCurta: $('#indic').value.split(/[.,:]/)[0],
@@ -1065,7 +1065,7 @@ $('#saveCase').onclick = async () => {
     id: S.caseId || ('c' + Date.now()), date: new Date().toISOString(), thumb: th.toDataURL('image/jpeg', .8),
     photos: Object.fromEntries(Object.keys(S.blob).map(k => [k, S.blob[k]])),
     lm: Object.fromEntries(Object.keys(S.img).map(k => [k, round(S.lm[k])])), eyes: S.eyes, adj: S.adj,
-    mode: S.mode, proc: S.proc, regs: [...S.regs], ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl, roff: S.roff,
+    pv: 2, mode: S.mode, proc: S.proc, regs: [...S.regs], ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl, roff: S.roff,
     f: Object.fromEntries(['indic', 'compl', 'interval', 'sess', 'hook1', 'hook2'].map(k => [k, $('#' + k).value])),
   };
   try { await dbPut(v); S.caseId = v.id; toast('Caso guardado neste aparelho.'); renderGal(); } catch (e) { toast('Este navegador não deixou guardar. Mantenha as fotos no seu arquivo.', 4000); }
@@ -1091,7 +1091,8 @@ async function loadCase(c) {
   S.regs = new Set(c.regs); S.ml = c.ml || {}; S.mlSide = c.mlSide || {}; S.perSide = !!c.perSide; S.roff = c.roff || {}; S.showMl = !!c.showMl; $('#swMl').classList.toggle('on', S.showMl);
   Object.entries(c.f || {}).forEach(([k, v]) => { if ($('#' + k)) $('#' + k).value = v; });
   S.adj = c.adj || S.adj; [['x', 'dx', 1], ['y', 'dy', 1], ['s', 'ds', 100], ['r', 'dr', 1]].forEach(([a, k, m]) => { $('#ad' + a).value = S.adj[k] * m; $('#ad' + a + 'v').textContent = Math.round(S.adj[k] * m); });
-  for (const k of ['fa', 'fd', 'pa', 'pd']) {
+  if (c.mode === 'cir' && !c.pv && c.photos.pa && !c.photos.k1) { c.photos = { ...c.photos, k1: c.photos.pa }; delete c.photos.pa; }
+  for (const k of ['fa', 'fd', 'pa', 'pd', 'k1', 'k2', 'k3']) {
     const b = c.photos[k]; const slot = $(`.slot[data-k="${k}"]`);
     if (!b) { S.img[k] = null; continue; }
     const img = await loadImg(b);

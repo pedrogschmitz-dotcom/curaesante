@@ -38,6 +38,7 @@ header.top h1 em{color:var(--dour)}
 .step h2{font-size:28px;line-height:1}
 .hint{color:var(--sub);font-size:14px;line-height:1.45}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pecaHd{grid-column:1/-1;margin-top:8px;font-weight:700;font-size:14px;color:var(--dour)}.pecaHd span{font-weight:500;color:var(--sub,#9a8f80);font-size:12px;margin-left:6px}
 .slot{position:relative;aspect-ratio:3/4;border:1.5px dashed rgba(188,167,142,.45);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;padding:10px;cursor:pointer;background:rgba(0,0,0,.15)}
 .slot.ok{border-style:solid;border-color:var(--dour)}
 .slot.ok .lab,.slot.ok .big,.slot.ok .req{display:none}
@@ -203,7 +204,11 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
       <label class="slot" data-k="fa"><span class="req">OBRIGATÓRIA</span><span class="lab">FRENTE</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
       <label class="slot" data-k="fd"><span class="req">OBRIGATÓRIA</span><span class="lab">FRENTE</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
       <label class="slot" data-k="pa"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
-      <label class="slot est" data-k="pd"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
+      <label class="slot" data-k="pd"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
+      <div class="cir pecaHd">Peça retirada <span>opcional · até 3 ângulos</span></div>
+      <label class="slot cir peca" data-k="k1"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 1</span><input type="file" accept="image/*"></label>
+      <label class="slot cir peca" data-k="k2"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 2</span><input type="file" accept="image/*"></label>
+      <label class="slot cir peca" data-k="k3"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 3</span><input type="file" accept="image/*"></label>
     </div>
     <div class="tog est" style="margin-top:12px"><div><b>Fundo preto automático</b><div class="hint">Recorta a pessoa e pinta o fundo de preto. Não mexe na pele nem no rosto.</div></div><div class="sw on" id="swBg"></div></div>
     <div class="com" style="margin-top:14px">
@@ -362,7 +367,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="hint">Desativando, o app volta a pedir a senha e oferece o Face ID de novo.</div>
     <label class="f">Google Drive</label>
     <div class="tog"><div><b>Enviar ao Drive ao guardar o caso</b><div class="hint">Ao tocar em “Guardar caso”, abre o envio para o Drive na hora.</div></div><div class="sw on" id="swAutoDrive"></div></div>
-    <div class="hint" style="margin-top:14px">Versão do app: 14</div>
+    <div class="hint" style="margin-top:14px">Versão do app: 15</div>
     <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
   </div>
 </section>

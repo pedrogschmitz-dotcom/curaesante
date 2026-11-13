@@ -1095,12 +1095,14 @@ function cover(ctx, src, sw, sh, z = 1, fx = .5, fy = .5) {
   ctx.drawImage(src, (W - w) * fx, (H - h) * fy, w, h);
 }
 function cirSegs(D) {
-  const segs = []; let t = 0; const has = (D.clips && D.clips.length) || D.PA;
+  const segs = []; let t = 0; const PC = D.PC || []; const has = (D.clips && D.clips.length) || PC.length;
   if (D.sens && has) { segs.push({ type: 'aviso', t0: t, t1: t + 1.4 }); t += 1.4; }
   segs.push({ type: 'antes', t0: t, t1: t + 2.6 }); t += 2.6;
+  if (D.PA) { segs.push({ type: 'antes2', t0: t, t1: t + 2 }); t += 2; }
   (D.clips || []).forEach((c, i) => { const d = c.dur; segs.push({ type: 'clip', clip: c, i, t0: t, t1: t + d }); t += d; });
-  if (D.PA) { segs.push({ type: 'peca', t0: t, t1: t + 2.8 }); t += 2.8; }
+  PC.forEach((fr, i) => { const d = i ? 1.8 : 2.8; segs.push({ type: 'peca', fr, i, n: PC.length, t0: t, t1: t + d }); t += d; });
   segs.push({ type: 'depois', t0: t, t1: t + 2.8 }); t += 2.8;
+  if (D.PB) { segs.push({ type: 'depois2', t0: t, t1: t + 2 }); t += 2; }
   segs.push({ type: 'split', t0: t, t1: t + 2.8 }); t += 2.8;
   return segs;
 }
@@ -1134,11 +1136,19 @@ ST.cirurgia = {
       vignette(ctx, .5, .85);
       kicker(ctx, D, 'Etapa ' + (sg.i + 1), 330, seg(lt, .1, .4));
       titulo(ctx, D, c.label || 'Procedimento', 470, T.upper ? 100 : 96, seg(lt, .15, .55), { d3: true });
+    } else if (sg.type === 'antes2') {
+      face(ctx, D.PA, z, CX, H / 2, CX, H / 2); vignette(ctx);
+      kicker(ctx, D, 'Outro ângulo', 330, seg(lt, .1, .4));
+      tag(ctx, D, 'ANTES', CX, 1560, seg(lt, .3, .7));
     } else if (sg.type === 'peca') {
-      face(ctx, D.PA, z, CX, H / 2, CX, H / 2); if (D.sens) desat(ctx, .55); vignette(ctx);
-      kicker(ctx, D, 'Peça retirada', 330, seg(lt, .1, .4));
-      if (D.tam) titulo(ctx, D, D.tam, 470, T.upper ? 110 : 104, seg(lt, .2, .6), { color: T.ac, d3: true });
-      txt(ctx, 'enviada para análise (anatomopatológico)', CX, 1520, { font: font(T, 'sans', 32, 600), color: T.ink, alpha: seg(lt, .6, 1), shadow: 'rgba(0,0,0,.7)' });
+      face(ctx, sg.fr, z, CX, H / 2, CX, H / 2); if (D.sens) desat(ctx, .55); vignette(ctx);
+      kicker(ctx, D, 'Peça retirada' + (sg.n > 1 ? ' · ' + (sg.i + 1) + '/' + sg.n : ''), 330, seg(lt, .1, .4));
+      if (D.tam && sg.i === 0) titulo(ctx, D, D.tam, 470, T.upper ? 110 : 104, seg(lt, .2, .6), { color: T.ac, d3: true });
+      if (sg.i === sg.n - 1) txt(ctx, 'enviada para análise (anatomopatológico)', CX, 1520, { font: font(T, 'sans', 32, 600), color: T.ink, alpha: seg(lt, .4, .9), shadow: 'rgba(0,0,0,.7)' });
+    } else if (sg.type === 'depois2') {
+      face(ctx, D.PB, z, CX, H / 2, CX, H / 2); vignette(ctx);
+      kicker(ctx, D, 'Outro ângulo', 330, seg(lt, .1, .4));
+      tag(ctx, D, 'DEPOIS', CX, 1560, seg(lt, .3, .7));
     } else if (sg.type === 'depois') {
       face(ctx, D.B, z, CX, H / 2, CX, H / 2); vignette(ctx);
       kicker(ctx, D, 'Cicatriz', 330, seg(lt, .1, .4));
