@@ -565,7 +565,7 @@ function renderTiles() {
   Object.entries(CIRS).forEach(([k, c]) => {
     const d = document.createElement('div'); d.className = 'tile' + (S.cirSel === k ? ' on' : '');
     d.innerHTML = `<b>${c.curto}</b><span>${({ lipoma: 'Nódulo de gordura sob a pele', cisto: '“Cisto sebáceo”: bolsa de queratina com cápsula', lobulo: 'Lóbulo da orelha rasgado ou alargado', nevo: 'Pinta ou lesão, com exame da peça' })[k]}</span>`;
-    d.onclick = () => { S.cirSel = k; document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); setTimeout(() => wzGo(WZ.i + 1), 220); };
+    d.onclick = () => { S.cirSel = k; try { PREF['proc_cir'] = k; savePref(); } catch (e) { } document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); setTimeout(() => wzGo(WZ.i + 1), 220); };
     box.append(d);
   });
 }
@@ -1205,6 +1205,40 @@ $('#swAutoDrive').classList.toggle('on', autoDrive);
 $('#swAutoDrive').onclick = e => { autoDrive = !autoDrive; e.currentTarget.classList.toggle('on', autoDrive); try { localStorage.setItem('estudio-autodrive', autoDrive ? '1' : '0'); } catch (_) { } };
 $('#saveCase').addEventListener('click', () => { if (autoDrive && S.img.fa && S.img.fd) $('#toDrive').onclick(); });
 
+
+/* ---------------- rapidez: lembrar escolhas, pular encaixe, gerar rápido, modelos, postar ---------------- */
+const PREF = (() => { try { return JSON.parse(localStorage.getItem('estudio-prefs') || '{}'); } catch (e) { return {}; } })();
+const savePref = () => { try { localStorage.setItem('estudio-prefs', JSON.stringify(PREF)); } catch (e) { } };
+// lembra estilo, trilha, destino e identidade
+['theme', 'music', 'dest'].forEach(id => $$(`#${id} button`).forEach(b => b.addEventListener('click', () => { PREF[id] = b.dataset.v; savePref(); })));
+document.getElementById('styles').addEventListener('click', e => { const d = e.target.closest('.sty'); if (d) { PREF['style_' + S.mode] = d.dataset.k; savePref(); } });
+const TPL = (() => { try { return JSON.parse(localStorage.getItem('estudio-tpl') || '{}'); } catch (e) { return {}; } })();
+const saveTpl = () => { try { localStorage.setItem('estudio-tpl', JSON.stringify(TPL)); } catch (e) { } };
+function tplUI() { const t = S.mode !== 'cir' && TPL[S.proc]; $('#tplDel').style.display = t ? '' : 'none'; $('#tplInfo').textContent = t ? `Usando o seu padrão de ${curP().curto}.` : ''; }
+function applyTpl() { const t = S.mode !== 'cir' && TPL[S.proc]; if (t) { S.regs = new Set(t.regs); S.regOrder = [...t.regs]; S.ml = { ...t.ml }; S.mlSide = { ...t.mlSide }; S.perSide = !!t.perSide; S.showMl = !!t.showMl; $('#swMl').classList.toggle('on', S.showMl); renderRegs(); } tplUI(); }
+$('#tplSave').onclick = () => { TPL[S.proc] = { regs: [...S.regs], ml: S.ml, mlSide: S.mlSide, perSide: S.perSide, showMl: S.showMl }; saveTpl(); tplUI(); toast(`Padrão de ${curP().curto} salvo. Vem pronto nos próximos casos.`); };
+$('#tplDel').onclick = () => { delete TPL[S.proc]; saveTpl(); tplUI(); toast('Padrão apagado.'); };
+// gerar rápido / pular encaixe
+function fotosOk() { return !!(S.img.fa && S.img.fd); }
+function rostoOk() { return S.mode !== 'cir' && !!((S.lm.fa || S.eyes.fa) && (S.lm.fd || S.eyes.fd)); }
+function fastUI() { const ok = fotosOk(); $('#fastGo').style.display = ok ? '' : 'none'; $('#fastHint').style.display = ok ? '' : 'none';
+  $('#fastHint').textContent = rostoOk() || S.mode === 'cir' ? 'Usa o encaixe automático e o seu último estilo, trilha e destino. Você confere na prévia.' : 'Rosto não achado em uma das fotos: confira o encaixe antes.'; }
+setInterval(() => { if (!$('#s1').classList.contains('wz-off')) fastUI(); }, 700);
+$('#fastGo').onclick = () => { if (!fotosOk()) return toast('Suba as fotos obrigatórias.'); if (S.mode !== 'cir' && !rostoOk()) { wzGo(WZ.i + 1); return toast('Confira o encaixe primeiro.'); } wzGo(wzPages().length - 1); toast('Confira a prévia, marque o checklist e gere o vídeo.', 3200); };
+// Avançar a partir das fotos pula o encaixe quando os rostos foram achados
+$('#wzNext').addEventListener('click', e => {
+  const P = wzPages(); if (P[WZ.i] === 's1' && fotosOk() && rostoOk()) { e.stopImmediatePropagation(); wzGo(WZ.i + 2); toast('Rostos encaixados sozinhos. Toque em Voltar para conferir o encaixe.', 3200); }
+}, true);
+// postar no Instagram: copia a legenda e abre o compartilhar com o vídeo
+$('#postIg').onclick = async () => {
+  if (!S.result) return toast('Gere o vídeo primeiro.');
+  try { await navigator.clipboard.writeText($('#cap').textContent); } catch (e) { }
+  const f = new File([S.result.blob], `curae-${slug()}.${S.result.ext}`, { type: 'video/' + S.result.ext });
+  try { if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f] }); toast('Legenda copiada: cole no Instagram.', 3500); } else toast('Este navegador não compartilha vídeo. Use “Salvar vídeo”.'); }
+  catch (e) { if (!(e && e.name === 'AbortError')) toast('Não consegui abrir o compartilhar.'); }
+};
+new MutationObserver(() => { $('#postIg').style.display = $('#saveVid').style.display; }).observe($('#saveVid'), { attributes: true, attributeFilter: ['style'] });
+
 /* ---------------- etapas (modo → procedimento → fotos → …) ---------------- */
 const WZ = { i: 0, procOk: false };
 const wzPages = () => S.mode === 'cir' ? ['sMode', 's0', 's1', 's2', 's3', 's4', 's5'] : ['sMode', 'sProc', 's1', 's2', 's3', 's4', 's5'];
@@ -1214,7 +1248,7 @@ function renderProcTiles() {
   Object.entries(PROCS).forEach(([k, p]) => {
     const d = document.createElement('div'); d.className = 'tile' + (WZ.procOk && S.proc === k ? ' on' : '');
     d.innerHTML = `<b>${p.curto}</b><span>${p.indic.split('.')[0]}.</span>`;
-    d.onclick = () => { procSel.value = k; applyProc(k); WZ.procOk = true; renderProcTiles(); refresh(true); setTimeout(() => wzGo(WZ.i + 1), 220); };
+    d.onclick = () => { procSel.value = k; applyProc(k); applyTpl(); WZ.procOk = true; PREF['proc_' + S.mode] = k; savePref(); renderProcTiles(); refresh(true); setTimeout(() => wzGo(WZ.i + 1), 220); };
     box.append(d);
   });
 }
@@ -1241,7 +1275,7 @@ $('#wzBack').onclick = () => wzGo(WZ.i - 1);
 $('#wzNext').onclick = () => wzGo(WZ.i + 1);
 $$('#modeTiles .tile').forEach(t => t.onclick = () => {
   $$('#modeTiles .tile').forEach(x => x.classList.toggle('on', x === t));
-  const b = $(`#mode button[data-v="${t.dataset.v}"]`); if (S.mode !== t.dataset.v) { WZ.procOk = false; b.click(); }
+  const b = $(`#mode button[data-v="${t.dataset.v}"]`); PREF.mode = t.dataset.v; savePref(); if (S.mode !== t.dataset.v) { WZ.procOk = false; b.click(); }
   setTimeout(() => { renderProcTiles(); wzGo(1); }, 60);
 });
 
@@ -1252,6 +1286,18 @@ const fontsReady = Promise.all(['500 40px "Cormorant Garamond"', 'italic 500 40p
 fontsReady.then(() => { refresh(); drawAlign(); });
 refresh(); drawAlign();
 renderProcTiles(); wzGo(0);
+(() => { // restaura as últimas escolhas
+  ['theme', 'music', 'dest'].forEach(id => { const v = PREF[id]; const b = v && $(`#${id} button[data-v="${v}"]`); if (b) b.click(); });
+  if (PREF.mode && PREF.mode !== 'est') { $(`#mode button[data-v="${PREF.mode}"]`).click(); }
+  $$('#modeTiles .tile').forEach(x => x.classList.toggle('on', x.dataset.v === (PREF.mode || 'est')));
+  setTimeout(() => {
+    const st = PREF['style_' + S.mode]; if (st && M.ST[st]) { const d = $(`.sty[data-k="${st}"]`); if (d) d.click(); }
+    const pk = PREF['proc_' + S.mode];
+    if (pk && S.mode !== 'cir' && PROCS[pk]) { procSel.value = pk; applyProc(pk); applyTpl(); WZ.procOk = true; renderProcTiles(); }
+    if (pk && S.mode === 'cir' && CIRS[pk]) { S.cirSel = pk; document.body.classList.remove('nocir'); applyProc(pk); renderTiles(); }
+    refresh(true);
+  }, 120);
+})();
 
 window.__estudio = { S, setPhoto, buildD, refresh, loadImg, findWatermark };
 })();

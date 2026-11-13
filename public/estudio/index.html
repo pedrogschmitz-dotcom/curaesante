@@ -206,6 +206,8 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
       <div id="clips"></div>
       <label class="btn small ghost" style="margin-top:10px;cursor:pointer">+ Adicionar vídeo<input type="file" id="clipIn" accept="video/*" style="display:none"></label>
     </div>
+    <button class="btn full" id="fastGo" style="margin-top:16px;display:none">⚡ Gerar rápido (pula para a prévia)</button>
+    <div class="hint" id="fastHint" style="margin-top:6px;display:none;text-align:center"></div>
   </div>
 
   <div class="step" id="s2">
@@ -253,6 +255,8 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="row" style="margin-top:8px"><button class="btn small ghost" id="regReset">Voltar posições automáticas</button></div>
     <div class="tog" style="margin-top:12px"><div><b>Mostrar ml no vídeo</b><div class="hint">Quanto foi usado em cada região e o total.</div></div><div class="sw" id="swMl"></div></div>
     <div id="mlBox" style="display:none"></div>
+    <div class="row" style="margin-top:12px"><button class="btn small ghost" id="tplSave">Salvar regiões e ml como padrão</button><button class="btn small ghost" id="tplDel" style="display:none">Apagar padrão</button></div>
+    <div class="hint" id="tplInfo"></div>
     </div>
     <label class="f">Indicação (para quem é)</label><textarea id="indic"></textarea>
     <label class="f">Evolução</label>
@@ -301,7 +305,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <button class="btn full" id="gen">Gerar vídeo</button>
     <div class="bar" style="margin-top:12px;display:none" id="genBar"><div></div></div>
     <div class="hint" id="genInfo" style="margin-top:8px"></div>
-    <div class="row" style="margin-top:12px"><button class="btn ghost small" id="saveVid" style="display:none">Salvar vídeo</button><button class="btn ghost small" id="saveCover">Salvar capa (PNG)</button><button class="btn ghost small" id="savePoll" style="display:none">Story da enquete (PNG)</button><button class="btn ghost small" id="saveInfo" style="display:none">Story do caso (PNG)</button></div>
+    <div class="row" style="margin-top:12px"><button class="btn small" id="postIg" style="display:none">Postar no Instagram</button><button class="btn ghost small" id="saveVid" style="display:none">Salvar vídeo</button><button class="btn ghost small" id="saveCover">Salvar capa (PNG)</button><button class="btn ghost small" id="savePoll" style="display:none">Story da enquete (PNG)</button><button class="btn ghost small" id="saveInfo" style="display:none">Story do caso (PNG)</button></div>
     <div class="row" style="margin-top:10px"><button class="btn ghost small" id="toDrive">Enviar caso para o Google Drive</button></div>
     <div class="hint" id="driveInfo" style="margin-top:6px"></div>
 
@@ -345,7 +349,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="hint">Desativando, o app volta a pedir a senha e oferece o Face ID de novo.</div>
     <label class="f">Google Drive</label>
     <div class="tog"><div><b>Enviar ao Drive ao guardar o caso</b><div class="hint">Ao tocar em “Guardar caso”, abre o envio para o Drive na hora.</div></div><div class="sw on" id="swAutoDrive"></div></div>
-    <div class="hint" style="margin-top:14px">Versão do app: 11</div>
+    <div class="hint" style="margin-top:14px">Versão do app: 12</div>
     <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
   </div>
 </section>
