@@ -388,7 +388,7 @@ function endCard(ctx, D, t) {
 // Cada estilo: {nome, desc, dur(D), draw(ctx,D,t), cues(D) -> tempos de transição p/ áudio}
 const ST = {};
 function offPts(P, o) { if (!o) return P; return P.map(q => Object.assign({}, q, { x: q.x + (q.lado === 'R' ? -o.dx : o.dx), y: q.y + o.dy })); }
-const regList = D => D.regs.map(id => ({ reg: REG[id], ptsA: offPts(regiaoPts(id, D.LA), D.roff && D.roff[id]), ptsB: offPts(regiaoPts(id, D.LB), D.roff && D.roff[id]) }));
+const regList = D => (!D.LA || !D.LB || !D.regs) ? [] : D.regs.map(id => ({ reg: REG[id], ptsA: offPts(regiaoPts(id, D.LA), D.roff && D.roff[id]), ptsB: offPts(regiaoPts(id, D.LB), D.roff && D.roff[id]) }));
 function cardLayout(R, key = 'ptsA') {
   const out = R.map((r, i) => ({ i, side: i % 2 ? 'R' : 'L', y: Math.min(...r[key].map(q => q.y)) }));
   for (const side of ['L', 'R']) {

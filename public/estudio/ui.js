@@ -565,7 +565,7 @@ function renderTiles() {
   Object.entries(CIRS).forEach(([k, c]) => {
     const d = document.createElement('div'); d.className = 'tile' + (S.cirSel === k ? ' on' : '');
     d.innerHTML = `<b>${c.curto}</b><span>${({ lipoma: 'Nódulo de gordura sob a pele', cisto: '“Cisto sebáceo”: bolsa de queratina com cápsula', lobulo: 'Lóbulo da orelha rasgado ou alargado', nevo: 'Pinta ou lesão, com exame da peça' })[k]}</span>`;
-    d.onclick = () => { S.cirSel = k; try { PREF['proc_cir'] = k; savePref(); } catch (e) { } document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); setTimeout(() => wzGo(WZ.i + 1), 220); };
+    d.onclick = () => { S.cirSel = k; try { PREF['proc_cir'] = k; savePref(); } catch (e) { } document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); { const at = WZ.i; wzLater(() => { if (WZ.i === at) wzGo(at + 1); }, 260); } };
     box.append(d);
   });
 }
@@ -733,7 +733,7 @@ function renderStyles() {
 function mkStyle(k) { const st = M.ST[k];
   const d = document.createElement('div'); d.className = 'sty' + (k === S.style ? ' on' : ''); d.dataset.k = k;
   d.innerHTML = `<canvas width="216" height="384"></canvas><div class="nm">${st.nome}</div><div class="ds">${st.desc}</div>`;
-  d.onclick = () => { S.style = k; $$('.sty').forEach(x => x.classList.toggle('on', x === d)); stopAudio(); playing = false; tNow = 0; refresh(); if (Dcur) setTimeout(() => { if (!playing) $('#play').click(); }, 450); };
+  d.onclick = () => { S.style = k; $$('.sty').forEach(x => x.classList.toggle('on', x === d)); stopAudio(); playing = false; tNow = 0; refresh(); if (Dcur && !$('#s5').classList.contains('wz-off')) setTimeout(() => { if (!playing) $('#play').click(); }, 350); };
   styleBox.append(d);
 }
 renderStyles();
@@ -1199,7 +1199,7 @@ $('#cvCrop').addEventListener('pointerdown', pushCrop, true);
 ['crt', 'crb', 'crl', 'crr'].forEach(id => $('#' + id).addEventListener('pointerdown', pushCrop));
 ['cropAuto', 'cropNone'].forEach(id => $('#' + id).addEventListener('click', pushCrop, true));
 $('#cropUndo').onclick = () => { if (!cropHist.length) return toast('Nada para desfazer.'); cropR = cropHist.pop(); ['t', 'b', 'l', 'r'].forEach(s2 => $('#cr' + s2).value = (+cropR[s2]).toFixed(1)); drawCrop(); };
-$('#cvPrev').addEventListener('click', () => { const on = !$('#cvPrev').classList.contains('fs'); $('#cvPrev').classList.toggle('fs', on); document.body.classList.toggle('prevfs', on); if (on) toast('Toque de novo para sair.'); });
+
 let autoDrive = true; try { autoDrive = localStorage.getItem('estudio-autodrive') !== '0'; } catch (e) { }
 $('#swAutoDrive').classList.toggle('on', autoDrive);
 $('#swAutoDrive').onclick = e => { autoDrive = !autoDrive; e.currentTarget.classList.toggle('on', autoDrive); try { localStorage.setItem('estudio-autodrive', autoDrive ? '1' : '0'); } catch (_) { } };
@@ -1227,7 +1227,7 @@ setInterval(() => { if (!$('#s1').classList.contains('wz-off')) fastUI(); }, 700
 $('#fastGo').onclick = () => { if (!fotosOk()) return toast('Suba as fotos obrigatórias.'); if (S.mode !== 'cir' && !rostoOk()) { wzGo(WZ.i + 1); return toast('Confira o encaixe primeiro.'); } wzGo(wzPages().length - 1); toast('Confira a prévia, marque o checklist e gere o vídeo.', 3200); };
 // Avançar a partir das fotos pula o encaixe quando os rostos foram achados
 $('#wzNext').addEventListener('click', e => {
-  const P = wzPages(); if (P[WZ.i] === 's1' && fotosOk() && rostoOk()) { e.stopImmediatePropagation(); wzGo(WZ.i + 2); toast('Rostos encaixados sozinhos. Toque em Voltar para conferir o encaixe.', 3200); }
+  const P = wzPages(); if (P[WZ.i] === 's1' && fotosOk() && rostoOk()) { e.stopImmediatePropagation(); wzGo(P.indexOf('s3')); toast('Rostos encaixados sozinhos. Toque em Voltar para conferir o encaixe.', 3200); }
 }, true);
 // postar no Instagram: copia a legenda e abre o compartilhar com o vídeo
 $('#postIg').onclick = async () => {
@@ -1239,16 +1239,38 @@ $('#postIg').onclick = async () => {
 };
 new MutationObserver(() => { $('#postIg').style.display = $('#saveVid').style.display; }).observe($('#saveVid'), { attributes: true, attributeFilter: ['style'] });
 
+
+/* ---------------- estilos em carrossel ---------------- */
+function styleList() { return $$('.sty').filter(x => !x.classList.contains('dis')).map(x => x.dataset.k); }
+function styleSync(scroll) {
+  $('#stName').textContent = M.ST[S.style] ? M.ST[S.style].nome : '';
+  const d = $(`.sty[data-k="${S.style}"]`); $$('.sty').forEach(x => x.classList.toggle('on', x === d));
+  if (scroll && d) { const box = $('#styles'); box.scrollTo({ left: d.offsetLeft - (box.clientWidth - d.clientWidth) / 2, behavior: 'smooth' }); }
+}
+function styleStep(dir) { const L = styleList(); if (!L.length) return; let i = L.indexOf(S.style); i = (i + dir + L.length) % L.length; const d = $(`.sty[data-k="${L[i]}"]`); if (d) d.click(); }
+$('#stPrev').onclick = () => styleStep(-1);
+$('#stNext').onclick = () => styleStep(1);
+document.getElementById('styles').addEventListener('click', () => setTimeout(() => styleSync(true), 0));
+(() => { // arrastar a prévia para o lado troca o estilo; toque simples = tela cheia
+  const c = $('#cvPrev'); let x0 = null, y0 = 0, t0 = 0;
+  c.addEventListener('pointerdown', e => { x0 = e.clientX; y0 = e.clientY; t0 = Date.now(); });
+  c.addEventListener('pointerup', e => { if (x0 == null) return; const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (c.classList.contains('fs')) { c.classList.remove('fs'); document.body.classList.remove('prevfs'); return; }
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) return styleStep(dx < 0 ? 1 : -1);
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && Date.now() - t0 < 400) { c.classList.add('fs'); document.body.classList.add('prevfs'); toast('Toque de novo para sair.'); } });
+})();
+
 /* ---------------- etapas (modo → procedimento → fotos → …) ---------------- */
-const WZ = { i: 0, procOk: false };
-const wzPages = () => S.mode === 'cir' ? ['sMode', 's0', 's1', 's2', 's3', 's4', 's5'] : ['sMode', 'sProc', 's1', 's2', 's3', 's4', 's5'];
-const WZ_NOMES = { sMode: 'Modo', sProc: 'Procedimento', s0: 'Cirurgia', s1: 'Fotos', s2: 'Encaixe', s3: 'O caso', s4: 'Estilo', s5: 'Prévia e vídeo' };
+const WZ = { i: 0, procOk: false, t: 0 };
+const wzLater = (fn, ms) => { clearTimeout(WZ.t); WZ.t = setTimeout(fn, ms); };
+const wzPages = () => S.mode === 'cir' ? ['sMode', 's0', 's1', 's2', 's3', 's5'] : ['sMode', 'sProc', 's1', 's2', 's3', 's5'];
+const WZ_NOMES = { sMode: 'Modo', sProc: 'Procedimento', s0: 'Cirurgia', s1: 'Fotos', s2: 'Encaixe', s3: 'O caso', s5: 'Estilo e vídeo' };
 function renderProcTiles() {
   const box = $('#procTiles'); box.innerHTML = '';
   Object.entries(PROCS).forEach(([k, p]) => {
     const d = document.createElement('div'); d.className = 'tile' + (WZ.procOk && S.proc === k ? ' on' : '');
     d.innerHTML = `<b>${p.curto}</b><span>${p.indic.split('.')[0]}.</span>`;
-    d.onclick = () => { procSel.value = k; applyProc(k); applyTpl(); WZ.procOk = true; PREF['proc_' + S.mode] = k; savePref(); renderProcTiles(); refresh(true); setTimeout(() => wzGo(WZ.i + 1), 220); };
+    d.onclick = () => { procSel.value = k; applyProc(k); applyTpl(); WZ.procOk = true; PREF['proc_' + S.mode] = k; savePref(); renderProcTiles(); const at = WZ.i; wzLater(() => { if (WZ.i === at) wzGo(at + 1); }, 260); };
     box.append(d);
   });
 }
@@ -1259,24 +1281,28 @@ function wzCan(id) {
   return true;
 }
 function wzGo(i) {
+  clearTimeout(WZ.t);
   const P = wzPages(); i = Math.max(0, Math.min(P.length - 1, i));
   if (i > WZ.i) for (let k = WZ.i; k < i; k++) { const ok = wzCan(P[k]); if (ok !== true) { toast(ok); i = k; break; } }
+  const sai = P[WZ.i], vai = P[i];
   WZ.i = i;
-  ['sMode', 'sProc', 's0', 's1', 's2', 's3', 's4', 's5'].forEach(id => { const el = $('#' + id); if (el) el.classList.toggle('wz-off', id !== P[i]); });
+  if (sai === 's5' && vai !== 's5' && playing) { playing = false; stopAudio(); $('#play').textContent = '▶ Tocar'; }
+  ['sMode', 'sProc', 's0', 's1', 's2', 's3', 's5'].forEach(id => { const el = $('#' + id); if (el) el.classList.toggle('wz-off', id !== vai); });
   P.forEach((id, k) => { const n = $('#' + id + ' .hd .num'); if (n) n.textContent = k + 1; });
   $('#wzFill').style.width = ((i + 1) / P.length * 100) + '%';
-  $('#wzLab').textContent = `Etapa ${i + 1} de ${P.length} · ${WZ_NOMES[P[i]]}`;
+  $('#wzLab').textContent = `Etapa ${i + 1} de ${P.length} · ${WZ_NOMES[vai]}`;
   $('#wzBack').disabled = i === 0; $('#wzNext').style.display = i === P.length - 1 ? 'none' : '';
-  $('#wzNext').textContent = i === P.length - 2 ? 'Ver prévia →' : 'Avançar →';
-  if (P[i] === 's2') drawAlign(); refresh(true);
-  $('#scroller').scrollTo({ top: 0, behavior: 'smooth' });
+  $('#wzNext').textContent = i === P.length - 2 ? 'Escolher estilo →' : 'Avançar →';
+  $('#scroller').scrollTop = 0;
+  if (vai === 's2') requestAnimationFrame(drawAlign);
+  if (vai === 's5') { refresh(true); styleSync(true); } else refresh(false);
 }
 $('#wzBack').onclick = () => wzGo(WZ.i - 1);
 $('#wzNext').onclick = () => wzGo(WZ.i + 1);
 $$('#modeTiles .tile').forEach(t => t.onclick = () => {
   $$('#modeTiles .tile').forEach(x => x.classList.toggle('on', x === t));
   const b = $(`#mode button[data-v="${t.dataset.v}"]`); PREF.mode = t.dataset.v; savePref(); if (S.mode !== t.dataset.v) { WZ.procOk = false; b.click(); }
-  setTimeout(() => { renderProcTiles(); wzGo(1); }, 60);
+  renderProcTiles(); wzLater(() => { if (WZ.i === 0) wzGo(1); }, 120);
 });
 
 /* ---------------- início ---------------- */

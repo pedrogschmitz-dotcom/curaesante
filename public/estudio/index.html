@@ -25,8 +25,10 @@ html,body{background:var(--esc);color:var(--off);font-family:"Red Hat Display",s
 body{padding:env(safe-area-inset-top) 0 calc(84px + env(safe-area-inset-bottom))}
 .wrap{max-width:720px;margin:0 auto;padding:18px 16px 40px}
 h1,h2,.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500}
-header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:10px 0 18px}
-header.top h1{font-size:38px;line-height:1}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0 10px}
+header.top h1{font-size:26px;line-height:1;white-space:nowrap}
+header.top .kick{font-size:9px;margin-bottom:2px}
+header.top .pill{font-size:11px;padding:5px 10px;white-space:nowrap}
 header.top h1 em{color:var(--dour)}
 .kick{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--dour);font-weight:700}
 .pill{font-size:12px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);color:var(--sub);white-space:nowrap}
@@ -69,7 +71,16 @@ textarea{min-height:72px;resize:vertical;line-height:1.4}
 .step-ml{display:flex;align-items:center;gap:6px}
 .step-ml button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--off);font-size:18px}
 .step-ml input{width:64px;text-align:center;padding:7px}
-.styles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.styles{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 10px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.styles::-webkit-scrollbar{display:none}
+.styles .sty{flex:0 0 30%;scroll-snap-align:center}
+.stylebar{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 8px}
+#stName{font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--dour)}
+details.more{margin-top:16px;border:1px solid var(--line);border-radius:16px;padding:4px 14px 12px}
+details.more summary{cursor:pointer;font-weight:700;padding:12px 0;list-style:none}
+details.more summary::after{content:" +";color:var(--dour)}
+details.more[open] summary::after{content:" −"}
+#stPrev,#stNext{padding:10px 14px;font-size:20px;line-height:1}
 .sty{border-radius:14px;overflow:hidden;border:1.5px solid transparent;background:var(--field);cursor:pointer;position:relative}
 .sty canvas{width:100%;display:block;aspect-ratio:9/16;background:#0d0a07}
 .sty .nm{font-size:13px;font-weight:700;padding:7px 8px 2px}
@@ -99,9 +110,8 @@ body.cir .est{display:none!important}body:not(.cir) .cir{display:none!important}
 body.cir.nocir #s1,body.cir.nocir #s2,body.cir.nocir #s3,body.cir.nocir #s4,body.cir.nocir #s5{opacity:.35;pointer-events:none}
 .clip{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;background:var(--field);border:1px solid var(--line);border-radius:14px;padding:8px;margin-top:8px}
 .clip video{width:72px;height:96px;object-fit:cover;border-radius:10px;background:#000}
-.toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);background:var(--off);color:var(--esc);padding:12px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
+.toast{position:fixed;left:50%;top:calc(64px + env(safe-area-inset-top));transform:translateX(-50%);background:var(--off);color:var(--esc);padding:12px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
-.modal.on ~ .toast{bottom:auto;top:calc(16px + env(safe-area-inset-top))}
 .modal{position:fixed;inset:0;background:var(--modalbg);z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;gap:12px}
 .modal.on{display:flex}
 .modal canvas{max-width:100%;max-height:68vh;border-radius:12px;touch-action:none}
@@ -136,6 +146,10 @@ input,textarea,select,.copybox{-webkit-user-select:text;user-select:text;font-si
 .slot .camb{right:50px}
 .gest{font-size:12px;color:var(--sub);text-align:center;margin-top:-4px}
 #cvAlign,#cvReg{width:min(78vw,340px,calc((100dvh - 330px) * 9 / 16))}
+#cvPrev:not(.fs),#resVideo{width:min(78vw,340px,calc((100dvh - 330px) * 9 / 16))}
+#v-criar{padding-bottom:12px}
+#v-criar .step .hd{margin-bottom:10px}
+#s5 .hd .hint{font-size:12px}
 #cvPrev.fs{position:fixed;inset:0;margin:auto;width:auto!important;height:100dvh;max-width:100vw;object-fit:contain;z-index:95;border-radius:0;background:#000}
 body.prevfs::after{content:"";position:fixed;inset:0;background:#000;z-index:94}
 /* layout de app: só o conteúdo rola; a barra de baixo fica parada */
@@ -268,12 +282,22 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="row" style="margin-top:14px"><button class="btn small ghost" id="saveCase">Guardar caso na galeria</button></div>
   </div>
 
-  <div class="step" id="s4">
-    <div class="hd"><span class="num">4</span><div><h2>Estilo</h2><div class="hint">Mesmas fotos, vários vídeos. Toque para escolher.</div></div></div>
+  <div class="step" id="s5">
+    <div class="hd"><span class="num">5</span><div><h2>Estilo e vídeo</h2><div class="hint" id="durInfo">—</div></div></div>
+    <div class="player">
+      <canvas id="cvPrev" width="1080" height="1920"></canvas><div class="gest">Toque para tela cheia · arraste para o lado para trocar o estilo</div>
+      <video id="resVideo" controls playsinline></video>
+      <div class="row" style="width:min(78vw,340px)"><button class="btn small ghost" id="stPrev" aria-label="Estilo anterior">‹</button><button class="btn small" id="play">▶ Tocar</button><input type="range" id="scrub" min="0" max="1000" value="0" style="flex:1"><button class="btn small ghost" id="stNext" aria-label="Próximo estilo">›</button></div>
+    </div>
+    <div class="stylebar"><span class="f" style="margin:0">Estilo</span><span id="stName"></span></div>
+    <div class="styles" id="styles"></div>
+    <div class="hint" style="text-align:center;margin-top:6px">Deslize os estilos ou arraste a prévia para o lado para trocar.</div>
+    <label class="f">Para onde vai</label>
+    <div class="seg" id="dest" style="margin-bottom:14px"><button data-v="reel" class="on">Reel</button><button data-v="stories">Stories</button><button data-v="whats">WhatsApp</button></div>
+    <div class="hint" id="destHint" style="margin:-6px 0 12px"></div>
+    <details class="more"><summary>Identidade, trilha e outras opções</summary>
     <label class="f">Identidade</label>
     <div class="seg" id="theme"><button data-v="drpedro" class="on">Dr. Pedro</button><button data-v="curae">Curae Santé</button></div>
-    <label class="f">Estilos</label>
-    <div class="styles" id="styles"></div>
     <label class="f">Trilha (original, sem direitos de terceiros)</label>
     <div class="seg" id="music"><button data-v="suave" class="on">Suave</button><button data-v="elegante">Elegante</button><button data-v="nenhuma">Sem trilha</button></div>
     <div class="tog"><div><b>Efeitos de transição discretos</b></div><div class="sw on" id="swSfx"></div></div>
@@ -284,18 +308,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="row"><label class="btn small ghost" style="cursor:pointer">Subir áudio ou vídeo<input type="file" id="voiceIn" accept="audio/*,video/*" style="display:none"></label><button class="btn small ghost" id="voiceDel" style="display:none">Tirar narração</button></div>
     <div class="hint" id="voiceInfo" style="margin-top:8px"></div>
     <div class="tog est"><div><b>Tarja nos olhos</b><div class="hint">Para quando o paciente não autorizou ser identificado.</div></div><div class="sw" id="swTarja"></div></div>
-  </div>
-
-  <div class="step" id="s5">
-    <div class="hd"><span class="num">5</span><div><h2>Prévia e vídeo</h2><div class="hint" id="durInfo">—</div></div></div>
-    <label class="f" style="margin-top:0">Para onde vai</label>
-    <div class="seg" id="dest" style="margin-bottom:14px"><button data-v="reel" class="on">Reel</button><button data-v="stories">Stories</button><button data-v="whats">WhatsApp</button></div>
-    <div class="hint" id="destHint" style="margin:-6px 0 12px"></div>
-    <div class="player">
-      <canvas id="cvPrev" width="1080" height="1920"></canvas><div class="gest">Toque na prévia para ver em tela cheia</div>
-      <video id="resVideo" controls playsinline></video>
-      <div class="row" style="width:min(78vw,340px)"><button class="btn small" id="play">▶ Tocar</button><input type="range" id="scrub" min="0" max="1000" value="0" style="flex:1"></div>
-    </div>
+    </details>
     <label class="f">Checklist CFM (Res. 2.336/2023)</label>
     <div class="check" data-c="consent"><i></i><span><b>O paciente assinou o termo de uso de imagem.</b> Obrigatório.</span></div>
     <div class="check" data-c="real"><i></i><span><b>Fotos sem filtro nem retoque</b>, só alinhadas. Obrigatório.</span></div>
@@ -349,7 +362,7 @@ nav.tabs{position:relative!important;left:auto;right:auto;bottom:auto!important;
     <div class="hint">Desativando, o app volta a pedir a senha e oferece o Face ID de novo.</div>
     <label class="f">Google Drive</label>
     <div class="tog"><div><b>Enviar ao Drive ao guardar o caso</b><div class="hint">Ao tocar em “Guardar caso”, abre o envio para o Drive na hora.</div></div><div class="sw on" id="swAutoDrive"></div></div>
-    <div class="hint" style="margin-top:14px">Versão do app: 12</div>
+    <div class="hint" style="margin-top:14px">Versão do app: 14</div>
     <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
   </div>
 </section>
