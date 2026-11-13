@@ -49,17 +49,61 @@ let CFG = Object.assign({}, DEF);
 try { Object.assign(CFG, JSON.parse(localStorage.getItem('estudio-cfg') || '{}')); } catch (e) { }
 const saveCfg = () => { try { localStorage.setItem('estudio-cfg', JSON.stringify(CFG)); } catch (e) { } };
 
-/* ---------------- senha (só no site) ---------------- */
+/* ---------------- acesso: Face ID (passkey do aparelho) ou senha (só no site) ---------------- */
 (async () => {
   if (!/curaesante\.com\.br$/.test(location.hostname)) return;
   const H = 'b3dbed9d716ffed8c1bce4cfa563390efb6f9acf876525044d8406779c2c5f8f';
-  try { if (localStorage.getItem('estudio-ok') === H) return; } catch (e) { }
-  const g = document.createElement('div'); g.className = 'modal on'; g.style.zIndex = 200; g.style.background = '#1E1610';
-  g.innerHTML = '<div class="kick">Curae Santé · estúdio</div><div class="serif" style="font-size:34px">Acesso restrito</div><input type="password" id="pwIn" placeholder="Senha" style="max-width:280px;text-align:center" autocomplete="current-password"><button class="btn" id="pwOk" style="min-width:200px">Entrar</button><div class="hint" id="pwMsg"></div>';
-  document.body.append(g);
+  const ls = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) { } }, del: k => { try { localStorage.removeItem(k); } catch (e) { } } };
+  const b64 = a => btoa(String.fromCharCode(...new Uint8Array(a))); const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const rnd = n => crypto.getRandomValues(new Uint8Array(n));
+  const temBio = async () => { try { return !!(window.PublicKeyCredential && await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()); } catch (e) { return false; } };
   const sha = async t => { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); };
-  const tryIt = async () => { const h = await sha('estudio:' + document.getElementById('pwIn').value.trim()); if (h === H) { try { localStorage.setItem('estudio-ok', H); } catch (e) { } g.remove(); } else document.getElementById('pwMsg').textContent = 'Senha incorreta.'; };
-  document.getElementById('pwOk').onclick = tryIt; document.getElementById('pwIn').addEventListener('keydown', e => { if (e.key === 'Enter') tryIt(); });
+  let g = null;
+  const tela = html => { if (!g) { g = document.createElement('div'); g.className = 'modal on'; g.style.zIndex = 200; g.style.background = '#1E1610'; document.body.append(g); } g.innerHTML = '<div class="kick">Curae Santé · estúdio</div>' + html; };
+  const sair = () => { if (g) { g.remove(); g = null; } };
+  const msg = t => { const m = document.getElementById('gMsg'); if (m) m.textContent = t; };
+
+  async function entrarFace() {
+    try {
+      await navigator.credentials.get({ publicKey: { challenge: rnd(32), rpId: location.hostname, userVerification: 'required', timeout: 60000, allowCredentials: [{ type: 'public-key', id: unb64(ls.get('estudio-fid')), transports: ['internal', 'hybrid'] }] } });
+      sair(); ultimo = Date.now();
+    } catch (e) { msg('Não deu certo. Toque de novo ou use a senha.'); }
+  }
+  async function ativarFace() {
+    try {
+      const c = await navigator.credentials.create({ publicKey: { challenge: rnd(32), rp: { name: 'Estúdio Curae', id: location.hostname }, user: { id: rnd(16), name: 'estudio-curae', displayName: 'Estúdio Curae' }, pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }], authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', residentKey: 'preferred' }, timeout: 60000, attestation: 'none' } });
+      ls.set('estudio-fid', b64(c.rawId)); sair(); ultimo = Date.now();
+    } catch (e) { msg('Face ID não foi ativado. Você pode tentar de novo depois.'); }
+  }
+  function telaFace() {
+    tela('<div class="serif" style="font-size:34px">Entrar</div><button class="btn" id="gFace" style="min-width:220px">Entrar com Face ID</button><button class="btn small ghost" id="gPw">Usar senha</button><div class="hint" id="gMsg"></div>');
+    document.getElementById('gFace').onclick = entrarFace;
+    document.getElementById('gPw').onclick = () => telaSenha(true);
+    entrarFace();
+  }
+  async function oferecerFace() {
+    if (!(await temBio()) || ls.get('estudio-fid-nao')) return sair();
+    tela('<div class="serif" style="font-size:30px">Usar Face ID?</div><div class="hint" style="max-width:300px;text-align:center">Na próxima vez, o app abre com o seu rosto em vez da senha.</div><button class="btn" id="gAt" style="min-width:220px">Ativar Face ID</button><button class="btn small ghost" id="gNao">Agora não</button><div class="hint" id="gMsg"></div>');
+    document.getElementById('gAt').onclick = ativarFace;
+    document.getElementById('gNao').onclick = () => { ls.set('estudio-fid-nao', '1'); sair(); };
+  }
+  function telaSenha(voltarFace) {
+    tela('<div class="serif" style="font-size:34px">Acesso restrito</div><input type="password" id="pwIn" placeholder="Senha" style="max-width:280px;text-align:center" autocomplete="current-password"><button class="btn" id="pwOk" style="min-width:200px">Entrar</button>' + (voltarFace ? '<button class="btn small ghost" id="gVolta">Voltar ao Face ID</button>' : '') + '<div class="hint" id="gMsg"></div>');
+    const ok = async () => { const h = await sha('estudio:' + document.getElementById('pwIn').value.trim()); if (h !== H) return msg('Senha incorreta.'); ls.set('estudio-ok', H); ultimo = Date.now(); if (ls.get('estudio-fid')) sair(); else oferecerFace(); };
+    document.getElementById('pwOk').onclick = ok; document.getElementById('pwIn').addEventListener('keydown', e => { if (e.key === 'Enter') ok(); });
+    if (voltarFace) document.getElementById('gVolta').onclick = telaFace;
+  }
+  let ultimo = 0;
+  async function abrir() {
+    if (ls.get('estudio-fid') && await temBio()) return telaFace();
+    if (ls.get('estudio-ok') === H) return oferecerFace();
+    telaSenha(false);
+  }
+  abrir();
+  // trava de novo se o app ficar mais de 5 minutos em segundo plano
+  let saiu = 0;
+  document.addEventListener('visibilitychange', () => { if (document.hidden) saiu = Date.now(); else if (saiu && Date.now() - saiu > 5 * 60 * 1000 && ls.get('estudio-fid') && !g) telaFace(); });
+  window.__estudioDesativarFace = () => { ls.del('estudio-fid'); ls.del('estudio-fid-nao'); };
 })();
 const toast = (m, ms = 2400) => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), ms); };
 
@@ -1062,6 +1106,8 @@ async function loadCase(c) {
   const el = $('#' + k); el.value = CFG[k] || '';
   el.addEventListener('input', () => { CFG[k] = el.value; saveCfg(); renderProfs(); refresh(); });
 });
+
+$('#fidOff').onclick = () => { if (window.__estudioDesativarFace) { window.__estudioDesativarFace(); toast('Face ID desativado. Na próxima abertura, entre com a senha.'); } else toast('O Face ID só funciona no site.'); };
 
 /* ---------------- navegação ---------------- */
 function go(v) { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v)); $$('nav.tabs button').forEach(b => b.classList.toggle('on', b.dataset.v === v)); scrollTo(0, 0); if (v === 'galeria') renderGal(); }
