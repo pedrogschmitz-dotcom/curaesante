@@ -565,7 +565,7 @@ function renderTiles() {
   Object.entries(CIRS).forEach(([k, c]) => {
     const d = document.createElement('div'); d.className = 'tile' + (S.cirSel === k ? ' on' : '');
     d.innerHTML = `<b>${c.curto}</b><span>${({ lipoma: 'Nódulo de gordura sob a pele', cisto: '“Cisto sebáceo”: bolsa de queratina com cápsula', lobulo: 'Lóbulo da orelha rasgado ou alargado', nevo: 'Pinta ou lesão, com exame da peça' })[k]}</span>`;
-    d.onclick = () => { S.cirSel = k; try { PREF['proc_cir'] = k; savePref(); } catch (e) { } document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); { const at = WZ.i; wzLater(() => { if (WZ.i === at) wzGo(at + 1); }, 260); } };
+    d.onclick = () => { S.cirSel = k; try { PREF['proc_cir'] = k; savePref(); } catch (e) { } document.body.classList.remove('nocir'); applyProc(k); renderTiles(); refresh(true); toast('Se quiser, suba as fotos da peça logo abaixo. Depois, Avançar.', 2600); };
     box.append(d);
   });
 }
@@ -681,7 +681,14 @@ $('#narrDel').onclick = () => { S.narr = null; S.voice = null; S.capWords = []; 
 function segCtl(id, key, cb) {
   $$(`#${id} button`).forEach(b => b.onclick = () => { $$(`#${id} button`).forEach(x => x.classList.toggle('on', x === b)); S[key] = b.dataset.v; cb && cb(); refresh(key === 'theme'); });
 }
-segCtl('mode', 'mode', () => setTimeout(applyMode, 0));
+segCtl('mode', 'mode', () => setTimeout(() => { applyMode(); reprocAll(); }, 0));
+async function reprocAll() { // fotos sobem antes do modo: refaz rosto e fundo para o modo escolhido
+  for (const k of ['fa', 'fd', 'pa', 'pd', 'v0', 'v7', 'v14', 'v30', 'vx']) {
+    if (!S.orig[k]) continue;
+    if (S.mode !== 'cir' && !S.lmOrig[k] && !S.eyesOrig[k]) { try { S.lmOrig[k] = await detect(S.orig[k]); } catch (e) { } }
+    await applyCrop(k, S.crop[k]);
+  }
+}
 function applyMode() {
   const cir = S.mode === 'cir'; document.body.classList.toggle('cir', cir); document.body.classList.toggle('com', S.mode === 'com');
   const L = cir ? { fa: ['ANTES', 'Antes'], fd: ['CICATRIZ', 'Depois'], pa: ['OUTRO ÂNGULO', 'Antes'], pd: ['OUTRO ÂNGULO', 'Depois'] } : { fa: ['FRENTE', 'Antes'], fd: ['FRENTE', 'Depois'], pa: ['PERFIL OU 3/4', 'Antes'], pd: ['PERFIL OU 3/4', 'Depois'] };
@@ -1227,10 +1234,6 @@ function fastUI() { const ok = fotosOk(); $('#fastGo').style.display = ok ? '' :
   $('#fastHint').textContent = rostoOk() || S.mode === 'cir' ? 'Usa o encaixe automático e o seu último estilo, trilha e destino. Você confere na prévia.' : 'Rosto não achado em uma das fotos: confira o encaixe antes.'; }
 setInterval(() => { if (!$('#s1').classList.contains('wz-off')) fastUI(); }, 700);
 $('#fastGo').onclick = () => { if (!fotosOk()) return toast('Suba as fotos obrigatórias.'); if (S.mode !== 'cir' && !rostoOk()) { wzGo(WZ.i + 1); return toast('Confira o encaixe primeiro.'); } wzGo(wzPages().length - 1); toast('Confira a prévia, marque o checklist e gere o vídeo.', 3200); };
-// Avançar a partir das fotos pula o encaixe quando os rostos foram achados
-$('#wzNext').addEventListener('click', e => {
-  const P = wzPages(); if (P[WZ.i] === 's1' && fotosOk() && rostoOk()) { e.stopImmediatePropagation(); wzGo(P.indexOf('s3')); toast('Rostos encaixados sozinhos. Toque em Voltar para conferir o encaixe.', 3200); }
-}, true);
 // postar no Instagram: copia a legenda e abre o compartilhar com o vídeo
 $('#postIg').onclick = async () => {
   if (!S.result) return toast('Gere o vídeo primeiro.');
@@ -1262,10 +1265,10 @@ document.getElementById('styles').addEventListener('click', () => setTimeout(() 
     if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && Date.now() - t0 < 400) { c.classList.add('fs'); document.body.classList.add('prevfs'); toast('Toque de novo para sair.'); } });
 })();
 
-/* ---------------- etapas (modo → procedimento → fotos → …) ---------------- */
+/* ---------------- etapas (fotos → modo → procedimento → …) ---------------- */
 const WZ = { i: 0, procOk: false, t: 0 };
 const wzLater = (fn, ms) => { clearTimeout(WZ.t); WZ.t = setTimeout(fn, ms); };
-const wzPages = () => S.mode === 'cir' ? ['sMode', 's0', 's1', 's2', 's3', 's5'] : ['sMode', 'sProc', 's1', 's2', 's3', 's5'];
+const wzPages = () => S.mode === 'cir' ? ['s1', 'sMode', 's0', 's2', 's3', 's5'] : ['s1', 'sMode', 'sProc', 's2', 's3', 's5'];
 const WZ_NOMES = { sMode: 'Modo', sProc: 'Procedimento', s0: 'Cirurgia', s1: 'Fotos', s2: 'Encaixe', s3: 'O caso', s5: 'Estilo e vídeo' };
 function renderProcTiles() {
   const box = $('#procTiles'); box.innerHTML = '';
@@ -1285,6 +1288,8 @@ function wzCan(id) {
 function wzGo(i) {
   clearTimeout(WZ.t);
   const P = wzPages(); i = Math.max(0, Math.min(P.length - 1, i));
+  // depois do procedimento, pula o encaixe quando os rostos foram achados
+  if (P[i] === 's2' && i === WZ.i + 1 && wzCan(P[WZ.i]) === true && rostoOk()) { i = P.indexOf('s3'); setTimeout(() => toast('Rostos encaixados sozinhos. Toque em Voltar para conferir o encaixe.', 3200), 50); }
   if (i > WZ.i) for (let k = WZ.i; k < i; k++) { const ok = wzCan(P[k]); if (ok !== true) { toast(ok); i = k; break; } }
   const sai = P[WZ.i], vai = P[i];
   WZ.i = i;
@@ -1304,7 +1309,7 @@ $('#wzNext').onclick = () => wzGo(WZ.i + 1);
 $$('#modeTiles .tile').forEach(t => t.onclick = () => {
   $$('#modeTiles .tile').forEach(x => x.classList.toggle('on', x === t));
   const b = $(`#mode button[data-v="${t.dataset.v}"]`); PREF.mode = t.dataset.v; savePref(); if (S.mode !== t.dataset.v) { WZ.procOk = false; b.click(); }
-  renderProcTiles(); wzLater(() => { if (WZ.i === 0) wzGo(1); }, 120);
+  renderProcTiles(); const at = WZ.i; wzLater(() => { if (WZ.i === at) wzGo(at + 1); }, 120);
 });
 
 /* ---------------- início ---------------- */

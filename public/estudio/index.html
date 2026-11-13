@@ -193,7 +193,7 @@ addEventListener('resize',fit);addEventListener('orientationchange',function(){s
 <section class="view on" id="v-criar">
   <div class="wz-top"><div class="wz-bar"><div id="wzFill"></div></div><div class="wz-lab" id="wzLab"></div></div>
   <div class="step" id="sMode">
-    <div class="hd"><span class="num">1</span><div><h2>Qual modo?</h2><div class="hint">Escolha o tipo de caso. Depois vem o procedimento e, só então, as fotos.</div></div></div>
+    <div class="hd"><span class="num">1</span><div><h2>Qual modo?</h2><div class="hint">Com as fotos já no aparelho, diga que tipo de caso é. Depois, o que foi feito.</div></div></div>
     <div class="seg" id="mode" style="display:none"><button data-v="est" class="on">Estético (rosto)</button><button data-v="cir">Cirúrgico</button><button data-v="com">Caso comentado</button></div>
     <div class="tiles wz-modes" id="modeTiles">
       <div class="tile on" data-v="est"><b>Estético (rosto)</b><span>Preenchimento, toxina, bioestimulador e outros. Encaixe automático pelo rosto.</span></div>
@@ -206,8 +206,14 @@ addEventListener('resize',fit);addEventListener('orientationchange',function(){s
     <div class="tiles" id="procTiles"></div>
   </div>
   <div class="step cir" id="s0">
-    <div class="hd"><span class="num">●</span><div><h2>Qual cirurgia?</h2><div class="hint">Escolha primeiro. Os textos do vídeo e da legenda vêm daqui, sem digitar.</div></div></div>
+    <div class="hd"><span class="num">●</span><div><h2>Qual cirurgia?</h2><div class="hint">Os textos do vídeo e da legenda vêm daqui, sem digitar. Embaixo, as fotos da peça (opcional).</div></div></div>
     <div class="tiles" id="cirTiles"></div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="pecaHd">Peça retirada <span>opcional · até 3 ângulos</span></div>
+      <label class="slot peca" data-k="k1"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 1</span><input type="file" accept="image/*"></label>
+      <label class="slot peca" data-k="k2"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 2</span><input type="file" accept="image/*"></label>
+      <label class="slot peca" data-k="k3"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 3</span><input type="file" accept="image/*"></label>
+    </div>
   </div>
   <div class="step" id="s1">
     <div class="hd"><span class="num">1</span><div><h2>Fotos</h2><div class="hint">Mesma luz e mesmo enquadramento. As fotos ficam só neste aparelho.</div></div></div>
@@ -216,10 +222,6 @@ addEventListener('resize',fit);addEventListener('orientationchange',function(){s
       <label class="slot" data-k="fd"><span class="req">OBRIGATÓRIA</span><span class="lab">FRENTE</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
       <label class="slot" data-k="pa"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
       <label class="slot" data-k="pd"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
-      <div class="cir pecaHd">Peça retirada <span>opcional · até 3 ângulos</span></div>
-      <label class="slot cir peca" data-k="k1"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 1</span><input type="file" accept="image/*"></label>
-      <label class="slot cir peca" data-k="k2"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 2</span><input type="file" accept="image/*"></label>
-      <label class="slot cir peca" data-k="k3"><span class="req">OPCIONAL</span><span class="lab">PEÇA</span><span class="big">Ângulo 3</span><input type="file" accept="image/*"></label>
     </div>
     <div class="evoHd">Evolução <span>opcional · fotos entre o antes e o depois</span></div>
     <div class="grid2 evo">
@@ -387,7 +389,7 @@ addEventListener('resize',fit);addEventListener('orientationchange',function(){s
     <div class="hint">Desativando, o app volta a pedir a senha e oferece o Face ID de novo.</div>
     <label class="f">Google Drive</label>
     <div class="tog"><div><b>Enviar ao Drive ao guardar o caso</b><div class="hint">Ao tocar em “Guardar caso”, abre o envio para o Drive na hora.</div></div><div class="sw on" id="swAutoDrive"></div></div>
-    <div class="hint" style="margin-top:14px">Versão do app: 16</div>
+    <div class="hint" style="margin-top:14px">Versão do app: 17</div>
     <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
   </div>
 </section>
