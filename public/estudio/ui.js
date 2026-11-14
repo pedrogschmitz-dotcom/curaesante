@@ -7,7 +7,7 @@ const { W, H } = M;
 const PROCS = {
   ah: { nome: 'Preenchimento com ácido hialurônico', curto: 'Preenchimento', indic: 'Perda de volume e de sustentação, com sulcos e sombras que deixam o rosto com aspecto cansado.', compl: 'Inchaço, roxos e sensibilidade nos primeiros dias. Mais raramente: nódulos, assimetria ou complicação vascular, que exige avaliação imediata.', interval: 'Imediatamente após', regs: ['malar', 'bigode', 'mento'] },
   bio: { nome: 'Bioestimulador de colágeno', curto: 'Bioestimulador', indic: 'Flacidez leve a moderada e perda de firmeza da pele.', compl: 'Inchaço e roxos transitórios; nódulos são possíveis. O resultado é gradual, ao longo de semanas a meses.', interval: '90 dias após', regs: ['malar', 'mandibula', 'prejowl'] },
-  tox: { nome: 'Toxina botulínica', curto: 'Toxina botulínica', indic: 'Linhas de expressão que aparecem com o movimento: testa, entre as sobrancelhas e ao redor dos olhos.', compl: 'Pequenos roxos no local e dor de cabeça leve. Raramente, queda transitória da pálpebra ou da sobrancelha.', interval: '15 dias após', regs: ['testa', 'glabela', 'pes'] },
+  tox: { nome: 'Toxina botulínica', curto: 'Toxina botulínica', indic: 'Linhas de expressão que aparecem com o movimento: testa, entre as sobrancelhas e ao redor dos olhos.', compl: 'Pequenos roxos no local e dor de cabeça leve. Raramente, queda transitória da pálpebra ou da sobrancelha.', interval: '14 dias após', regs: ['testa', 'glabela', 'pes'] },
   sb: { nome: 'Hidratação injetável da pele', curto: 'Hidratação injetável', indic: 'Pele desidratada, sem viço e com linhas finas.', compl: 'Pequenas pápulas e inchaço por 1 a 3 dias; roxos pontuais.', interval: '30 dias após', regs: ['malar', 'olheiras'] },
   fio: { nome: 'Fios de PDO', curto: 'Fios de PDO', indic: 'Flacidez leve com perda de contorno do rosto.', compl: 'Inchaço, sensibilidade e pequenas irregularidades transitórias. Raramente, exposição do fio ou infecção.', interval: '30 dias após', regs: ['malar', 'mandibula'] },
   rino: { nome: 'Rinomodelação com ácido hialurônico', curto: 'Rinomodelação', indic: 'Pequenas irregularidades do dorso e da ponta do nariz, para quem não quer cirurgia.', compl: 'Inchaço e roxos leves. Complicação vascular é rara e exige avaliação imediata.', interval: 'Imediatamente após', regs: ['nariz'] },
@@ -22,9 +22,10 @@ const CIRS = {
 };
 const LOCAIS = ['Couro cabeludo', 'Testa', 'Face', 'Pescoço', 'Ombro', 'Costas', 'Tórax', 'Abdome', 'Braço', 'Antebraço', 'Mão', 'Coxa', 'Perna', 'Pé', 'Outro'];
 const LOCAIS_LOB = ['Lóbulo direito', 'Lóbulo esquerdo', 'Os dois lóbulos'];
-const DIAS_CIR = ['7 dias depois', '14 dias depois', '30 dias depois', '60 dias depois', '90 dias depois', '6 meses depois', '1 ano depois'];
+const TEMPOS = ['Pós imediato', '7 dias', '14 dias', '30 dias', '60 dias', '90 dias', '6 meses', '1 ano'];
+const DIAS_CIR = ['Logo após', '7 dias depois', '14 dias depois', '30 dias depois', '60 dias depois', '90 dias depois', '6 meses depois', '1 ano depois'];
 const curP = () => (S.mode === 'cir' ? CIRS[S.proc] || CIRS.lipoma : PROCS[S.proc] || PROCS.ah);
-const INTERVALS = ['Imediatamente após', '7 dias após', '15 dias após', '30 dias após', '60 dias após', '90 dias após', '6 meses após'];
+const INTERVALS = ['Imediatamente após', '7 dias após', '14 dias após', '30 dias após', '60 dias após', '90 dias após', '6 meses após', '1 ano após'];
 const SESS = ['1 sessão', '2 sessões', '3 sessões', '4 sessões', 'Sessão única + retoque'];
 const ANGLES = { resultado: 'Resultado', regioes: 'Regiões', planejamento: 'Planejamento', indicacao: 'Para quem é', enquete: 'Enquete', pos: 'O que esperar depois', natural: 'Naturalidade' };
 const WEEK = [
@@ -494,11 +495,17 @@ $('#manEyes').onclick = () => { eyeQueue = ['fa', 'fd'].filter(k => S.img[k]); i
 const procSel = $('#proc');
 Object.entries(PROCS).forEach(([k, p]) => procSel.add(new Option(p.nome, k)));
 INTERVALS.forEach(v => $('#interval').add(new Option('Depois: ' + v.toLowerCase(), v)));
+// tempo da foto do depois: escolhido na etapa das fotos, vale para qualquer modo/procedimento
+$('#depT').add(new Option('Escolher depois (usa o padrão do procedimento)', ''));
+TEMPOS.forEach((v, i) => $('#depT').add(new Option(v, i)));
+function syncIv() { const i = $('#depT').value; if (i === '') return; const L = S.mode === 'cir' ? DIAS_CIR : INTERVALS; $('#interval').value = L[+i]; }
+$('#depT').addEventListener('change', () => { syncIv(); refresh(); });
+$('#interval').addEventListener('change', () => { $('#depT').value = String($('#interval').selectedIndex); });
 SESS.forEach(v => $('#sess').add(new Option(v, v)));
 function applyProc(k, keepRegs) {
   if (S.mode === 'cir') { const c = CIRS[k]; S.proc = k; renderLocais(k); $('#indic').value = c.indic; $('#compl').value = c.compl; $('#tecnica').value = c.tecnica; $('#cuidados').value = c.cuidados; $('#hook1').value = c.curto; $('#hook2').value = 'Antes e depois'; S.regs = new Set(); renderRegs(); return; }
   const p = PROCS[k]; S.proc = k;
-  $('#indic').value = p.indic; $('#compl').value = p.compl; $('#interval').value = p.interval;
+  $('#indic').value = p.indic; $('#compl').value = p.compl; $('#interval').value = p.interval; syncIv();
   if (!keepRegs) S.regs = new Set(p.regs);
   $('#hook1').value = 'Antes e depois'; $('#hook2').value = p.curto;
   renderRegs();
@@ -702,6 +709,7 @@ function applyMode() {
   if (cir) { renderTiles(); if (S.cirSel) applyProc(S.cirSel); else document.body.classList.add('nocir'); } else { document.body.classList.remove('nocir'); applyProc('ah'); }
   S.style = cir ? 'cirurgia' : S.mode === 'com' ? 'comentado' : 'cortina'; renderStyles();
   if (cir) { $('#interval').value = '30 dias depois'; }
+  syncIv();
   // fotos já carregadas: refaz sem/ com detecção de rosto
   buildFrames(); refresh(true);
 }

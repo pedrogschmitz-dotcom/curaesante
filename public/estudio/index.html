@@ -223,15 +223,9 @@ addEventListener('resize',fit);addEventListener('orientationchange',function(){s
       <label class="slot" data-k="pa"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Antes</span><input type="file" accept="image/*"></label>
       <label class="slot" data-k="pd"><span class="req">OPCIONAL</span><span class="lab">PERFIL OU 3/4</span><span class="big">Depois</span><input type="file" accept="image/*"></label>
     </div>
-    <div class="evoHd">Evolução <span>opcional · fotos entre o antes e o depois</span></div>
-    <div class="grid2 evo">
-      <label class="slot" data-k="v0"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">Pós imediato</span><input type="file" accept="image/*"></label>
-      <label class="slot" data-k="v7"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">7 dias</span><input type="file" accept="image/*"></label>
-      <label class="slot" data-k="v14"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">14 dias</span><input type="file" accept="image/*"></label>
-      <label class="slot" data-k="v30"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">30 dias</span><input type="file" accept="image/*"></label>
-      <label class="slot" data-k="vx"><span class="req">OPCIONAL</span><span class="lab">EVOLUÇÃO</span><span class="big">Outro tempo</span><input type="file" accept="image/*"></label>
-      <div class="evoX"><label class="f" style="margin-top:0">Tempo da foto “outro”</label><input id="evx" placeholder="ex.: 60 dias"></div>
-    </div>
+    <label class="f" for="depT">Quando foi tirada a foto do depois?</label>
+    <select id="depT"></select>
+    <input id="evx" type="hidden">
     <div class="tog est" style="margin-top:12px"><div><b>Fundo preto automático</b><div class="hint">Recorta a pessoa e pinta o fundo de preto. Não mexe na pele nem no rosto.</div></div><div class="sw on" id="swBg"></div></div>
     <div class="com" style="margin-top:14px">
       <label class="f" style="margin-top:0">Seu vídeo narrando o caso</label>
@@ -389,7 +383,7 @@ addEventListener('resize',fit);addEventListener('orientationchange',function(){s
     <div class="hint">Desativando, o app volta a pedir a senha e oferece o Face ID de novo.</div>
     <label class="f">Google Drive</label>
     <div class="tog"><div><b>Enviar ao Drive ao guardar o caso</b><div class="hint">Ao tocar em “Guardar caso”, abre o envio para o Drive na hora.</div></div><div class="sw on" id="swAutoDrive"></div></div>
-    <div class="hint" style="margin-top:14px">Versão do app: 17</div>
+    <div class="hint" style="margin-top:14px">Versão do app: 18</div>
     <div class="note" style="margin-top:14px">Regras deste estúdio: nunca apresenta ninguém como especialista nem cita RQE; mostra só nome e CRM; não aplica filtro na pele; sempre fecha com indicação, evolução, possíveis efeitos e "resultados variam".</div>
   </div>
 </section>
