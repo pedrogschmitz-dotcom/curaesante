@@ -223,6 +223,10 @@ write('blog/index.html', layout({ title: 'Blog: pele, cabelo e metabolismo | Cur
 urls.push('/blog/');
 
 const SVC = [
+  [/lábio|labios/i, '/servicos/preenchimento-labial/', 'preenchimento labial'],
+  [/melasma|mancha/i, '/servicos/manchas-na-pele/', 'manchas na pele'],
+  [/cicatriz|laser|poro/i, '/servicos/laser-co2-fracionado/', 'laser CO2 fracionado'],
+  [/harmoniza|rosto cansado|mandíbula|bigode|olheira|marionete|pé de galinha/i, '/servicos/harmonizacao-facial/', 'harmonização facial'],
   [/tirzepatida|semaglutida|emagrec|peso|obesidade|massa muscular|fome|dieta|plateau|álcool|sono/i, '/servicos/programa-de-emagrecimento/', 'programa de emagrecimento'],
   [/menopausa|perimenopausa|hormon/i, '/servicos/menopausa-e-insonia/', 'menopausa e insônia'],
   [/insulina|glicada|esteatose|fígado|cortisol|tireoid|ferritina|ferro|cardiovascular/i, '/servicos/investigacao-metabolica/', 'investigação metabólica'],
