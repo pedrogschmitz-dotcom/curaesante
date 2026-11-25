@@ -291,8 +291,9 @@
   if (choice === 'nao') return;
   const bar = document.createElement('div');
   bar.setAttribute('role', 'dialog'); bar.setAttribute('aria-label', 'Aviso de cookies');
-  bar.style.cssText = 'position:fixed;left:16px;right:16px;bottom:16px;z-index:95;max-width:560px;margin:0 auto;background:#2A1F14;color:#EAE4DA;border-radius:18px;padding:18px 20px;box-shadow:0 20px 50px rgba(0,0,0,.35);font:15px/1.5 "Hanken Grotesk",system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;align-items:center';
-  bar.innerHTML = '<span style="flex:1 1 260px">Usamos cookies para medir as visitas e melhorar o site. Nenhum dado de saúde é coletado.</span><button data-c="nao" style="font:inherit;font-weight:700;background:none;border:1px solid rgba(234,228,218,.4);color:#EAE4DA;border-radius:99px;padding:9px 16px;cursor:pointer">Recusar</button><button data-c="sim" style="font:inherit;font-weight:700;background:#BCA78E;border:0;color:#2A1F14;border-radius:99px;padding:10px 18px;cursor:pointer">Aceitar</button>';
+  bar.className = 'ckbar'; bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:95;max-width:560px;margin:0 auto;background:#2A1F14;color:#EAE4DA;border-radius:14px;padding:12px 14px;box-shadow:0 20px 50px rgba(0,0,0,.35);font:15px/1.5 "Hanken Grotesk",system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:12px;align-items:center';
+  const ckTxt = innerWidth < 640 ? 'Cookies só para medir visitas. Nenhum dado de saúde.' : 'Usamos cookies para medir as visitas e melhorar o site. Nenhum dado de saúde é coletado.';
+  bar.innerHTML = '<span style="flex:1 1 260px">' + ckTxt + '</span><button data-c="nao" style="font:inherit;font-weight:700;background:none;border:1px solid rgba(234,228,218,.4);color:#EAE4DA;border-radius:99px;padding:9px 16px;cursor:pointer">Recusar</button><button data-c="sim" style="font:inherit;font-weight:700;background:#BCA78E;border:0;color:#2A1F14;border-radius:99px;padding:10px 18px;cursor:pointer">Aceitar</button>';
   bar.addEventListener('click', e => { const c = e.target.dataset && e.target.dataset.c; if (!c) return; try { localStorage.setItem(KEY, c); } catch (x) {} bar.remove(); if (c === 'sim') load(); });
   document.body.appendChild(bar);
 })();

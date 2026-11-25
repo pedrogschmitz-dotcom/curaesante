@@ -5,8 +5,9 @@ NOVOS = [
  {
   "slug": "harmonizacao-facial", "nome": "Harmonização facial", "kick": "Plano para o rosto todo", "estetico": True,
   "foto": "/s/img/pedro-espelho.jpg", "assunto": "harmonização facial",
-  "title": "Harmonização facial em São José/SC | Curae Santé",
-  "description": "Harmonização facial com avaliação e aplicação feitas por médico: toxina, ácido hialurônico e bioestimuladores com plano individual. São José/SC.",
+  "title": "Harmonização facial em São José/SC, Kobrasol | Curae Santé",
+  "description": "Harmonização facial no Kobrasol, em São José/SC, perto de Florianópolis: avaliação e aplicação por médico, com plano individual e resultado natural.",
+  "h1": "Harmonização facial em São José",
   "lead": "Não é um procedimento só: é um plano para o seu rosto, que pode combinar toxina botulínica, ácido hialurônico e bioestimuladores. O objetivo é equilíbrio e naturalidade, sem copiar o rosto de outra pessoa.",
   "oque": "Harmonização facial é o nome popular para o conjunto de procedimentos que tratam rugas de expressão, perda de volume, flacidez e contorno. Cada técnica resolve um problema diferente, e por isso a avaliação vem antes de qualquer aplicação: o médico analisa anatomia, proporções, qualidade da pele e o que incomoda você, e só então define o que faz sentido, em que ordem e com que intervalo.",
   "para": ["Rugas de expressão que incomodam", "Perda de volume no meio do rosto, nos sulcos ou nos lábios", "Flacidez leve a moderada e perda de firmeza", "Desejo de um plano organizado, em etapas, em vez de aplicações isoladas"],
@@ -17,8 +18,12 @@ NOVOS = [
    {"q": "Vou ficar com o rosto artificial?", "a": "O plano respeita a anatomia e as proporções do seu rosto, e a quantidade de produto é decidida na avaliação. Resultados variam de pessoa para pessoa."},
    {"q": "Preciso fazer tudo de uma vez?", "a": "Não. Muitos planos são feitos em etapas, e o médico explica a ordem. Nem todo rosto precisa de todos os procedimentos."},
    {"q": "Quanto tempo dura?", "a": "Depende do produto, da região e do organismo. A toxina dura alguns meses, o ácido hialurônico de meses a mais de um ano, e o bioestimulador tem efeito gradual."},
-   {"q": "Quem faz o procedimento?", "a": "Na Curae Santé, a avaliação e a aplicação são feitas pelo Dr. Pedro Schmitz (CRM/SC 38229)."}
+   {"q": "Quem faz o procedimento?", "a": "Na Curae Santé, a avaliação e a aplicação são feitas pelo Dr. Pedro Schmitz (CRM/SC 38229)."},
+   {"q": "Quanto custa a harmonização facial?", "a": "Depende do plano: quais técnicas, quanto produto, quantas regiões e quantas etapas. O valor é informado depois da avaliação, quando o plano está definido."},
+   {"q": "Atendem pacientes de Florianópolis?", "a": "Sim. A clínica fica no Kobrasol, em São José, e recebe pacientes de Florianópolis, Palhoça, Biguaçu e de toda a Grande Florianópolis."}
   ],
+  "custo": ["Quais técnicas entram no plano: toxina botulínica, ácido hialurônico, bioestimulador ou uma combinação", "Quanto produto cada região precisa, o que só se define olhando o seu rosto", "Quantas regiões e quantas etapas o plano tem", "Retornos de revisão e a manutenção ao longo do tempo"],
+  "local": True,
   "evid": ["A maior parte das reações aos preenchedores de ácido hialurônico é leve e passageira, e eventos graves são raros, segundo consenso internacional de médicos.", "A obstrução de um vaso é uma complicação rara, mas pode ter consequências graves. Diretrizes afirmam que quem aplica precisa saber reconhecer e tratar o problema rapidamente, inclusive com o uso de hialuronidase.", "Revisões sistemáticas avaliaram eficácia, durabilidade e segurança dos bioestimuladores de colágeno no rosto, com resultado gradual e variável entre pessoas.", "A evidência avalia sobretudo cada técnica isolada. Planos combinados são montados com base na avaliação clínica e na experiência do médico, e não em estudos que testem o pacote."],
   "refs": ["Signorini M et al. Global Aesthetics Consensus: avoidance and management of complications from hyaluronic acid fillers. Plast Reconstr Surg, 2016 (consenso internacional).", "Murray G et al. Guideline for the management of hyaluronic acid filler-induced vascular occlusion. J Clin Aesthet Dermatol, 2021.", "Murray G et al. Guideline for the safe use of hyaluronidase in aesthetic medicine. J Clin Aesthet Dermatol, 2021.", "Signori R et al. Efficacy and safety of poly-L-lactic acid in facial aesthetics: systematic review. Polymers, 2024.", "Ferreira et al. Efficacy, durability, and safety of collagen biostimulators (PLLA and CaHA) in the face: systematic review. Aesthetic Plast Surg, 2026."],
   "rel": ["botox-harmonizacao-facial-o-que-faz-de-verdade", "rosto-cansado", "flacidez-facial-tratamentos"]
@@ -198,5 +203,50 @@ NOVOS = [
   "evid": ["Em uma revisão sistemática de 16 estudos, o ultrassom microfocado levantou levemente a sobrancelha e reduziu a área do queixo na região abaixo dele. Os pesquisadores avaliaram melhora em 92% dos casos aos 90 dias. A melhora relatada pelas pacientes foi leve.", "Os dados de longo prazo não estão disponíveis, e todos os estudos incluídos eram só com mulheres, segundo a mesma revisão.", "Em uma revisão sistemática com metanálise de 42 estudos, 89% dos pacientes tiveram alguma melhora segundo os avaliadores e 84% referiram melhora, com dor moderada em média e efeitos adversos leves a moderados.", "As conclusões dependem de estudos com métodos diferentes, e os dados de longo prazo ainda são limitados."],
   "refs": ["Contini M et al. A systematic review of the efficacy of microfocused ultrasound for facial skin tightening. Int J Environ Res Public Health, 2023.", "Amiri M et al. Microfocused ultrasound with visualization (MFU-V) effectiveness and safety: a systematic review and meta-analysis. Aesthet Surg J, 2025."],
   "rel": ["flacidez-facial-tratamentos", "contorno-mandibula", "rosto-cansado"]
+ },
+
+ {
+  "slug": "harmonizacao-facial-natural", "nome": "Harmonização facial natural", "kick": "Parecer descansado, não diferente", "estetico": True,
+  "foto": "/s/img/pedro-rugas.jpg", "assunto": "harmonização facial natural",
+  "title": "Harmonização facial natural em São José/SC | Curae Santé",
+  "description": "Harmonização facial natural no Kobrasol, São José/SC: plano por médico que respeita as suas proporções, com pouco produto e em etapas. Perto de Florianópolis.",
+  "h1": "Harmonização facial natural",
+  "lead": "Para quem quer parecer descansado, e não com outro rosto. O plano parte das suas proporções, usa o mínimo necessário e é feito em etapas, com revisão entre uma e outra.",
+  "oque": "Harmonização natural não é uma técnica diferente: é um jeito de planejar. Em vez de seguir um padrão de rosto, o médico avalia o que mudou com o tempo no seu rosto (rugas de expressão, perda de volume, flacidez) e trata a causa de cada coisa, em vez de só preencher o que aparece. Isso costuma significar menos produto por sessão, prioridade para o que mais incomoda você e respeito às características que fazem o seu rosto ser seu.",
+  "para": ["Quem tem receio de ficar com o rosto artificial ou \"preenchido\"", "Quem quer suavizar o aspecto cansado sem mudar traços", "Quem já fez procedimentos e quer um plano mais conservador", "Quem prefere começar com pouco e avaliar antes de seguir"],
+  "nao_kick": "Expectativa", "nao_titulo": "Quando não é o caminho",
+  "nao": ["Quando o objetivo é ficar parecido com o rosto de outra pessoa", "Quando se espera uma mudança grande em uma única sessão", "Gestação e amamentação", "Infecção ativa ou doenças autoimunes em atividade, avaliadas caso a caso"],
+  "como": [["Avaliação", "Análise do rosto em repouso e em movimento, fotos para comparação e conversa sobre o que incomoda você."], ["Plano em etapas", "O médico define o que tratar primeiro e o que pode esperar, com a menor quantidade de produto que faça sentido."], ["Aplicação", "Feita pelo médico, com técnica escolhida para cada região."], ["Revisão", "Retorno para ver como o rosto respondeu antes de decidir a etapa seguinte."]],
+  "riscos": "Inchaço, roxos e sensibilidade por alguns dias são esperados. Complicações sérias são raras, mas existem, como a obstrução de um vaso por preenchedor. Planejar com cuidado e usar menos produto não elimina os riscos, e por isso o procedimento deve ser feito por médico, que reconhece e trata um problema logo no início.",
+  "faq": [
+   {"q": "Como saber se vai ficar natural?", "a": "Natural depende de indicação e de quantidade. Na avaliação o médico mostra o que pretende tratar e por quê, e muitas vezes o plano começa com pouco. Resultados variam de pessoa para pessoa."},
+   {"q": "Dá para fazer só um pouco e ver como fica?", "a": "Sim. Começar com uma etapa e revisar antes da próxima é uma forma comum de planejar."},
+   {"q": "Já fiz preenchimento e não gostei. E agora?", "a": "O ácido hialurônico pode ser dissolvido com hialuronidase em situações indicadas. A avaliação define se vale ajustar, esperar ou dissolver."},
+   {"q": "Onde fica a clínica?", "a": "No Kobrasol, em São José/SC, perto de Florianópolis. A avaliação e a aplicação são feitas pelo Dr. Pedro Schmitz (CRM/SC 38229)."}
+  ],
+  "local": True,
+  "rel": ["botox-harmonizacao-facial-o-que-faz-de-verdade", "rosto-cansado", "flacidez-facial-tratamentos"]
+ },
+ {
+  "slug": "harmonizacao-facial-masculina", "nome": "Harmonização facial masculina", "kick": "Rosto masculino", "estetico": True,
+  "foto": "/s/img/pedro-espelho.jpg", "assunto": "harmonização facial masculina",
+  "title": "Harmonização facial masculina em São José/SC | Curae Santé",
+  "description": "Harmonização facial masculina no Kobrasol, São José/SC: plano por médico que preserva os traços masculinos, para rugas, olheiras, mandíbula e queixo.",
+  "h1": "Harmonização facial masculina",
+  "lead": "O rosto masculino tem proporções próprias, e o plano precisa respeitar isso. O objetivo é suavizar o cansaço e as marcas, sem afinar nem feminilizar os traços.",
+  "oque": "Homens costumam ter testa e sobrancelhas mais retas, músculos de expressão mais fortes, ângulo da mandíbula mais marcado e queixo mais projetado. Um plano pensado para o rosto feminino, como sobrancelha arqueada, maçã do rosto muito projetada ou lábios com mais volume, pode deixar o homem com aparência estranha. Por isso a avaliação parte das proporções masculinas e trata o que incomoda: rugas, aspecto cansado, contorno e perda de volume.",
+  "para": ["Rugas na testa, entre as sobrancelhas e ao redor dos olhos", "Aspecto cansado, olheiras e sulcos marcados", "Contorno de mandíbula e queixo pouco definidos", "Perda de volume no rosto depois de emagrecer"],
+  "nao_kick": "Quando não fazer", "nao_titulo": "Quando adiar ou evitar",
+  "nao": ["Infecção ou inflamação ativa na região a tratar, incluindo foliculite na área da barba", "Algumas doenças autoimunes em atividade, avaliadas caso a caso", "Uso de remédios que afinam o sangue: avisar antes, porque aumentam o risco de roxos", "Expectativa de mudar o rosto ou de ficar igual a uma foto"],
+  "como": [["Avaliação", "Análise do rosto em repouso e em movimento, com atenção às proporções masculinas e ao que incomoda você."], ["Plano individual", "Definição do que tratar e com quais técnicas, explicado antes de começar."], ["Aplicação", "Feita pelo médico. Na área da barba, a pele é preparada conforme a região tratada."], ["Retorno", "Revisão para avaliar o resultado e ajustar o que for preciso."]],
+  "riscos": "Inchaço, roxos e sensibilidade por alguns dias são esperados. Complicações sérias são raras, mas existem, como a obstrução de um vaso por preenchedor. Por isso o procedimento deve ser feito por médico, que conhece a anatomia e sabe reconhecer e tratar um problema logo no início.",
+  "faq": [
+   {"q": "Vou ficar com cara de quem fez procedimento?", "a": "O plano é feito para preservar os traços masculinos, e a quantidade é decidida na avaliação, muitas vezes em etapas. Resultados variam de pessoa para pessoa."},
+   {"q": "A barba atrapalha?", "a": "Não impede. Dependendo da região, a pele precisa ser preparada no dia, e isso é combinado antes."},
+   {"q": "Volto ao trabalho no mesmo dia?", "a": "Na maioria dos casos, sim. Pode haver inchaço e pequenos roxos por alguns dias."},
+   {"q": "Quem faz o procedimento?", "a": "A avaliação e a aplicação são feitas pelo Dr. Pedro Schmitz (CRM/SC 38229), na Curae Santé, no Kobrasol, em São José/SC."}
+  ],
+  "local": True,
+  "rel": ["contorno-mandibula", "olheiras", "botox-harmonizacao-facial-o-que-faz-de-verdade"]
  },
 ]

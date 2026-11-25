@@ -334,12 +334,18 @@ for p in PROCS:
         medico_html = f'''<section class="pad-s cr"><div class="wrap narrow"><span class="kick" data-fade>Avaliação e procedimento por médico</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">Na Curae Santé, quem avalia é quem faz</h2><p data-fade>A avaliação e a realização dos procedimentos estéticos são feitas por médico, {m['nome']} ({m['crm']}). Isso importa por quatro motivos:</p><ul class="chk" data-stagger><li>A indicação começa em consulta: história de saúde, medicamentos em uso e exame da pele.</li><li>Conhecimento de anatomia, incluindo vasos e nervos, reduz o risco de complicações.</li><li>Se houver uma complicação, o médico reconhece cedo e sabe como tratar ou encaminhar.</li><li>Contraindicações e interações com doenças e medicamentos são avaliadas antes de aplicar.</li></ul><p data-fade style="margin-top:18px"><a href="{m['perfil']}" style="color:var(--dour)">Conheça {m['curto']} →</a></p></div></section>
 
 '''
+    custo_html = (f'''<section class="pad-s"><div class="wrap narrow"><span class="kick" data-fade>Valor</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">Quanto custa {p['nome'].lower()}?</h2><p data-fade>Não existe um preço fixo, porque cada plano é diferente. O valor depende de:</p><ul class="chk" data-stagger>{li(p['custo'])}</ul><p data-fade style="margin-top:18px">O valor é informado depois da avaliação, quando o plano está definido. Desconfie de pacotes fechados sem que alguém tenha examinado o seu rosto.</p></div></section>
+
+''') if p.get('custo') else ''
+    local_html = ('''<section class="pad-s cr"><div class="wrap narrow"><span class="kick" data-fade>Onde fica</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">No Kobrasol, em São José, perto de Florianópolis</h2><p data-fade>A Curae Santé fica na Av. Delamar José da Silva, 186, sala 3, no Kobrasol, em São José/SC. Recebemos pacientes de São José (Kobrasol, Campinas, Barreiros, Bela Vista), de Florianópolis, Palhoça, Biguaçu e de toda a Grande Florianópolis. Do centro de Florianópolis, são cerca de 15 a 20 minutos de carro pelas pontes, fora do horário de pico.</p><p data-fade><a href="/clinica-medica-kobrasol-sao-jose/" style="color:var(--dour)">Como chegar →</a></p></div></section>
+
+''') if p.get('local') else ''
     body = f'''<!--meta {json.dumps(meta, ensure_ascii=False)} -->
 <section class="phead"><div class="wrap g2" style="align-items:center">
   <div>
     <div class="crumbs" data-in><a href="/">Início</a> · <a href="/procedimentos/">Procedimentos</a> · {p['nome']}</div>
     <span class="kick" data-in>{p['kick']}</span>
-    <h1 style="font-size:clamp(44px,6.4vw,88px)">{p['nome']}</h1>
+    <h1 style="font-size:clamp(40px,5.6vw,80px)">{p.get('h1', p['nome'])}</h1>
     <p class="lead" data-in>{p['lead']}</p>
     <div class="ctas" data-in><a class="btn gold" href="{{{{WA:{WA.format(p['assunto'])}}}}}" target="_blank" rel="noopener">{{{{ICO_WA}}}} Agendar avaliação</a><a class="btn line" href="#como">Como é feito</a></div>
   </div>
@@ -375,7 +381,7 @@ for p in PROCS:
   </div>
 </section>
 
-{refs_html}<section class="pad cr">
+{custo_html}{refs_html}{local_html}<section class="pad cr">
   <div class="wrap narrow faq">
     <span class="kick" data-fade>Perguntas frequentes</span>
     <h2 data-split>Dúvidas comuns</h2>

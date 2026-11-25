@@ -437,3 +437,6 @@ h1,h2,h3{max-width:min(var(--hmax,100%),100%)}
 .hero h1,.hero em{text-shadow:0 2px 6px rgba(20,14,9,.45),0 8px 32px rgba(20,14,9,.55)}
 .hero .kick{color:#D9C6AE;text-shadow:0 1px 3px rgba(20,14,9,.7),0 4px 16px rgba(20,14,9,.5)}
 .hero .lead{text-shadow:0 1px 3px rgba(20,14,9,.55)}
+
+/* Aviso de cookies compacto no celular: não cobre o botão de agendar */
+@media (max-width:640px){.ckbar{font-size:12.5px!important;line-height:1.35!important;gap:8px!important;flex-wrap:nowrap!important;right:84px!important;padding:10px 12px!important}.ckbar span{flex:1 1 auto!important}.ckbar button{padding:7px 12px!important}}
