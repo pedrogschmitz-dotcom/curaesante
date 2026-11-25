@@ -445,3 +445,10 @@ h1,h2,h3{max-width:min(var(--hmax,100%),100%)}
 .hero-est{display:inline-flex;gap:6px;align-items:center;margin-top:22px;color:var(--creme);text-decoration:none;font-size:15px;border-bottom:1px solid rgba(234,228,218,.35);padding-bottom:3px;text-shadow:0 1px 3px rgba(20,14,9,.55)}
 .hero-est b{color:#E2C7CC;font-weight:600}
 .hero-est:hover{border-color:var(--rosa)}
+/* Bloco "Quanto tempo" nas páginas de procedimento */
+.tempos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+.tempos .t{background:#fff;border:1px solid var(--linha);border-radius:18px;padding:20px 20px 18px}
+.tempos .t span{display:block;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--dour);margin-bottom:10px}
+.tempos .t p{margin:0;font-size:16px;line-height:1.5;color:var(--marrom)}
+@media (max-width:900px){.tempos{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.tempos{grid-template-columns:1fr}}

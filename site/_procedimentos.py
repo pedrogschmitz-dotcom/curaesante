@@ -307,6 +307,7 @@ PROCS += [
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _procs_esteticos import NOVOS
+from _tempos import TEMPOS
 for _p in PROCS:
     if _p["slug"] in ("toxina-botulinica", "preenchimento-acido-hialuronico", "bioestimuladores-de-colageno"):
         _p["estetico"] = True
@@ -340,6 +341,19 @@ for p in PROCS:
     medico_html = ''
     if p.get('estetico'):
         medico_html = f'''<section class="pad-s cr"><div class="wrap narrow"><span class="kick" data-fade>Avaliação e procedimento por médico</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">Na Curae Santé, quem avalia é quem faz</h2><p data-fade>A avaliação e a realização dos procedimentos estéticos são feitas por médico, {m['nome']} ({m['crm']}). Isso importa por quatro motivos:</p><ul class="chk" data-stagger><li>A indicação começa em consulta: história de saúde, medicamentos em uso e exame da pele.</li><li>Conhecimento de anatomia, incluindo vasos e nervos, reduz o risco de complicações.</li><li>Se houver uma complicação, o médico reconhece cedo e sabe como tratar ou encaminhar.</li><li>Contraindicações e interações com doenças e medicamentos são avaliadas antes de aplicar.</li></ul><p data-fade style="margin-top:18px"><a href="{m['perfil']}" style="color:var(--dour)">Conheça {m['curto']} →</a></p></div></section>
+
+'''
+    t = TEMPOS.get(p['slug'])
+    assert t, 'faltou TEMPOS para ' + p['slug']
+    nome_l = p['nome'][0].lower() + p['nome'][1:] if not p['nome'].isupper() else p['nome']
+    qs = ' '.join(f['q'].lower() for f in p['faq'])
+    extra = []
+    if 'dura' not in qs: extra.append({"q": "Quanto tempo dura?", "a": t[0] + " Varia de pessoa para pessoa."})
+    if 'sess' not in qs and 'quanto em quanto' not in qs: extra.append({"q": "De quanto em quanto tempo é feito?", "a": t[1]})
+    extra.append({"q": "Quando aparecem as primeiras mudanças?", "a": t[2] + " Varia de pessoa para pessoa."})
+    if 'resultado' not in qs: extra.append({"q": "Em quanto tempo vejo o resultado final?", "a": t[3] + " Varia de pessoa para pessoa."})
+    meta["faqItems"] = p["faq"] + extra
+    tempos_html = f'''<section class="pad-s"><div class="wrap"><span class="kick" data-fade>Quanto tempo</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">Duração, intervalo e resultado</h2><div class="tempos" data-stagger><div class="t"><span>Quanto tempo dura</span><p>{t[0]}</p></div><div class="t"><span>De quanto em quanto tempo</span><p>{t[1]}</p></div><div class="t"><span>Primeiras mudanças</span><p>{t[2]}</p></div><div class="t"><span>Resultado final</span><p>{t[3]}</p></div></div><p class="note" style="margin-top:14px">Valores de referência. O tempo exato varia de pessoa para pessoa e é combinado na avaliação.</p></div></section>
 
 '''
     custo_html = (f'''<section class="pad-s"><div class="wrap narrow"><span class="kick" data-fade>Valor</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">Quanto custa {p['nome'].lower()}?</h2><p data-fade>Não existe um preço fixo, porque cada plano é diferente. O valor depende de:</p><ul class="chk" data-stagger>{li(p['custo'])}</ul><p data-fade style="margin-top:18px">O valor é informado depois da avaliação, quando o plano está definido. Desconfie de pacotes fechados sem que alguém tenha examinado o seu rosto.</p></div></section>
@@ -381,7 +395,7 @@ for p in PROCS:
   </div>
 </section>
 
-{medico_html}<section class="pad">
+{tempos_html}{medico_html}<section class="pad">
   <div class="wrap narrow">
     <span class="kick" data-fade>Segurança</span>
     <h2 data-split>{p.get('riscos_titulo','Efeitos esperados e riscos')}</h2>
