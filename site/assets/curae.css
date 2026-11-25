@@ -1,10 +1,11 @@
+/* Tipografia Curae Santé (25/11/2026): Gloock (títulos) + Hanken Grotesk (corpo). Gloock tem só Regular, sem itálico. */
 /* Curae Santé · site estático (padrão Sono em Dia) */
 :root{--off:#F9F6F2;--creme:#EAE4DA;--rosa:#BC9FA5;--dour:#BCA78E;--marrom:#5D4424;--escuro:#2A1F14;--fundo:#1E1610;--sub:#8A7461;--linha:rgba(93,68,36,.16);--r:24px}
 *{margin:0;padding:0;box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{overflow-x:clip}
 html{background:var(--fundo)}
-body{font-family:"Red Hat Display",system-ui,sans-serif;color:var(--marrom);background:var(--off);-webkit-font-smoothing:antialiased;line-height:1.6;font-size:17px}
+body{font-family:"Hanken Grotesk",system-ui,sans-serif;color:var(--marrom);background:var(--off);-webkit-font-smoothing:antialiased;line-height:1.6;font-size:17px}
 img,svg,video{display:block;max-width:100%}
 a{color:inherit}
 em{font-style:italic;color:var(--rosa)}
@@ -14,7 +15,7 @@ strong{color:var(--escuro);font-weight:700}
 .narrow{max-width:780px}
 .kick{font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--dour);display:inline-flex;align-items:center;gap:12px}
 .kick:before{content:"";width:28px;height:1px;background:currentColor}
-h1,h2,h3,.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;line-height:1.02;letter-spacing:-.012em;color:var(--escuro)}
+h1,h2,h3,.serif{font-family:"Gloock",Georgia,serif;font-weight:400;font-synthesis:none;line-height:1.06;letter-spacing:-.01em;color:var(--escuro)}
 .dk h1,.dk h2,.dk h3{color:var(--off)}
 h1{font-size:clamp(50px,8.6vw,118px)}
 h2{font-size:clamp(38px,5.4vw,68px);margin:16px 0 22px}
@@ -61,9 +62,9 @@ p{margin-bottom:16px}
 .menu-open .burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 #mnav{position:fixed;inset:0;z-index:39;background:var(--escuro);display:flex;flex-direction:column;justify-content:center;padding:90px 32px 40px;gap:8px;clip-path:circle(0 at calc(100% - 46px) 42px);transition:clip-path .7s cubic-bezier(.7,0,.2,1);visibility:hidden}
 .menu-open #mnav{clip-path:circle(150% at calc(100% - 46px) 42px);visibility:visible}
-#mnav a{font-family:"Cormorant Garamond",serif;font-size:42px;color:var(--off);text-decoration:none;line-height:1.15}
+#mnav a{font-family:"Gloock",serif;font-size:42px;color:var(--off);text-decoration:none;line-height:1.15}
 #mnav a[aria-current]{color:var(--dour)}
-#mnav .btn{margin-top:26px;align-self:flex-start;font-family:"Red Hat Display";font-size:16px}
+#mnav .btn{margin-top:26px;align-self:flex-start;font-family:"Hanken Grotesk";font-size:16px}
 @media(max-width:980px){#brand nav{display:none}.burger{display:block}}
 
 /* hero */
@@ -91,11 +92,11 @@ p{margin-bottom:16px}
 /* marquee */
 .marq{background:var(--dour);color:var(--escuro);overflow:hidden;padding:20px 0;white-space:nowrap}
 .marq .t{display:inline-flex;will-change:transform}
-.marq span{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:clamp(28px,3.4vw,44px);padding:0 28px;display:inline-flex;align-items:center;gap:56px}
+.marq span{font-family:"Gloock",serif;font-style:italic;font-size:clamp(28px,3.4vw,44px);padding:0 28px;display:inline-flex;align-items:center;gap:56px}
 .marq span:after{content:"✦";font-style:normal;font-size:18px;color:var(--marrom)}
 
 /* leitura que acende */
-.read{font-family:"Cormorant Garamond",serif;font-size:clamp(32px,4.4vw,58px);line-height:1.12;color:var(--escuro)}
+.read{font-family:"Gloock",serif;font-size:clamp(32px,4.4vw,58px);line-height:1.12;color:var(--escuro)}
 .read .rw{opacity:.16}
 .no-js .read .rw,.rm .read .rw{opacity:1}
 
@@ -111,7 +112,7 @@ p{margin-bottom:16px}
 .card{background:#fff;border:1px solid var(--linha);border-radius:var(--r);padding:30px;position:relative}
 .cr .card{background:var(--off)}
 .dk .card{background:rgba(249,246,242,.04);border-color:rgba(234,228,218,.14)}
-.card .n{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:24px;color:var(--dour);margin-bottom:6px}
+.card .n{font-family:"Gloock",serif;font-style:italic;font-size:24px;color:var(--dour);margin-bottom:6px}
 .card p{font-size:16px;margin-bottom:0}
 .card ul{list-style:none;margin-top:16px;display:grid;gap:8px;font-size:15.5px}
 .card ul li{padding-left:22px;position:relative}
@@ -133,7 +134,7 @@ p{margin-bottom:16px}
 
 /* números */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
-.stats b{display:block;font-family:"Cormorant Garamond",serif;font-weight:500;font-size:clamp(54px,7vw,92px);line-height:1;color:var(--dour)}
+.stats b{display:block;font-family:"Gloock",serif;font-weight:500;font-size:clamp(54px,7vw,92px);line-height:1;color:var(--dour)}
 .stats span{font-size:15px}
 @media(max-width:600px){.stats{grid-template-columns:1fr}}
 
@@ -142,7 +143,7 @@ p{margin-bottom:16px}
 #pil .head{padding:clamp(80px,10vw,120px) 0 40px}
 #rail{display:flex;gap:22px;padding:0 24px 110px;width:max-content}
 #rail .card{width:min(400px,80vw);flex:none;min-height:420px;display:flex;flex-direction:column}
-#rail .card .ico{width:58px;height:58px;border-radius:50%;border:1px solid var(--dour);display:grid;place-items:center;margin-bottom:auto;color:var(--dour);font-family:"Cormorant Garamond";font-size:26px}
+#rail .card .ico{width:58px;height:58px;border-radius:50%;border:1px solid var(--dour);display:grid;place-items:center;margin-bottom:auto;color:var(--dour);font-family:"Gloock";font-size:26px}
 #rail .card h3{margin-top:40px}
 
 /* processo */
@@ -167,7 +168,7 @@ p{margin-bottom:16px}
 .proc details{border-bottom:1px solid var(--linha)}
 .proc summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:70px 1fr 40px;align-items:center;padding:26px 0;gap:10px}
 .proc summary::-webkit-details-marker{display:none}
-.proc summary .i{font-family:"Cormorant Garamond";font-style:italic;color:var(--dour);font-size:22px}
+.proc summary .i{font-family:"Gloock";font-style:italic;color:var(--dour);font-size:22px}
 .proc summary h3{margin:0;transition:transform .4s}
 .proc summary:hover h3{transform:translateX(8px)}
 .proc summary:after{content:"+";font-size:32px;color:var(--dour);justify-self:end;transition:transform .4s}
@@ -179,7 +180,7 @@ p{margin-bottom:16px}
 
 /* faq */
 .faq details{border-bottom:1px solid var(--linha);padding:22px 0}
-.faq summary{cursor:pointer;font-family:"Cormorant Garamond",serif;font-size:clamp(23px,2.4vw,28px);line-height:1.2;list-style:none;display:flex;justify-content:space-between;gap:24px;color:var(--escuro)}
+.faq summary{cursor:pointer;font-family:"Gloock",serif;font-size:clamp(23px,2.4vw,28px);line-height:1.2;list-style:none;display:flex;justify-content:space-between;gap:24px;color:var(--escuro)}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary:after{content:"+";color:var(--dour);font-size:30px;line-height:1;flex:none;transition:transform .3s}
 .faq details[open] summary:after{transform:rotate(45deg)}
@@ -202,7 +203,7 @@ p{margin-bottom:16px}
 .cover{aspect-ratio:16/10;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:22px;background:var(--escuro)}
 .cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cover .tg{position:relative;font-size:11.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--escuro);background:var(--off);padding:6px 11px;border-radius:99px}
-.cover .ini{position:absolute;right:18px;top:6px;font-family:"Cormorant Garamond";font-style:italic;font-size:120px;line-height:1;opacity:.22;color:var(--off)}
+.cover .ini{position:absolute;right:18px;top:6px;font-family:"Gloock";font-style:italic;font-size:120px;line-height:1;opacity:.22;color:var(--off)}
 .cover.c0{background:linear-gradient(135deg,#2A1F14,#5D4424)}.cover.c1{background:linear-gradient(135deg,#BCA78E,#8A7461)}.cover.c2{background:linear-gradient(135deg,#BC9FA5,#8C6F73)}.cover.c3{background:linear-gradient(135deg,#5D4424,#BCA78E)}
 .post .tx{padding:22px 24px 26px;display:flex;flex-direction:column;gap:8px;flex:1}
 .post h3{font-size:25px;margin:0;line-height:1.1}
@@ -232,7 +233,7 @@ p{margin-bottom:16px}
 .ctabox p{font-size:16.5px}
 
 /* palavra final */
-.big{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(90px,21vw,320px);line-height:.85;letter-spacing:-.03em;text-align:center;background-size:cover;background-position:center;-webkit-background-clip:text;background-clip:text;color:transparent}
+.big{font-family:"Gloock",serif;font-weight:600;font-size:clamp(90px,21vw,320px);line-height:.85;letter-spacing:-.03em;text-align:center;background-size:cover;background-position:center;-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* mapa */
 .map{border-radius:var(--r);overflow:hidden;aspect-ratio:4/3;background:var(--creme);filter:grayscale(.85) sepia(.15)}
@@ -298,14 +299,14 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 .areas{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--linha);border:1px solid var(--linha);border-radius:var(--r);overflow:hidden;margin-top:34px}
 .areas>div{background:var(--off);padding:32px 28px;transition:background .4s}
 .areas>div:hover{background:#fff}
-.areas .n{font-family:"Cormorant Garamond";font-style:italic;color:var(--dour);font-size:22px}
+.areas .n{font-family:"Gloock";font-style:italic;color:var(--dour);font-size:22px}
 .areas h3{margin:6px 0 8px}
 .areas p{font-size:15.5px;margin:0}
 @media(max-width:900px){.areas{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.areas{grid-template-columns:1fr}}
-.quote{font-family:"Cormorant Garamond";font-style:italic;font-size:clamp(30px,4vw,52px);line-height:1.15;color:var(--escuro);max-width:22ch}
+.quote{font-family:"Gloock";font-style:italic;font-size:clamp(30px,4vw,52px);line-height:1.15;color:var(--escuro);max-width:22ch}
 .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;border-top:1px solid var(--linha);padding-top:30px}
-.facts b{display:block;font-family:"Cormorant Garamond";font-weight:500;font-size:clamp(46px,5vw,72px);line-height:1;color:var(--dour)}
+.facts b{display:block;font-family:"Gloock";font-weight:500;font-size:clamp(46px,5vw,72px);line-height:1;color:var(--dour)}
 .facts span{font-size:14.5px}
 @media(max-width:600px){.facts{grid-template-columns:1fr}}
 .pgroup{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin:34px 0 4px;padding-bottom:12px}
@@ -318,7 +319,7 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 .cir-list{display:grid;gap:16px}
 .cir{background:#fff;border:1px solid var(--linha);border-radius:var(--r);padding:clamp(22px,3vw,34px);display:grid;grid-template-columns:minmax(220px,.8fr) 2.2fr;gap:24px;scroll-margin-top:90px}
 .cir-h{display:flex;gap:16px;align-items:flex-start}
-.cir-h .n{font-family:"Cormorant Garamond";font-style:italic;font-size:26px;color:var(--dour);line-height:1.1}
+.cir-h .n{font-family:"Gloock";font-style:italic;font-size:26px;color:var(--dour);line-height:1.1}
 .cir-h h3{margin:0}
 .cir-h .sub{font-size:14px;color:var(--sub)}
 .cir-b{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
@@ -379,7 +380,7 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 .carr-sl figure{margin:0}
 .carr-txt .carr-sl>*{background:var(--off);border:1px solid rgba(188,167,142,.35);border-radius:22px;padding:30px 28px;box-sizing:border-box}
 .dk .carr-txt .carr-sl>*,#pil .carr-sl>*{background:rgba(255,255,255,.04);border-color:rgba(188,167,142,.3)}
-.carr-n{display:block;font-family:"Cormorant Garamond",serif;font-size:46px;line-height:1;color:var(--dour);margin-bottom:18px}
+.carr-n{display:block;font-family:"Gloock",serif;font-size:46px;line-height:1;color:var(--dour);margin-bottom:18px}
 .carr-txt h3{font-size:clamp(24px,2.4vw,30px);margin:0 0 8px}
 .carr-nav{display:flex;align-items:center;gap:16px;margin-top:22px}
 .carr-b{width:46px;height:46px;border-radius:50%;border:1px solid var(--dour);background:transparent;color:inherit;font-size:18px;cursor:pointer;transition:background .3s,color .3s}
@@ -416,3 +417,9 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 .carr-step .carr-sl>*{background:var(--off);border:1px solid rgba(188,167,142,.35);border-radius:22px}
 .dk .carr-step .carr-sl>*{background:rgba(255,255,255,.04);border-color:rgba(188,167,142,.3)}
 .carr-step .carr-img img{object-position:center 18%}
+
+[style*="Gloock"],.marq span,.card .n,.proc summary .i,.areas .n,.quote,.cir-h .n,.cover .ini,.big,.stats b,.facts b,.carr-n,.read,.faq summary,#mnav a{font-synthesis:none}
+/* Gloock é mais larga que a Cormorant: títulos ~15% menores e caixa do hero limitada à tela */
+h1{font-size:clamp(40px,7.2vw,100px)}
+.hero h1{max-width:min(11ch,100%)}
+h1,h2,h3{max-width:min(var(--hmax,100%),100%)}

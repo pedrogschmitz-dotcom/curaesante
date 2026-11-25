@@ -118,7 +118,7 @@ ${preload ? `<link rel="preload" as="image" href="${toWebp(preload)}" fetchprior
 <meta property="og:url" content="${SITE}${url}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}">
 <meta property="og:image" content="${SITE}${ogImage}"><meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Red+Hat+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/s/curae.css?v=${VER}">
 <script type="application/ld+json">${JSON.stringify(graph)}</script>
 <script>window.CURAE_CFG=${JSON.stringify({ ga4: CFG.ga4 || '', metaPixel: CFG.metaPixel || '' })}</script>
