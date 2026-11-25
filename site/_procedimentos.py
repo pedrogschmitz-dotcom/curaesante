@@ -312,7 +312,7 @@ for _p in PROCS:
         _p["estetico"] = True
 PROCS += NOVOS
 
-ALT = {"/s/img/proc/preenchimento.jpg": "Perfil de nariz e lábios", "/s/img/proc/bioestimulador.jpg": "Retrato de mulher em luz suave", "/s/img/seringas.jpg": "Mão com luva segurando três seringas", "/s/img/equipamento.jpg": "Equipamento de laser em consultório", "/s/img/pedro-wood-luz.jpg": "Dr. Pedro Schmitz segurando a lâmpada de exame da pele", "/s/img/pedro-toxina.jpg": "Dr. Pedro Schmitz planejando os pontos de aplicação em uma ficha de toxina botulínica", "/s/img/pedro-espelho.jpg": "Dr. Pedro Schmitz explicando um ponto do rosto diante do espelho", "/s/img/pedro-cirurgia.jpg": "Dr. Pedro Schmitz com instrumentos de pequena cirurgia no consultório", "/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/pes.jpg":"Pés descalços sobre piso de madeira","/s/img/maos.jpg":"Mãos de mulher em luz suave","/s/img/queratose.jpg":"Pele vista de perto","/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
+ALT = {"/s/img/pedro-wood-luz2.jpg": "Dr. Pedro Schmitz com a lâmpada de exame da pele e do couro cabeludo", "/s/img/pedro-rugas.jpg": "Dr. Pedro Schmitz avaliando rugas de expressão", "/s/img/proc/toxina.jpg": "Mulher tocando o rosto e o pescoço", "/s/img/proc/maos.jpg": "Braços e mãos de mulher em luz suave", "/s/img/proc/preenchimento.jpg": "Perfil de nariz e lábios", "/s/img/proc/bioestimulador.jpg": "Retrato de mulher em luz suave", "/s/img/seringas.jpg": "Mão com luva segurando três seringas", "/s/img/equipamento.jpg": "Equipamento de laser em consultório", "/s/img/pedro-wood-luz.jpg": "Dr. Pedro Schmitz segurando a lâmpada de exame da pele", "/s/img/pedro-toxina.jpg": "Dr. Pedro Schmitz planejando os pontos de aplicação em uma ficha de toxina botulínica", "/s/img/pedro-espelho.jpg": "Dr. Pedro Schmitz explicando um ponto do rosto diante do espelho", "/s/img/pedro-cirurgia.jpg": "Dr. Pedro Schmitz com instrumentos de pequena cirurgia no consultório", "/s/img/consultorio.jpg": "Consultório da Curae Santé, no Kobrasol, em São José/SC", "/s/img/recepcao.jpg": "Recepção da Curae Santé, no Kobrasol, em São José/SC", "/s/img/pele.jpg": "Imagem ilustrativa de cuidado com a pele", "/s/img/dra-julia.jpg": "Dra. Júlia Schmitz, médica da Curae Santé", "/s/img/pes.jpg":"Pés descalços sobre piso de madeira","/s/img/maos.jpg":"Mãos de mulher em luz suave","/s/img/queratose.jpg":"Pele vista de perto","/s/img/bandeja.jpg": "Instrumentos cirúrgicos esterilizados sobre campo azul"}
 
 def li(items): return ''.join(f'<li>{x}</li>' for x in items)
 
@@ -329,6 +329,14 @@ for p in PROCS:
     irmaos = ''.join(f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/servicos/{o["slug"]}/">{o["nome"]}</a>' for o in PROCS if o.get('medico','pedro') == p.get('medico','pedro') and bool(o.get('estetico')) == bool(p.get('estetico')) and o is not p) + (f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/metabolismo-feminino/">Metabolismo feminino</a>' if p.get('medico')=='julia' else f'<a class="btn lined" style="padding:12px 20px;font-size:14px" href="/servicos/pequenas-cirurgias/">Pequenas cirurgias</a><a class="btn lined" style="padding:12px 20px;font-size:14px" href="/blog/bigode-chines/">Guia: bigode chinês</a>')
     refs_html = (f'<section class="pad-s"><div class="wrap narrow"><span class="kick" data-fade>Base científica</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">O que dizem as diretrizes</h2>' + ''.join(f'<p data-fade>{x}</p>' for x in p['evid']) + '<details class="refs"><summary>Referências</summary><ol>' + ''.join(f'<li>{r}</li>' for r in p['refs']) + '</ol></details><p class="note">Revisado por Dr. Pedro Schmitz (CRM/SC 38229). Conteúdo informativo; não substitui a consulta.</p></div></section>\n\n') if p.get('refs') else ''
     rel = ''.join(f'{{{{POST:{r}}}}}' for r in p['rel'])
+    rel_html = (f'''<section class="pad">
+  <div class="wrap">
+    <span class="kick" data-fade>Para ler antes</span>
+    <h2 data-split>Artigos relacionados</h2>
+    <div class="posts" data-stagger style="margin-top:20px">{rel}</div>
+  </div>
+</section>
+''') if p['rel'] else ''
     medico_html = ''
     if p.get('estetico'):
         medico_html = f'''<section class="pad-s cr"><div class="wrap narrow"><span class="kick" data-fade>Avaliação e procedimento por médico</span><h2 data-split style="font-size:clamp(30px,3.6vw,44px)">Na Curae Santé, quem avalia é quem faz</h2><p data-fade>A avaliação e a realização dos procedimentos estéticos são feitas por médico, {m['nome']} ({m['crm']}). Isso importa por quatro motivos:</p><ul class="chk" data-stagger><li>A indicação começa em consulta: história de saúde, medicamentos em uso e exame da pele.</li><li>Conhecimento de anatomia, incluindo vasos e nervos, reduz o risco de complicações.</li><li>Se houver uma complicação, o médico reconhece cedo e sabe como tratar ou encaminhar.</li><li>Contraindicações e interações com doenças e medicamentos são avaliadas antes de aplicar.</li></ul><p data-fade style="margin-top:18px"><a href="{m['perfil']}" style="color:var(--dour)">Conheça {m['curto']} →</a></p></div></section>
@@ -389,14 +397,7 @@ for p in PROCS:
   </div>
 </section>
 
-<section class="pad">
-  <div class="wrap">
-    <span class="kick" data-fade>Para ler antes</span>
-    <h2 data-split>Artigos relacionados</h2>
-    <div class="posts" data-stagger style="margin-top:20px">{rel}</div>
-  </div>
-</section>
-
+{rel_html}
 <section class="pad-s cr">
   <div class="wrap">
     <span class="kick" data-fade>Outros tratamentos com {m['curto'].split(' ',1)[1]}</span>

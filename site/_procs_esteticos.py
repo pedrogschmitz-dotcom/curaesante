@@ -233,7 +233,7 @@ NOVOS = [
   "title": "Harmonização facial masculina em São José/SC | Curae Santé",
   "description": "Harmonização facial masculina no Kobrasol, São José/SC: plano por médico que preserva os traços masculinos, para rugas, olheiras, mandíbula e queixo.",
   "h1": "Harmonização facial masculina",
-  "lead": "O rosto masculino tem proporções próprias, e o plano precisa respeitar isso. O objetivo é suavizar o cansaço e as marcas, sem afinar nem feminilizar os traços.",
+  "lead": "O rosto masculino tem proporções próprias, e o plano precisa respeitar isso. Para quem quer um rosto mais forte, definido e com expressão mais firme: queixo, mandíbula, rugas e aspecto cansado, sem afinar nem feminilizar os traços.",
   "oque": "Homens costumam ter testa e sobrancelhas mais retas, músculos de expressão mais fortes, ângulo da mandíbula mais marcado e queixo mais projetado. Um plano pensado para o rosto feminino, como sobrancelha arqueada, maçã do rosto muito projetada ou lábios com mais volume, pode deixar o homem com aparência estranha. Por isso a avaliação parte das proporções masculinas e trata o que incomoda: rugas, aspecto cansado, contorno e perda de volume.",
   "para": ["Rugas na testa, entre as sobrancelhas e ao redor dos olhos", "Aspecto cansado, olheiras e sulcos marcados", "Contorno de mandíbula e queixo pouco definidos", "Perda de volume no rosto depois de emagrecer"],
   "nao_kick": "Quando não fazer", "nao_titulo": "Quando adiar ou evitar",
@@ -242,11 +242,342 @@ NOVOS = [
   "riscos": "Inchaço, roxos e sensibilidade por alguns dias são esperados. Complicações sérias são raras, mas existem, como a obstrução de um vaso por preenchedor. Por isso o procedimento deve ser feito por médico, que conhece a anatomia e sabe reconhecer e tratar um problema logo no início.",
   "faq": [
    {"q": "Vou ficar com cara de quem fez procedimento?", "a": "O plano é feito para preservar os traços masculinos, e a quantidade é decidida na avaliação, muitas vezes em etapas. Resultados variam de pessoa para pessoa."},
+   {"q": "Dá para deixar o rosto mais viril?", "a": "Queixo e mandíbula mais definidos deixam o rosto mais forte e quadrado. A toxina botulínica pode suavizar rugas mantendo uma expressão firme, sem o olhar \"arregalado\". Tudo é planejado na avaliação."},
    {"q": "A barba atrapalha?", "a": "Não impede. Dependendo da região, a pele precisa ser preparada no dia, e isso é combinado antes."},
    {"q": "Volto ao trabalho no mesmo dia?", "a": "Na maioria dos casos, sim. Pode haver inchaço e pequenos roxos por alguns dias."},
    {"q": "Quem faz o procedimento?", "a": "A avaliação e a aplicação são feitas pelo Dr. Pedro Schmitz (CRM/SC 38229), na Curae Santé, no Kobrasol, em São José/SC."}
   ],
   "local": True,
+  "evid": ["Autores que estudam o paciente masculino descrevem diferenças de anatomia, pele e musculatura que mudam a forma de planejar e aplicar, e alertam para o risco de feminilizar o rosto com técnicas pensadas para mulheres.", "Para homens, queixo e mandíbula são regiões centrais para definir o terço inferior do rosto.", "Consenso internacional sobre toxina botulínica descreve o uso em rugas de expressão e as diferenças de dose ligadas à musculatura."],
+  "refs": ["de Maio M et al. Ethnic and gender considerations in the use of facial injectables: male patients. Plast Reconstr Surg, 2015.", "Indeyeva YA et al. Injectable nuances for the male face. Facial Plast Surg, 2026.", "Sundaram H et al. Global Aesthetics Consensus: botulinum toxin type A, evidence-based review and consensus recommendations for aesthetic use. Plast Reconstr Surg, 2016."],
   "rel": ["contorno-mandibula", "olheiras", "botox-harmonizacao-facial-o-que-faz-de-verdade"]
+ },
+
+ {
+  "slug": "preenchimento-de-queixo", "nome": "Preenchimento de queixo", "kick": "Queixo retraído ou curto", "estetico": True,
+  "foto": "/s/img/pedro-espelho.jpg", "assunto": "preenchimento de queixo",
+  "title": "Queixo retraído ou curto: preenchimento sem cirurgia | Curae Santé",
+  "description": "Queixo para trás, curto ou pequeno: como o preenchimento com ácido hialurônico projeta e alonga o queixo sem cirurgia. Avaliação por médico em São José/SC.",
+  "h1": "Queixo retraído ou curto: preenchimento sem cirurgia",
+  "lead": "O queixo define o perfil e o equilíbrio do terço inferior do rosto. Quando ele é curto ou fica para trás, o nariz parece maior, a papada aparece mais e o rosto perde definição. O ácido hialurônico (preenchedores como Juvéderm, Restylane, Belotero e Rennova, entre outros) pode projetar e alongar o queixo sem cirurgia.",
+  "oque": "Queixo retraído é o queixo que fica para trás em relação aos lábios quando o rosto é visto de perfil. Queixo curto é o que tem pouca altura. Os dois são muito comuns e quase sempre têm origem na estrutura óssea. O preenchimento com ácido hialurônico mais firme, aplicado em pontos profundos sobre o osso, aumenta a projeção e a altura do queixo de forma temporária. Em homens, ajuda a deixar o rosto mais forte e definido. Em mulheres, o objetivo costuma ser um perfil mais harmônico e delicado. Quando há alteração grande da mordida ou do osso, a avaliação pode indicar ortodontia ou cirurgia, e o médico explica isso.",
+  "para": ["Queixo para trás quando visto de perfil", "Queixo curto ou pequeno em relação ao rosto", "Perfil com nariz que parece maior por causa do queixo", "Quem quer mais definição no terço inferior do rosto sem cirurgia"],
+  "nao": ["Gestação e amamentação", "Infecção ou inflamação ativa na região", "Alteração grande de mordida ou do osso, que pede avaliação de ortodontista ou cirurgião", "Expectativa de resultado definitivo: o ácido hialurônico é absorvido com o tempo"],
+  "como": [["Avaliação", "Análise do perfil, da mordida e das proporções entre nariz, lábios, queixo e mandíbula."], ["Planejamento", "Definição de quanto projetar e alongar, e se faz sentido tratar junto a mandíbula."], ["Aplicação", "Ácido hialurônico de alta firmeza, com anestésico, aplicado pelo médico em planos profundos."], ["Retorno", "Revisão para avaliar o resultado e ajustar, se for preciso."]],
+  "riscos": "Inchaço, roxos e sensibilidade por alguns dias são esperados. Podem ocorrer assimetria e nódulos. Mais raramente, o preenchedor pode obstruir um vaso, o que exige atendimento imediato, e quem aplica precisa saber reconhecer e tratar. Procure a clínica se houver dor intensa, mudança de cor da pele ou alteração da visão.",
+  "faq": [
+   {"q": "Preenchimento de queixo substitui a cirurgia?", "a": "Não substitui em todos os casos. Para retrações leves a moderadas é uma opção sem cirurgia e temporária. Alterações grandes do osso ou da mordida podem precisar de ortodontia ou cirurgia."},
+   {"q": "Quanto tempo dura?", "a": "Depende do produto, da quantidade e do organismo. Em geral, de meses a mais de um ano, e o retorno é combinado na consulta."},
+   {"q": "Deixa o rosto mais masculino?", "a": "Pode deixar o terço inferior mais forte e definido, o que muitos homens procuram. Em mulheres, o planejamento busca harmonia sem masculinizar."},
+   {"q": "Dá para desfazer?", "a": "O ácido hialurônico pode ser dissolvido com hialuronidase em situações indicadas."}
+  ],
+  "evid": ["Uma revisão sistemática reuniu 8 estudos com 917 pacientes que fizeram aumento de queixo com ácido hialurônico: a maioria ficou satisfeita e houve apenas 2 complicações maiores.", "Outra revisão, focada no relato dos próprios pacientes, encontrou melhora da satisfação com a aparência do queixo e do perfil após o preenchimento.", "Revisão de todas as técnicas de aumento de queixo mostra que preenchedores são a opção sem cirurgia e temporária, enquanto implantes e osteotomia são definitivos e cirúrgicos.", "A avaliação do terço inferior do rosto (lábios, queixo e mandíbula em conjunto) é recomendada para um resultado proporcional."],
+  "refs": ["Ou Y et al. Nonsurgical chin augmentation using hyaluronic acid: a systematic review of technique, satisfaction, and complications. Aesthetic Plast Surg, 2023.", "Al-Khafaji MQM et al. The application and efficacy of hyaluronic acid fillers for chin enhancement and retrusion correction: a systematic review of patient-reported outcomes. Cureus, 2023.", "Oranges CM et al. Chin augmentation techniques: a systematic review. Plast Reconstr Surg, 2023.", "Mariwalla K et al. Assessing the lower face: lips, chin, and jawline. Dermatol Surg, 2025."],
+  "local": True,
+  "rel": ["contorno-mandibula", "labios", "botox-harmonizacao-facial-o-que-faz-de-verdade"]
+ },
+ {
+  "slug": "contorno-de-mandibula", "nome": "Contorno de mandíbula", "kick": "Mandíbula marcada", "estetico": True,
+  "foto": "/s/img/pedro-rugas.jpg", "assunto": "contorno de mandíbula",
+  "title": "Contorno de mandíbula com ácido hialurônico | Curae Santé",
+  "description": "Mandíbula marcada sem cirurgia: como o ácido hialurônico define o ângulo e a linha da mandíbula em homens e mulheres. Avaliação por médico em São José/SC.",
+  "h1": "Contorno de mandíbula: mandíbula mais marcada sem cirurgia",
+  "lead": "Com o tempo, ou por estrutura, a linha da mandíbula perde definição e o rosto parece mais pesado. O preenchimento com ácido hialurônico (Juvéderm, Restylane, Belotero, entre outros) pode marcar o ângulo e a linha da mandíbula, com resultado temporário.",
+  "oque": "A mandíbula vai do ângulo, embaixo da orelha, até o queixo. Uma linha bem definida separa o rosto do pescoço. Perda de volume, flacidez, papada e a própria estrutura óssea deixam essa linha menos nítida. O preenchimento com ácido hialurônico firme, aplicado em pontos estratégicos sobre o osso, define o ângulo e a linha. Em homens, o objetivo costuma ser um rosto mais quadrado e viril. Em mulheres, um contorno mais limpo e delicado. Muitas vezes o plano inclui o queixo, porque os dois trabalham juntos.",
+  "para": ["Linha da mandíbula pouco definida", "Ângulo da mandíbula apagado", "Transição entre rosto e pescoço pouco marcada", "Homens que querem um rosto mais quadrado e forte"],
+  "nao": ["Gestação e amamentação", "Infecção ou inflamação ativa na região", "Papada importante ou flacidez intensa, que podem pedir outra abordagem primeiro", "Expectativa de resultado definitivo"],
+  "como": [["Avaliação", "Análise do rosto de frente e de perfil, da papada, da flacidez e do queixo."], ["Planejamento", "Definição dos pontos, da quantidade e se o queixo entra no plano."], ["Aplicação", "Ácido hialurônico de alta firmeza, com agulha ou cânula, aplicado pelo médico."], ["Retorno", "Revisão para avaliar e ajustar."]],
+  "riscos": "Inchaço, roxos e sensibilidade por alguns dias são esperados. Podem ocorrer assimetria e nódulos. Mais raramente, o preenchedor pode obstruir um vaso, o que exige atendimento imediato, e quem aplica precisa saber reconhecer e tratar. Procure a clínica se houver dor intensa, mudança de cor da pele ou alteração da visão.",
+  "faq": [
+   {"q": "Mandíbula marcada com preenchimento fica natural?", "a": "Depende da indicação e da quantidade. O plano respeita a estrutura do seu rosto, e muitas vezes é feito em etapas. Resultados variam de pessoa para pessoa."},
+   {"q": "Resolve papada?", "a": "Não diretamente. Definir a mandíbula pode disfarçar a transição, mas papada importante pode pedir outros tratamentos, avaliados na consulta."},
+   {"q": "Quanto tempo dura?", "a": "Em geral, de meses a mais de um ano, conforme o produto e o organismo."},
+   {"q": "Serve para mulher?", "a": "Sim. Em mulheres, o objetivo é um contorno mais limpo, sem masculinizar o rosto."}
+  ],
+  "evid": ["Revisões sobre o uso de preenchedores no queixo e na mandíbula descrevem melhora do contorno do terço inferior do rosto, com técnicas e produtos de maior firmeza.", "Autores recomendam avaliar lábios, queixo e mandíbula em conjunto para um resultado proporcional.", "A anatomia da região inclui vasos importantes, e o conhecimento dela é a principal forma de reduzir complicações."],
+  "refs": ["Go BC et al. Using injectable fillers for chin and jawline rejuvenation. World J Otorhinolaryngol Head Neck Surg, 2023.", "Braz A et al. Reshaping the lower face using injectable fillers. Indian J Plast Surg, 2020.", "Braz A et al. Lower face: clinical anatomy and regional approaches with injectable fillers. Plast Reconstr Surg, 2015.", "Mariwalla K et al. Assessing the lower face: lips, chin, and jawline. Dermatol Surg, 2025."],
+  "local": True,
+  "rel": ["contorno-mandibula", "flacidez-facial-tratamentos", "rosto-cansado"]
+ },
+ {
+  "slug": "preenchimento-de-olheiras", "nome": "Preenchimento de olheiras", "kick": "Olheira funda", "estetico": True,
+  "foto": "/s/img/pedro-rugas.jpg", "assunto": "preenchimento de olheiras",
+  "title": "Preenchimento de olheiras: quando funciona | Curae Santé",
+  "description": "Olheira funda, aspecto cansado: quando o preenchimento com ácido hialurônico é indicado, quando não é e quais os riscos. Avaliação por médico em São José/SC.",
+  "h1": "Preenchimento de olheiras",
+  "lead": "A olheira funda, o \"sulco\" entre a pálpebra e a bochecha, é uma das queixas mais comuns e deixa o rosto com cara de cansaço. Nem toda olheira é de preencher: a avaliação mostra se é sulco, mancha, vaso ou bolsa.",
+  "oque": "Olheira é um nome para várias coisas diferentes. Pode ser um sulco por perda de volume (o \"vale da lágrima\"), pigmento escuro na pele, vasos aparentes através da pele fina ou bolsa de gordura. O preenchimento com ácido hialurônico (Restylane, Juvéderm, Belotero, entre outros) trata o sulco, devolvendo suporte à região. Mancha, vaso e bolsa pedem outros tratamentos. É uma região delicada, com pele fina e vasos próximos, e exige técnica cuidadosa e pouca quantidade de produto.",
+  "para": ["Sulco fundo entre a pálpebra e a bochecha", "Aspecto de cansaço mesmo dormindo bem", "Olheira que melhora quando se ilumina de frente (sinal de sulco)", "Quem quer suavizar o olhar sem cirurgia"],
+  "nao": ["Bolsas de gordura grandes embaixo dos olhos, que podem piorar com preenchimento", "Inchaço frequente nas pálpebras", "Olheira só de mancha ou de vasos, sem sulco", "Gestação, amamentação ou infecção na região"],
+  "como": [["Avaliação", "Diferenciar sulco, mancha, vaso e bolsa, com o rosto em várias luzes e posições."], ["Indicação", "Se o problema for sulco, planejar pouca quantidade e técnica adequada. Se não for, indicar outro tratamento."], ["Aplicação", "Feita pelo médico, em geral com cânula, em plano profundo."], ["Retorno", "Revisão para avaliar e ajustar com cuidado."]],
+  "riscos": "Inchaço, roxos e sensibilidade por alguns dias são esperados. Nesta região, o excesso de produto ou a indicação errada podem causar inchaço prolongado, irregularidade ou um tom azulado. Complicações vasculares são raras, mas podem atingir a visão, e quem aplica precisa saber reconhecer e tratar. Procure a clínica imediatamente se houver dor forte, mudança de cor ou alteração da visão.",
+  "faq": [
+   {"q": "Toda olheira pode ser preenchida?", "a": "Não. O preenchimento trata o sulco. Olheira de mancha, de vasos ou com bolsa de gordura pede outra abordagem."},
+   {"q": "Dura quanto tempo?", "a": "Na região dos olhos o produto costuma durar bastante, mas varia de pessoa para pessoa. O retorno é combinado na consulta."},
+   {"q": "Pode ficar inchado?", "a": "Pode, principalmente com excesso de produto ou em quem tem tendência a inchaço. Por isso a quantidade é pequena e a indicação é cuidadosa."},
+   {"q": "Dá para desfazer?", "a": "O ácido hialurônico pode ser dissolvido com hialuronidase em situações indicadas."}
+  ],
+  "evid": ["Revisão sistemática sobre preenchedores no sulco da olheira conclui que conhecer a anatomia, escolher o produto certo e planejar bem são essenciais para um resultado seguro e natural.", "Revisão de complicações tardias encontrou principalmente inchaço, nódulos e alteração de cor, em geral tratáveis, e reforça a importância da técnica e da quantidade.", "Complicações de preenchedores ao redor dos olhos podem, raramente, afetar a visão, o que exige reconhecimento e tratamento imediatos."],
+  "refs": ["Trinh LN et al. Dermal fillers for tear trough rejuvenation: a systematic review. Facial Plast Surg, 2022.", "Trinh LN et al. Delayed complications following dermal filler for tear trough augmentation: a systematic review. Facial Plast Surg, 2022.", "Termanini KM et al. Tear trough deformity: update on anatomy and clinical management. Aesthet Surg J, 2026.", "Wang Y et al. Complications of periocular dermal fillers. Facial Plast Surg Clin North Am, 2021."],
+  "local": True,
+  "rel": ["olheiras", "rosto-cansado", "pe-de-galinha"]
+ },
+]
+
+# ---------- Bioestimulador de colágeno por região (25/11/2026) ----------
+_BIO_REFS = ["Haddad A et al. Injectable poly-L-lactic acid for body aesthetic treatments: an international consensus on evidence assessment and practical recommendations. Aesthetic Plast Surg, 2025.",
+             "de Almeida AT et al. Consensus recommendations for the use of hyperdiluted calcium hydroxyapatite (Radiesse) as a face and body biostimulatory agent. Plast Reconstr Surg Glob Open, 2019.",
+             "Goldie K et al. Global consensus guidelines for the injection of diluted and hyperdiluted calcium hydroxylapatite for skin tightening. Dermatol Surg, 2018.",
+             "Christen MO et al. Collagen stimulators in body applications: a review focused on poly-L-lactic acid (PLLA). Clin Cosmet Investig Dermatol, 2022.",
+             "Butterwick KJ et al. The FDA-approved and non-FDA-approved indications for biostimulatory fillers off the face. Dermatol Surg, 2026."]
+_BIO_EVID = ["Consensos internacionais de médicos descrevem o uso de ácido poli-L-lático e de hidroxiapatita de cálcio diluída para melhorar firmeza, flacidez e qualidade da pele no rosto e no corpo, com técnica, diluição e número de sessões por região.",
+             "Revisão de 2026 conclui que os dois produtos melhoram qualidade da pele, flacidez e sustentação por estímulo de colágeno, e que o resultado depende da região, da diluição e da técnica.",
+             "A maior parte dos usos no corpo é considerada fora da bula (off-label) e se apoia em consenso de especialistas e séries de casos, com poucos estudos comparativos. Por isso a expectativa deve ser realista e a seleção do paciente, cuidadosa."]
+_BIO_NAO = ["Gestação e amamentação", "Infecção ou inflamação ativa na região", "Doenças autoimunes em atividade e tendência a queloide, avaliadas caso a caso", "Excesso de pele ou flacidez intensa, que podem precisar de cirurgia", "Expectativa de resultado imediato: o colágeno se forma ao longo de meses"]
+_BIO_COMO = [["Avaliação", "Exame da região, da qualidade da pele e do grau de flacidez, e conversa sobre o que incomoda você."], ["Plano", "Escolha do produto, da diluição, da quantidade e do número de sessões, explicados antes de começar."], ["Aplicação", "Com cânula ou agulha, em geral com anestésico, feita pelo médico."], ["Cuidados e reavaliação", "Orientações de massagem e cuidados quando indicadas, e retorno para reavaliar, porque o efeito é gradual."]]
+_BIO_RISCOS = "Inchaço, roxos e dor leve por alguns dias são esperados. Podem surgir pequenos nódulos ou caroços sob a pele, mais comuns quando a técnica, a diluição ou os cuidados não são adequados. Infecção e complicações vasculares são raras. Procure a clínica se houver dor forte, vermelhidão crescente, febre ou mudança de cor da pele."
+_BIO_BRANDS = "ácido poli-L-lático (Sculptra, Elleva), hidroxiapatita de cálcio (Radiesse) e policaprolactona (Ellansé), entre outros"
+
+def _bio(slug, regiao, titulo_regiao, kick, foto, lead, oque, para, faq_extra, rel, extra_evid=None, extra_refs=None):
+    return {
+        "slug": f"bioestimulador-de-colageno-{slug}", "nome": f"Bioestimulador de colágeno {titulo_regiao}", "kick": kick, "estetico": True,
+        "foto": foto, "assunto": f"bioestimulador de colágeno {titulo_regiao}",
+        "title": f"Bioestimulador de colágeno {titulo_regiao} | Curae Santé",
+        "description": f"Bioestimulador de colágeno {titulo_regiao}: para quem é, como é feito, quantas sessões, quanto tempo leva e riscos. Avaliação por médico em São José/SC.",
+        "lead": lead,
+        "oque": oque + f" Os produtos mais usados são o {_BIO_BRANDS}. A escolha depende da região e do objetivo.",
+        "para": para, "nao": _BIO_NAO, "como": _BIO_COMO, "riscos": _BIO_RISCOS,
+        "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> O efeito é gradual, aparece ao longo de meses e depende da quantidade de produto, do número de sessões e da sua pele.",
+        "faq": [
+            {"q": "Quanto tempo leva para aparecer o resultado?", "a": "O colágeno se forma aos poucos. A melhora costuma ser percebida ao longo de semanas a meses depois das sessões, e não no mesmo dia."},
+            {"q": "Quantas sessões são necessárias?", "a": "Depende da região, do produto e do grau de flacidez. O número de sessões e o intervalo são definidos na avaliação."},
+            {"q": "Dói?", "a": "Costuma haver desconforto leve. Em geral se usa anestésico, e a cânula reduz o incômodo."},
+        ] + faq_extra + [
+            {"q": f"Quanto custa o bioestimulador {titulo_regiao}?", "a": "Depende da quantidade de produto, do tipo de produto e do número de sessões. O valor é informado depois da avaliação."},
+        ],
+        "custo": ["Qual produto é indicado para a região", "Quantos frascos a região precisa, o que depende do tamanho da área e da flacidez", "Quantas sessões o plano tem", "Retornos de reavaliação"],
+        "evid": _BIO_EVID + (extra_evid or []), "refs": _BIO_REFS + (extra_refs or []),
+        "local": True, "rel": rel,
+    }
+
+NOVOS += [
+ _bio("rosto", "rosto", "no rosto", "Firmeza e qualidade da pele", "/s/img/pele.jpg",
+      "Com o tempo, a pele do rosto perde colágeno, fica mais fina e menos firme, e o contorno se desfaz. O bioestimulador faz o próprio corpo produzir colágeno novo, com melhora gradual da firmeza e da qualidade da pele.",
+      "O bioestimulador de colágeno é um produto injetável que, em vez de preencher, provoca uma reação controlada que leva a pele a produzir colágeno. No rosto, é usado para flacidez leve a moderada, perda de firmeza e pele mais fina, muitas vezes junto com outros tratamentos.",
+      ["Flacidez leve a moderada no rosto", "Pele mais fina e com menos firmeza", "Perda de definição do contorno", "Rosto que mudou depois de emagrecer"],
+      [{"q": "Bioestimulador ou preenchimento?", "a": "São coisas diferentes. O preenchimento dá volume na hora em um ponto. O bioestimulador melhora a firmeza e a qualidade da pele aos poucos. Muitas vezes os dois se completam."}],
+      ["flacidez-facial-tratamentos", "rosto-cansado", "bioestimuladores-de-colageno-como-funcionam"]),
+ _bio("pescoco", "pescoço", "no pescoço", "Pescoço com flacidez", "/s/img/proc/toxina.jpg",
+      "O pescoço mostra cedo a perda de colágeno: pele fina, flacidez e linhas horizontais. O bioestimulador, em geral bem diluído, melhora a firmeza e a textura da pele aos poucos.",
+      "A pele do pescoço é fina e se movimenta muito, por isso responde mal a tratamentos agressivos. No pescoço, o bioestimulador costuma ser aplicado bem diluído e superficial, para estimular colágeno e melhorar a qualidade da pele, sem dar volume.",
+      ["Pele do pescoço fina e com flacidez leve a moderada", "Linhas horizontais no pescoço", "Textura e aspecto envelhecido da pele", "Quem já cuida do rosto e quer tratar o pescoço junto"],
+      [{"q": "Resolve a papada?", "a": "Não. O bioestimulador melhora a qualidade e a firmeza da pele. Papada por gordura pede outros tratamentos, avaliados na consulta."}],
+      ["flacidez-facial-tratamentos", "bioestimuladores-de-colageno-como-funcionam", "rosto-cansado"]),
+ _bio("colo", "colo", "no colo", "Colo e decote", "/s/img/proc/toxina.jpg",
+      "O colo recebe muito sol ao longo da vida e mostra rugas, linhas de dormir e pele mais fina. O bioestimulador diluído melhora a firmeza e a textura da pele da região aos poucos.",
+      "No colo, o bioestimulador é aplicado diluído para melhorar a qualidade da pele: firmeza, textura e linhas. Costuma ser combinado com fotoproteção diária e, quando há manchas, com outros tratamentos.",
+      ["Rugas e linhas no colo", "Pele do decote fina e com textura envelhecida", "Linhas que aparecem ao dormir de lado", "Quem quer tratar colo e pescoço juntos"],
+      [{"q": "Tira as manchas do colo?", "a": "Não é o foco. Manchas de sol pedem outros tratamentos, como laser ou peeling, que podem ser combinados."}],
+      ["bioestimuladores-de-colageno-como-funcionam", "flacidez-facial-tratamentos"],
+      ["Nos Estados Unidos, a hidroxiapatita de cálcio é aprovada pela FDA para o colo e para as mãos, segundo revisão de 2026."]),
+ _bio("bracos", "braços", "nos braços", "Flacidez nos braços", "/s/img/proc/maos.jpg",
+      "A parte interna dos braços é uma das primeiras a mostrar flacidez, principalmente depois de emagrecer ou com o passar dos anos. O bioestimulador melhora a firmeza e a textura da pele de forma gradual.",
+      "Nos braços, o bioestimulador é aplicado em leque na parte interna e posterior, para estimular colágeno e melhorar a firmeza da pele. Funciona melhor em flacidez leve a moderada. Quando há muito excesso de pele, a cirurgia pode ser a indicação.",
+      ["Flacidez leve a moderada na parte interna dos braços", "Pele dos braços mais fina depois de emagrecer", "Textura e aspecto envelhecido da pele", "Quem não quer ou não pode fazer cirurgia agora"],
+      [{"q": "Substitui a cirurgia de braço?", "a": "Não quando há excesso de pele. O bioestimulador melhora a qualidade e a firmeza da pele, mas não retira pele sobrando."}],
+      ["bioestimuladores-de-colageno-como-funcionam"]),
+ _bio("abdomen", "abdômen", "no abdômen", "Abdômen com flacidez", "/s/img/seringas.jpg",
+      "Depois de gestação ou de emagrecer, a pele da barriga pode ficar frouxa, enrugada e com textura irregular. O bioestimulador melhora a firmeza e a qualidade da pele aos poucos.",
+      "No abdômen, o bioestimulador é aplicado em leque, em geral ao redor do umbigo e na parte de baixo da barriga, para estimular colágeno e melhorar a firmeza e a textura da pele. Não trata gordura nem diástase (separação do músculo), e não retira pele sobrando.",
+      ["Flacidez leve a moderada da pele da barriga", "Pele enrugada ao redor do umbigo", "Textura irregular depois de gestação ou emagrecimento", "Homens e mulheres com pele da barriga menos firme"],
+      [{"q": "Diminui a barriga?", "a": "Não. O bioestimulador melhora a pele, não a gordura. Gordura e diástase pedem outras abordagens, avaliadas na consulta."}],
+      ["bioestimuladores-de-colageno-como-funcionam"]),
+ _bio("gluteo", "glúteo", "no glúteo", "Glúteo", "/s/img/seringas.jpg",
+      "Com o tempo e depois de emagrecer, o glúteo perde firmeza e a pele fica com textura irregular. O bioestimulador melhora a firmeza e a textura da pele e pode dar um discreto ganho de contorno, de forma gradual.",
+      "No glúteo, o bioestimulador é aplicado em várias áreas, com cânula, para estimular colágeno. O objetivo principal é firmeza e qualidade da pele, com melhora da textura e, em alguns casos, um pequeno ganho de contorno. A região é grande e costuma precisar de mais produto e mais sessões. Não é uma alternativa à prótese para quem quer aumentar muito o volume.",
+      ["Glúteo com flacidez leve a moderada", "Pele com textura irregular e furinhos leves", "Perda de firmeza depois de emagrecer", "Quem quer melhorar o aspecto sem cirurgia"],
+      [{"q": "Bioestimulador aumenta o glúteo?", "a": "Pode dar um discreto ganho de contorno, mas o foco é firmeza e textura. Para aumentar muito o volume, as opções são outras."}, {"q": "Melhora a celulite?", "a": "Pode suavizar a aparência em alguns casos, mas celulite tem várias causas e costuma pedir tratamentos combinados."}],
+      ["bioestimuladores-de-colageno-como-funcionam"],
+      ["Estudo retrospectivo com 60 mulheres que fizeram ácido poli-L-lático no glúteo relatou melhora de volume, textura e aparência da celulite, com bom perfil de segurança, usando quantidade adequada de produto.", "Revisão sobre aumento de glúteo minimamente invasivo reforça que segurança depende do produto, da técnica e de evitar substâncias não autorizadas."],
+      ["Durairaj KK et al. Poly-L-lactic acid for gluteal augmentation found to be safe and effective in retrospective clinical review of 60 patients. Dermatol Surg, 2020.", "Atiyeh B et al. Safety and efficiency of minimally invasive buttock augmentation: a review. Aesthetic Plast Surg, 2023."]),
+ _bio("parte-interna-da-coxa", "parte interna da coxa", "na parte interna da coxa", "Parte interna da coxa", "/s/img/seringas.jpg",
+      "A pele da parte interna da coxa é fina e perde firmeza com facilidade, principalmente depois de emagrecer. O bioestimulador melhora a firmeza e a textura da pele aos poucos.",
+      "Na parte interna da coxa, o bioestimulador é aplicado em leque, com cânula, para estimular colágeno e melhorar a firmeza e o aspecto da pele, inclusive na região acima do joelho. Funciona melhor em flacidez leve a moderada.",
+      ["Flacidez na parte interna da coxa", "Pele fina e com textura irregular", "Perda de firmeza depois de emagrecer", "Região acima do joelho com pele frouxa"],
+      [{"q": "Afina a coxa?", "a": "Não. O bioestimulador melhora a pele, não a gordura. O objetivo é firmeza e textura."}],
+      ["bioestimuladores-de-colageno-como-funcionam"]),
+]
+
+# ---------- Lote 3: tecnologias e cabelo (25/11/2026) ----------
+for _p in NOVOS:
+    if _p["slug"] == "laser-co2-fracionado":
+        _p["title"] = "Laser CO2 fracionado em São José/SC: cicatrizes, estrias e rugas | Curae Santé"
+        _p["lead"] = _p["lead"] + " Aparelhos conhecidos: UltraPulse, eCO2 e similares."
+        _p["faq"] += [
+            {"q": "Quantas sessões de laser CO2 são necessárias?", "a": "Depende do objetivo. Para cicatrizes de acne e estrias costuma ser mais de uma sessão, com intervalo de semanas. O número é definido na avaliação."},
+            {"q": "Quanto tempo de recuperação?", "a": "Há vermelhidão, inchaço e descamação por alguns dias, em geral cerca de uma semana no rosto, variando com a intensidade. Os cuidados são explicados antes."},
+            {"q": "Laser CO2 funciona para estrias?", "a": "Pode melhorar a textura e o aspecto das estrias, principalmente as brancas, mas não costuma apagá-las. Revisões mostram resultado parecido com o do microagulhamento com radiofrequência."},
+        ]
+        _p["evid"] = _p["evid"] + ["Metanálise com 467 pacientes com cicatrizes de acne encontrou pele mais lisa com o laser CO2 fracionado do que com outros métodos.", "Metanálise sobre estrias não encontrou superioridade clara entre laser CO2 fracionado e microagulhamento com radiofrequência."]
+        _p["refs"] = _p["refs"] + ["Lin L et al. Ultra-pulse CO2 fractional laser in the treatment of depressed acne scars: systematic review and meta-analysis. Ann Palliat Med, 2022.", "Aktoz F et al. Comparing fractional microneedle radiofrequency and fractional CO2 laser for striae distensae: systematic review and meta-analysis. Lasers Med Sci, 2024."]
+        _p["custo"] = ["Área tratada (rosto, pálpebras, estrias, cicatriz)", "Intensidade e número de sessões", "Cuidados e produtos do pós", "Retornos"]
+        _p["local"] = True
+    if _p["slug"] == "ultrassom-microfocado":
+        _p["title"] = "Ultrassom microfocado (HIFU) em São José/SC: papada e flacidez | Curae Santé"
+        _p["lead"] = _p["lead"] + " Aparelhos conhecidos: Ultraformer, Ulthera e similares."
+        _p["faq"] += [
+            {"q": "Ultrassom microfocado funciona?", "a": "Revisões mostram melhora discreta a moderada da firmeza, como pequena elevação da sobrancelha, em quem tem flacidez leve. Não substitui cirurgia em flacidez intensa."},
+            {"q": "Serve para papada?", "a": "Pode melhorar a firmeza da pele da região. Gordura importante na papada pode pedir outros tratamentos."},
+            {"q": "Quanto tempo dura?", "a": "O efeito aparece ao longo de meses e costuma ser mantido com sessões periódicas, combinadas na avaliação."},
+        ]
+        _p["custo"] = ["Regiões tratadas (rosto, papada, pescoço, corpo)", "Quantidade de disparos necessária", "Número de sessões", "Retornos"]
+        _p["local"] = True
+
+NOVOS += [
+ {
+  "slug": "laser-de-tulio-1927", "nome": "Laser de túlio 1927 nm", "kick": "Manchas, textura e viço", "estetico": True,
+  "foto": "/s/img/equipamento.jpg", "assunto": "laser de túlio 1927 nm (Lavieen)",
+  "title": "Laser de túlio 1927 nm (Lavieen) em São José/SC | Curae Santé",
+  "description": "Laser de túlio 1927 nm (Lavieen e similares): para que serve, manchas, melasma, textura e poros, quantas sessões e recuperação. Perto de Florianópolis.",
+  "h1": "Laser de túlio 1927 nm (Lavieen)",
+  "lead": "Um laser fracionado suave, que age na camada mais superficial da pele. É usado para manchas, textura, poros e viço, com recuperação rápida. O aparelho mais conhecido no Brasil é o Lavieen, e há outros com a mesma tecnologia.",
+  "oque": "O laser de túlio trabalha no comprimento de onda de 1927 nm, que é muito absorvido pela água da pele. Por isso ele atua de forma superficial e fracionada: cria microcolunas de tratamento e deixa pele intacta entre elas, o que acelera a recuperação. É chamado por muitos de laser \"BB\" porque deixa a pele com aspecto mais uniforme. Não é o mesmo que o laser CO2, que é mais profundo e tem recuperação maior.",
+  "para": ["Manchas de sol e pele com tom irregular", "Textura áspera e poros dilatados", "Pele sem viço", "Melasma, sempre com cautela e combinado com outros cuidados"],
+  "nao": ["Pele bronzeada ou exposição ao sol intensa nas semanas anteriores", "Infecção ativa, herpes ativo ou feridas na região", "Gestação", "Tendência a manchas depois de inflamação, que pede preparo e parâmetros cuidadosos"],
+  "como": [["Avaliação", "Exame da pele, do tipo de mancha e do fototipo, para definir se o laser é indicado."], ["Preparo", "Em alguns casos, cremes e fotoproteção nas semanas anteriores."], ["Sessão", "Anestésico tópico e disparos do laser pela área, em poucos minutos."], ["Cuidados", "Pele avermelhada e áspera por alguns dias, com descamação fina. Protetor solar rigoroso."]],
+  "riscos": "Vermelhidão, inchaço leve, sensação de calor e pele áspera por alguns dias são esperados. Pode haver escurecimento passageiro em quem tem tendência a manchas, principalmente na pele morena. No melasma, a melhora pode ser seguida de retorno das manchas, porque é uma condição crônica.",
+  "faq": [
+   {"q": "Para que serve o laser Lavieen?", "a": "Lavieen é a marca de um aparelho de laser de túlio 1927 nm. Ele é usado para manchas, textura, poros e viço da pele."},
+   {"q": "Laser de túlio ajuda no melasma?", "a": "Pode ajudar como parte do tratamento, mas o melasma é crônico e pode voltar. O laser é sempre combinado com fotoproteção e outros cuidados."},
+   {"q": "Quantas sessões?", "a": "Os estudos usam em média três sessões com intervalo de cerca de um mês. O número é definido na avaliação."},
+   {"q": "Precisa ficar em casa?", "a": "Em geral não. A pele fica avermelhada e áspera por alguns dias, e dá para voltar à rotina com fotoproteção."}
+  ],
+  "custo": ["Área tratada (rosto, pescoço, colo, mãos)", "Número de sessões", "Preparo e cuidados do pós", "Retornos"],
+  "evid": ["Revisão sistemática de 2025 reuniu 17 estudos com 448 pacientes: o laser de túlio 1927 nm melhorou textura, manchas e aparência de cicatrizes, com efeitos adversos leves e passageiros. Os protocolos usaram em média três sessões mensais.", "A mesma revisão registrou retorno do melasma em parte dos casos e grande variação entre os estudos, a maioria com risco de viés moderado a alto.", "Revisão integrativa de 2025 descreveu boa tolerância e recuperação mais rápida que a de lasers mais agressivos, com limitações metodológicas."],
+  "refs": ["Oliveira Modena DA et al. Thulium laser (1927 nm) for dermatological conditions: a systematic review. Lasers Med Sci, 2025.", "da Silva Sardinha M et al. Evaluation of the safety and efficacy of the thulium 1927 laser in aesthetic health: an integrative review. J Cosmet Laser Ther, 2025.", "Goldman MP et al. Dual 1550-nm erbium glass fiber and 1927-nm thulium fiber non-ablative fractional laser in patients with skin of color: a review of clinical studies. Lasers Surg Med, 2026."],
+  "local": True, "rel": []
+ },
+ {
+  "slug": "mesoterapia-capilar", "nome": "Mesoterapia capilar", "kick": "Queda e afinamento do cabelo", "estetico": True,
+  "foto": "/s/img/seringas.jpg", "assunto": "mesoterapia capilar",
+  "title": "Mesoterapia capilar em São José/SC: funciona? | Curae Santé",
+  "description": "Mesoterapia capilar (intradermoterapia): o que é aplicado, para quem funciona, quantas sessões e o que dizem os estudos. Avaliação por médico em São José/SC.",
+  "h1": "Mesoterapia capilar",
+  "lead": "Aplicações de medicamentos com agulha fina diretamente no couro cabeludo, como complemento do tratamento da calvície e da queda de cabelo. Funciona melhor junto com o tratamento de base, e não sozinha.",
+  "oque": "Na mesoterapia capilar, ou intradermoterapia, pequenas quantidades de medicamentos são aplicadas na pele do couro cabeludo, perto dos folículos. As substâncias mais estudadas são a dutasterida, o minoxidil e fatores de crescimento. A vantagem é levar o medicamento direto ao local com doses baixas. A indicação começa pelo diagnóstico do tipo de queda, porque calvície, queda temporária e outras alopecias têm tratamentos diferentes.",
+  "para": ["Calvície masculina (alopecia androgenética) como complemento", "Afinamento do cabelo na mulher, como complemento", "Quem não tolera bem o tratamento por via oral ou tópica", "Quem quer potencializar um tratamento que já está fazendo"],
+  "nao": ["Queda sem diagnóstico definido", "Infecção ou inflamação ativa no couro cabeludo", "Gestação e amamentação, conforme a substância", "Expectativa de recuperar áreas totalmente calvas há muito tempo"],
+  "como": [["Diagnóstico", "Consulta com exame do couro cabeludo e tricoscopia, e exames de sangue quando indicados."], ["Plano", "Tratamento de base, como minoxidil e outros remédios, mais a mesoterapia como complemento quando indicada."], ["Sessões", "Aplicações com agulha fina no couro cabeludo, em geral mensais no início."], ["Acompanhamento", "Fotos padronizadas e reavaliação a cada poucos meses."]],
+  "riscos": "Dor no momento, pequenos pontos de sangramento e vermelhidão são comuns. Raramente podem ocorrer infecção, dermatite, cicatriz e até queda paradoxal. A técnica e a escolha da substância influenciam o risco.",
+  "aviso": "<strong>A evidência ainda é limitada.</strong> Os estudos são pequenos e usam protocolos diferentes. Resultados variam de pessoa para pessoa.",
+  "faq": [
+   {"q": "Mesoterapia capilar funciona?", "a": "Os estudos mostram benefício em parte dos pacientes, principalmente com dutasterida, mas são pequenos e variados. Funciona melhor como complemento do tratamento de base."},
+   {"q": "O que é aplicado?", "a": "As substâncias mais estudadas são dutasterida, minoxidil e fatores de crescimento. A escolha depende do diagnóstico e da sua saúde."},
+   {"q": "Quanto tempo para fazer efeito?", "a": "Cabelo cresce devagar. A estabilização da queda e o ganho de densidade são avaliados em meses."},
+   {"q": "Dói?", "a": "Há desconforto pelas picadas. Pode-se usar anestésico tópico ou outras medidas para reduzir."}
+  ],
+  "custo": ["Substância aplicada", "Número de sessões", "Tratamento de base associado", "Retornos e fotos de acompanhamento"],
+  "evid": ["Revisão sistemática de 27 artigos sobre mesoterapia para queda de cabelo encontrou resultados positivos em vários estudos, com dutasterida, minoxidil, fatores de crescimento, toxina botulínica e outras substâncias, mas com métodos muito variados.", "Revisão sistemática de 2026 concluiu que a terapia injetável pode trazer benefício estético na calvície, principalmente com dutasterida, mas que a evidência é limitada por amostras pequenas e seguimento curto. Os efeitos adversos foram em geral leves, incluindo raros casos de queda paradoxal e cicatriz."],
+  "refs": ["Gupta AK et al. Systematic review of mesotherapy: a novel avenue for the treatment of hair loss. J Dermatolog Treat, 2023.", "Beer J et al. Injectable therapy for androgenetic alopecia: a systematic review. Dermatol Surg, 2026."],
+  "local": True, "rel": ["calvicie-masculina", "alopecia-androgenetica-feminina"]
+ },
+ {
+  "slug": "mmp-capilar", "nome": "MMP capilar", "kick": "Microinfusão de medicamentos", "estetico": True,
+  "foto": "/s/img/seringas.jpg", "assunto": "MMP capilar",
+  "title": "MMP capilar (microinfusão de medicamentos) em São José/SC | Curae Santé",
+  "description": "MMP capilar: o que é a microinfusão de medicamentos na pele, para quem é, como é feita, efeitos colaterais e o que dizem os estudos. São José/SC.",
+  "h1": "MMP capilar: microinfusão de medicamentos",
+  "lead": "MMP é a sigla de microinfusão de medicamentos na pele (MMP®), uma técnica criada no Brasil que usa um aparelho parecido com o de tatuagem para levar medicamentos ao couro cabeludo. É um complemento do tratamento da queda de cabelo.",
+  "oque": "No MMP, um aparelho com microagulhas faz várias perfurações muito rápidas e superficiais enquanto deposita o medicamento na pele. A ideia é distribuir o remédio de forma uniforme no couro cabeludo e somar o efeito das microperfurações. É usado principalmente na calvície masculina e no afinamento feminino, como parte de um plano que inclui o tratamento de base.",
+  "para": ["Calvície masculina como complemento", "Afinamento do cabelo na mulher, como complemento", "Quem quer potencializar o tratamento de base", "Quem não tolera bem remédios por via oral"],
+  "nao": ["Queda sem diagnóstico definido", "Infecção, ferida ou inflamação no couro cabeludo", "Gestação e amamentação, conforme o medicamento", "Tendência a queloide, avaliada caso a caso"],
+  "como": [["Diagnóstico", "Consulta com exame do couro cabeludo e exames quando indicados."], ["Plano", "Escolha do medicamento e do número de sessões, junto com o tratamento de base."], ["Sessão", "Anestesia local e aplicação com o aparelho nas áreas definidas."], ["Cuidados", "Couro cabeludo avermelhado e com crostas finas por alguns dias. Orientações de lavagem e retorno."]],
+  "riscos": "Dor, sangramento leve, vermelhidão e crostas por alguns dias são esperados. Podem ocorrer inchaço na testa, infecção e reação ao medicamento. Raramente, cicatriz ou queda paradoxal.",
+  "aviso": "<strong>A evidência ainda é limitada.</strong> Os estudos sobre MMP são pequenos. Resultados variam de pessoa para pessoa.",
+  "faq": [
+   {"q": "MMP capilar funciona?", "a": "Estudos e séries de casos mostram benefício em parte dos pacientes como complemento, mas a evidência ainda é limitada. O tratamento de base continua essencial."},
+   {"q": "MMP é melhor que mesoterapia?", "a": "São técnicas parecidas que mudam a forma de levar o medicamento à pele. Não há estudos grandes que mostrem uma clara vantagem. A escolha é feita na avaliação."},
+   {"q": "Quais os efeitos colaterais?", "a": "Dor, vermelhidão, crostas e inchaço passageiro são os mais comuns. Infecção e cicatriz são raras."},
+   {"q": "Quantas sessões?", "a": "Em geral, algumas sessões com intervalo de semanas, definidas no plano."}
+  ],
+  "custo": ["Medicamento usado", "Número de sessões", "Tratamento de base associado", "Retornos"],
+  "evid": ["Revisão sobre procedimentos minimamente invasivos no afinamento feminino descreve microagulhamento, mesoterapia, microinfusão de medicamentos (MMP®) e plasma rico em plaquetas como tratamentos complementares ao tratamento com remédios.", "Revisão sistemática de 2026 sobre terapia injetável na calvície aponta benefício possível, com evidência limitada por estudos pequenos e protocolos variados."],
+  "refs": ["Melo DF et al. Minimally invasive procedures for the management of female pattern hair loss. J Cosmet Dermatol, 2022.", "Beer J et al. Injectable therapy for androgenetic alopecia: a systematic review. Dermatol Surg, 2026."],
+  "local": True, "rel": ["calvicie-masculina", "alopecia-androgenetica-feminina"]
+ },
+ {
+  "slug": "tratamento-da-calvicie", "nome": "Tratamento da calvície sem cirurgia", "kick": "Calvície masculina", "tipo": "terapia",
+  "foto": "/s/img/pedro-wood-luz.jpg", "assunto": "tratamento da calvície",
+  "title": "Tratamento da calvície sem cirurgia em São José/SC | Curae Santé",
+  "description": "Calvície masculina tem tratamento sem cirurgia: minoxidil, finasterida, dutasterida e procedimentos complementares. O que funciona e o que esperar. São José/SC.",
+  "h1": "Tratamento da calvície sem cirurgia",
+  "lead": "A calvície masculina (alopecia androgenética) é progressiva, mas tem tratamento. Quanto mais cedo começar, mais cabelo se preserva. O tratamento combina remédios com boa evidência e, quando indicado, procedimentos complementares.",
+  "oque": "Na calvície, os folículos ficam sensíveis aos hormônios masculinos e vão afinando o fio com o tempo, até parar de produzir cabelo visível. O tratamento busca frear esse processo e recuperar parte da espessura. Os remédios com melhor evidência são o minoxidil, em loção ou em comprimido de baixa dose, e os bloqueadores hormonais, como a finasterida e a dutasterida. Procedimentos como mesoterapia, MMP e microagulhamento podem complementar. O transplante é uma opção para áreas já sem cabelo.",
+  "para": ["Entradas e coroa ficando ralas", "Fios mais finos e couro cabeludo aparecendo", "Histórico de calvície na família", "Quem quer manter o cabelo que ainda tem"],
+  "nao_kick": "Antes de tratar", "nao_titulo": "O que avaliar primeiro",
+  "nao": ["Queda súbita ou em placas, que pode ser outra doença", "Couro cabeludo com coceira, descamação ou feridas", "Problemas de coração, pressão ou fígado, que influenciam a escolha do remédio", "Planos de ter filhos, conversados antes de bloqueadores hormonais"],
+  "como": [["Consulta", "História, exame do couro cabeludo com tricoscopia e fotos padronizadas."], ["Exames", "Quando indicados, para descartar outras causas de queda."], ["Plano", "Remédios de base e, se for o caso, procedimentos complementares."], ["Acompanhamento", "Reavaliação com fotos a cada poucos meses. O resultado aparece entre 6 e 12 meses."]],
+  "riscos_titulo": "Efeitos e cuidados",
+  "riscos": "Cada remédio tem efeitos possíveis, explicados antes de começar. O minoxidil pode causar aumento de pelos no corpo, queda inicial passageira e, em comprimido, inchaço ou alteração da pressão. Bloqueadores hormonais podem, em uma minoria, afetar a libido. O acompanhamento médico serve para ajustar o tratamento.",
+  "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> A calvície é crônica: parar o tratamento faz o processo voltar.",
+  "faq": [
+   {"q": "Calvície tem cura?", "a": "Não tem cura, mas tem controle. O tratamento contínuo freia a queda e pode recuperar parte da espessura dos fios."},
+   {"q": "Minoxidil em comprimido funciona?", "a": "Revisões mostram que o minoxidil oral em baixa dose é eficaz e bem tolerado em pessoas saudáveis, com acompanhamento médico."},
+   {"q": "Finasterida causa impotência?", "a": "Uma minoria pode ter alteração da libido ou da ereção, em geral reversível. Isso é conversado antes, e a escolha é individual."},
+   {"q": "Quanto tempo para ver resultado?", "a": "Em geral, entre 6 e 12 meses de tratamento contínuo."}
+  ],
+  "evid": ["Revisão de 17 estudos com 634 pacientes concluiu que o minoxidil oral é eficaz e bem tolerado em pessoas saudáveis com dificuldade com a loção.", "Comparação de estudos mostrou eficácia de minoxidil oral, finasterida e dutasterida na calvície, com diferenças entre eles.", "Revisões de tratamento da alopecia androgenética colocam minoxidil e bloqueadores hormonais como base, e procedimentos como complemento."],
+  "refs": ["Randolph M et al. Oral minoxidil treatment for hair loss: a review of efficacy and safety. J Am Acad Dermatol, 2021.", "Gupta AK et al. Comparison of oral minoxidil, finasteride, and dutasteride for treating androgenetic alopecia. J Dermatolog Treat, 2022.", "Devjani S et al. Androgenetic alopecia: therapy update. Drugs, 2023."],
+  "local": True, "rel": ["calvicie-masculina"]
+ },
+ {
+  "slug": "calvicie-feminina", "nome": "Calvície feminina", "kick": "Afinamento do cabelo na mulher", "tipo": "terapia",
+  "foto": "/s/img/pedro-wood-luz2.jpg", "assunto": "calvície feminina",
+  "title": "Calvície feminina tem tratamento? | Curae Santé, São José/SC",
+  "description": "Calvície feminina (alopecia androgenética): sinais, causas, exames e tratamentos com evidência, como minoxidil e procedimentos complementares. São José/SC.",
+  "h1": "Calvície feminina",
+  "lead": "Na mulher, a calvície aparece como afinamento no topo da cabeça, com a risca cada vez mais larga, e raramente forma entradas como no homem. Tem tratamento, e quanto antes começar, melhor.",
+  "oque": "A calvície feminina, ou alopecia androgenética feminina, é a causa mais comum de afinamento do cabelo na mulher. Os fios vão ficando mais finos e curtos, principalmente no alto da cabeça. Pode começar em qualquer idade e costuma piorar na menopausa. É importante diferenciar de outras causas de queda, como deficiência de ferro, alterações da tireoide, queda depois de emagrecer, de gestação ou de estresse, porque muitas vezes elas se somam.",
+  "para": ["Risca do cabelo cada vez mais larga", "Rabo de cavalo mais fino", "Couro cabeludo aparecendo no topo da cabeça", "Afinamento que piorou na menopausa ou depois de emagrecer"],
+  "nao_kick": "Antes de tratar", "nao_titulo": "O que investigar junto",
+  "nao": ["Ferritina e vitaminas baixas", "Alterações da tireoide e dos hormônios", "Queda intensa depois de emagrecer, gestação ou doença", "Uso de remédios que podem afinar o cabelo"],
+  "como": [["Consulta", "História, exame do couro cabeludo com tricoscopia e fotos padronizadas."], ["Exames", "Ferro, tireoide e hormônios quando indicados."], ["Plano", "Minoxidil em loção ou comprimido, outros remédios quando indicados e procedimentos complementares."], ["Acompanhamento", "Reavaliação com fotos. O resultado é avaliado em meses."]],
+  "riscos_titulo": "Efeitos e cuidados",
+  "riscos": "O minoxidil pode causar aumento de pelos no rosto e no corpo, queda inicial passageira e, em comprimido, inchaço ou alteração da pressão. Outros remédios hormonais têm efeitos próprios e não são usados na gestação. Tudo é explicado antes de começar.",
+  "aviso": "<strong>Resultados variam de pessoa para pessoa.</strong> A calvície feminina é crônica e precisa de tratamento contínuo.",
+  "faq": [
+   {"q": "Calvície feminina tem cura?", "a": "Não tem cura, mas tem tratamento que freia o afinamento e pode recuperar parte da densidade."},
+   {"q": "Como saber se é calvície ou queda temporária?", "a": "Na consulta, o exame do couro cabeludo e a história diferenciam. É comum as duas coisas acontecerem juntas."},
+   {"q": "Mesoterapia e MMP ajudam?", "a": "Podem ajudar como complemento do tratamento com remédios, mas a evidência ainda é limitada."},
+   {"q": "Quem atende?", "a": "O Dr. Pedro Schmitz (CRM/SC 38229) cuida do cabelo. Quando há alteração hormonal ou de peso, o acompanhamento pode ser feito junto com a Dra. Júlia Schmitz (CRM/SC 34242)."}
+  ],
+  "evid": ["Revisões de tratamento da alopecia androgenética colocam o minoxidil como base também nas mulheres, com o minoxidil oral em baixa dose como alternativa eficaz.", "Revisão sobre procedimentos minimamente invasivos no afinamento feminino descreve microagulhamento, mesoterapia, MMP e plasma rico em plaquetas como complementos."],
+  "refs": ["Devjani S et al. Androgenetic alopecia: therapy update. Drugs, 2023.", "Randolph M et al. Oral minoxidil treatment for hair loss: a review of efficacy and safety. J Am Acad Dermatol, 2021.", "Melo DF et al. Minimally invasive procedures for the management of female pattern hair loss. J Cosmet Dermatol, 2022."],
+  "local": True, "rel": ["alopecia-androgenetica-feminina"]
+ },
+ {
+  "slug": "queda-de-cabelo-apos-emagrecer-com-remedio", "nome": "Queda de cabelo com tirzepatida ou semaglutida", "kick": "Queda depois de emagrecer", "tipo": "terapia",
+  "foto": "/s/img/pedro-wood-luz2.jpg", "assunto": "queda de cabelo depois de emagrecer com remédio",
+  "title": "Queda de cabelo com tirzepatida (Mounjaro) ou semaglutida | Curae Santé",
+  "description": "Queda de cabelo usando tirzepatida (Mounjaro) ou semaglutida (Ozempic, Wegovy): por que acontece, quanto dura, o que fazer e quando investigar. São José/SC.",
+  "h1": "Queda de cabelo com tirzepatida ou semaglutida",
+  "lead": "Muita gente percebe queda de cabelo alguns meses depois de começar a emagrecer com tirzepatida (Mounjaro) ou semaglutida (Ozempic, Wegovy). Na maioria das vezes é uma queda temporária e tem o que fazer.",
+  "oque": "A causa mais comum é o eflúvio telógeno: depois de uma mudança grande no corpo, como perder peso rápido, comer menos proteína ou ter deficiência de ferro, muitos fios entram ao mesmo tempo na fase de queda. Ela aparece de 2 a 4 meses depois e costuma melhorar em alguns meses, quando o peso estabiliza e a alimentação é ajustada. Em quem já tinha tendência à calvície, a queda pode revelar ou acelerar o afinamento, e aí o tratamento é diferente. Não pare o remédio por conta própria: converse com o médico que o prescreveu.",
+  "para": ["Queda de cabelo que começou meses depois de iniciar o remédio", "Fios caindo em maior quantidade no banho e na escova", "Cabelo mais ralo depois de perder muito peso", "Quem quer emagrecer protegendo o cabelo"],
+  "nao_kick": "Antes de tratar", "nao_titulo": "O que investigar",
+  "nao": ["Ferritina, vitamina B12, vitamina D e zinco", "Tireoide", "Ingestão de proteína e calorias", "Sinais de calvície que já existia antes"],
+  "como": [["Consulta", "História da queda, do remédio e da perda de peso, e exame do couro cabeludo."], ["Exames", "Ferro, vitaminas e tireoide, conforme o caso."], ["Plano", "Ajuste de alimentação e proteína, reposição do que estiver baixo e, quando indicado, minoxidil e procedimentos."], ["Junto com o emagrecimento", "Na Curae Santé, o cabelo é cuidado pelo Dr. Pedro e o emagrecimento pela Dra. Júlia, que podem acompanhar juntos."]],
+  "riscos_titulo": "Quando procurar logo",
+  "riscos": "Procure avaliação se a queda durar mais de 6 meses, vier em placas, com coceira ou feridas no couro cabeludo, ou se o cabelo estiver ficando ralo de forma progressiva. Esses sinais podem indicar outra causa ou calvície.",
+  "aviso": "<strong>Não interrompa o remédio sem orientação.</strong> A queda costuma ser temporária, e o médico que acompanha o emagrecimento ajuda a ajustar o plano.",
+  "faq": [
+   {"q": "Mounjaro faz cair cabelo?", "a": "Estudos registram mais relatos de queda com tirzepatida e semaglutida do que com outros remédios da classe. Na maioria das vezes a queda é temporária, ligada à perda de peso rápida."},
+   {"q": "Quanto tempo dura a queda?", "a": "O eflúvio telógeno costuma melhorar em alguns meses depois que o peso estabiliza e a alimentação é ajustada."},
+   {"q": "Que vitamina tomar?", "a": "Só faz sentido repor o que estiver baixo nos exames, como ferro ou vitaminas. Suplementos sem necessidade não fazem o cabelo crescer mais."},
+   {"q": "Preciso parar o remédio?", "a": "Em geral não. Converse com o médico que prescreveu antes de qualquer mudança."}
+  ],
+  "evid": ["Revisão sistemática de 2026 com 24 estudos encontrou que semaglutida e tirzepatida tiveram as maiores taxas de relato de queda de cabelo entre os agonistas de GLP-1, com eflúvio telógeno e alopecia androgenética como os tipos mais descritos.", "Outra revisão sistemática de 2025 reuniu os relatos de queda associada a esses remédios e reforça a relação com a perda de peso e com a alimentação.", "Comentário de especialistas de 2026 orienta avaliar ferro, proteína e outras causas, e tratar a queda sem interromper o tratamento do peso sem necessidade."],
+  "refs": ["Gupta AK et al. GLP-1 therapies and hair loss: a systematic review of current evidence and implications for counseling. Sci Prog, 2026.", "Alsuwailem OA et al. Hair loss associated with glucagon-like peptide-1 (GLP-1) receptor agonist use: a systematic review. Cureus, 2025.", "Piraccini BM et al. Hair loss in patients on glucagon-like peptide 1 receptor agonists: understanding risks and managing outcomes. Dermatol Ther (Heidelb), 2026."],
+  "local": True, "rel": ["queda-cabelo-apos-emagrecimento"]
  },
 ]
