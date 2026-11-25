@@ -423,3 +423,17 @@ footer .med{font-size:13.5px;line-height:1.55;opacity:.8;margin-top:14px}
 h1{font-size:clamp(40px,7.2vw,100px)}
 .hero h1{max-width:min(11ch,100%)}
 h1,h2,h3{max-width:min(var(--hmax,100%),100%)}
+
+/* Palavras de impacto (25/11/2026): ganham negrito quando entram na tela */
+.imp{font-weight:inherit;transition:font-weight .7s cubic-bezier(.2,.7,.2,1),color .7s ease}
+.imp.on{font-weight:750}
+.pad:not(.dk) .imp.on{color:var(--escuro)}
+.dk .imp.on,.hero .imp.on{color:var(--off)}
+/* Gloock não tem negrito: no manifesto o destaque vem da cor */
+.read .imp{background:linear-gradient(var(--rosa),var(--rosa)) 0 92%/0 .08em no-repeat;transition:color .8s ease,background-size 1s cubic-bezier(.2,.7,.2,1)}
+.read .imp.on{font-weight:400;color:var(--marrom);background-size:100% .08em}
+@media (prefers-reduced-motion:reduce){.imp,.read .imp{transition:none}}
+/* Hero: sombreado leve para destacar o título do fundo (como nos vídeos) */
+.hero h1,.hero em{text-shadow:0 2px 6px rgba(20,14,9,.45),0 8px 32px rgba(20,14,9,.55)}
+.hero .kick{color:#D9C6AE;text-shadow:0 1px 3px rgba(20,14,9,.7),0 4px 16px rgba(20,14,9,.5)}
+.hero .lead{text-shadow:0 1px 3px rgba(20,14,9,.55)}

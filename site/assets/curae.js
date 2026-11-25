@@ -296,3 +296,16 @@
   bar.addEventListener('click', e => { const c = e.target.dataset && e.target.dataset.c; if (!c) return; try { localStorage.setItem(KEY, c); } catch (x) {} bar.remove(); if (c === 'sim') load(); });
   document.body.appendChild(bar);
 })();
+
+/* Palavras de impacto: negrito ao rolar (25/11/2026) */
+(function () {
+  const els = Array.from(document.querySelectorAll('.imp'));
+  if (!els.length) return;
+  const on = g => g.querySelectorAll('.imp').forEach((e, i) => setTimeout(() => e.classList.add('on'), 150 + i * 220));
+  const groups = Array.from(new Set(els.map(e => e.parentElement)));
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) { els.forEach(e => e.classList.add('on')); return; }
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!en.isIntersecting) return; on(en.target); io.unobserve(en.target);
+  }), { rootMargin: '0px 0px -12% 0px', threshold: 0.25 });
+  groups.forEach(g => io.observe(g));
+})();
