@@ -452,3 +452,7 @@ h1,h2,h3{max-width:min(var(--hmax,100%),100%)}
 .tempos .t p{margin:0;font-size:16px;line-height:1.5;color:var(--marrom)}
 @media (max-width:900px){.tempos{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.tempos{grid-template-columns:1fr}}
+
+/* Vídeos verticais (tour da clínica, Dra. Júlia) */
+.vid{max-width:380px;margin:0 auto;border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(42,31,20,.22);background:var(--escuro)}
+.vid video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover}
